@@ -1,0 +1,5 @@
+Model,MaxTimeSA,TimestepSA,MaxTimeProj,TimestepProj
+Stokes,0.8992,0.0002,4.7925,0.0005
+Bagheri,0.0432,0.0002,0.0916,0.0002
+Dioguardi,0.0994,0.0002,0.0994,0.0002
+Zhang,0.8992,0.0002,4.7925,0.0002
