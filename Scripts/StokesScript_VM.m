@@ -478,9 +478,9 @@ set(gca,'XLim', [0, MaxW_Proj*1.1] )
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/Stokes_MeasVsCalc.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220517/StokesVM_MeasVsCalc.jpg', 'Resolution', 300);
 
-%% D) wt against wt measured with fitted lines
+%% D1) wt against wt measured with fitted lines
 % ===============================================
 
 subplot(1, 2, 1)
@@ -532,8 +532,67 @@ set(gca, 'Xlim', [0, 1.1*MaxW_Proj])
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/Stokes_MeasVsCalc_Eqn.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220517/StokesVM_MeasVsCalc_Eqn.jpg', 'Resolution', 300);
 
+%% D2) wt against wt measured using Matlab fitlm function
+% ========================================================
+
+% Fit linear model through the intercept: SA
+lm_StokesSA = fitlm(Table_Stokes_SA.Wt_Meas, Table_Stokes_SA.Wt, 'y~-1+x1');
+m_StokesSA = lm_StokesSA.Coefficients.Estimate(1);
+fitY_StokesSA = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_Stokes_SA.Wt), max(Table_Stokes_SA.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq = lm_StokesSA.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_StokesSA(i) = m_StokesSA * nVal(i);
+end
+
+subplot(1, 2, 1)
+plot(Table_Stokes_SA.Wt_Meas, Table_Stokes_SA.Wt, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+ylabel('Estimated settling velocity (m/s)')
+xlabel('Measured settling velocity (m/s)')
+title('Stokes Model, Surface Area')
+hold on
+plot(nVal, nVal, '--r')
+plot(nVal, fitY_StokesSA, '-g')
+legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_StokesSA, r_sq), 'location', 'best');
+set(gca,'YLim', [0, nMax*1.1] )
+set(gca,'XLim', [0, nMax*1.1] )
+hold off
+
+% Fit linear model through the intercept: Projected area
+lm_StokesProj = fitlm(Table_Stokes_Proj.Wt_Meas, Table_Stokes_Proj.Wt, 'y~-1+x1');
+m_StokesProj = lm_StokesProj.Coefficients.Estimate(1);
+fitY_StokesProj = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_Stokes_Proj.Wt), max(Table_Stokes_Proj.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq = lm_StokesProj.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_StokesProj(i) = m_StokesProj * nVal(i);
+end
+
+subplot(1, 2, 2)
+plot(Table_Stokes_Proj.Wt_Meas, Table_Stokes_Proj.Wt, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+ylabel('Estimated settling velocity (m/s)')
+xlabel('Measured settling velocity (m/s)')
+title('Stokes Model, Projection Area')
+hold on
+plot(nVal, nVal, '--r')
+plot(nVal, fitY_StokesProj, '-g')
+legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_StokesProj, r_sq), 'location', 'best');
+set(gca,'YLim', [0, nMax*1.1] )
+set(gca,'XLim', [0, nMax*1.1] )
+hold off
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20220517/StokesVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);
 %% E1) Re against Cd (ALL)
 % =========================
 

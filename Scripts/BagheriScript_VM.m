@@ -507,7 +507,7 @@ hold off
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220517/BagheriVM_MeasVsCalc.jpg', 'Resolution', 300);
 
-%% D) wt against wt measured with fitted lines
+%% D1) wt against wt measured with fitted lines
 % ===============================================
 
 subplot(1, 2, 1)
@@ -560,6 +560,66 @@ hold off
 
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220517/BagheriVM_MeasVsCalc_Eqn.jpg', 'Resolution', 300);
+
+%% D2) wt against wt measured using Matlab fitlm function
+% ========================================================
+
+% Fit linear model through the intercept: SA
+lm_BBSA = fitlm(Table_BB_SA.Wt_Meas, Table_BB_SA.Wt_Calc, 'y~-1+x1');
+m_BBSA = lm_BBSA.Coefficients.Estimate(1);
+fitY_BBSA = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_BB_SA.Wt_Calc), max(Table_BB_SA.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq = lm_BBSA.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_BBSA(i) = m_BBSA * nVal(i);
+end
+
+subplot(1, 2, 1)
+plot(Table_BB_SA.Wt_Meas, Table_BB_SA.Wt_Calc, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+ylabel('Estimated settling velocity (m/s)')
+xlabel('Measured settling velocity (m/s)')
+title('Bagheri Model, Surface Area')
+hold on
+plot(nVal, nVal, '--r')
+plot(nVal, fitY_BBSA, '-g')
+legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_BBSA, r_sq), 'location', 'best');
+set(gca,'YLim', [0, nMax*1.1] )
+set(gca,'XLim', [0, nMax*1.1] )
+hold off
+
+% Fit linear model through the intercept: Projected area
+lm_BBProj = fitlm(Table_BB_Proj.Wt_Meas, Table_BB_Proj.Wt_Calc, 'y~-1+x1');
+m_BBProj = lm_BBProj.Coefficients.Estimate(1);
+fitY_BBProj = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_BB_Proj.Wt_Calc), max(Table_BB_Proj.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq = lm_BBProj.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_BBProj(i) = m_BBProj * nVal(i);
+end
+
+subplot(1, 2, 2)
+plot(Table_BB_Proj.Wt_Meas, Table_BB_Proj.Wt_Calc, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+ylabel('Estimated settling velocity (m/s)')
+xlabel('Measured settling velocity (m/s)')
+title('Bagheri Model, Projection Area')
+hold on
+plot(nVal, nVal, '--r')
+plot(nVal, fitY_BBProj, '-g')
+legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_BBProj, r_sq), 'location', 'best');
+set(gca,'YLim', [0, nMax*1.1] )
+set(gca,'XLim', [0, nMax*1.1] )
+hold off
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20220517/BagheriVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);
 
 %% E1) Re against Cd (ALL)
 % =========================

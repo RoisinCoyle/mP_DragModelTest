@@ -1,34 +1,35 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: ImplictTimes
 % Date created: 25.04.22
-% Date last mostified: 25.04.22
+% Date last mostified: 24.05.22
 % Purpose: Output of timing data summary for implicit models
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-Table_Stokes_SA= readtable("./DragModelsTest/Output/StokesOutputVM_SA.txt", "Delimiter", ",");
-Table_Stokes_Proj= readtable("./DragModelsTest/Output/StokesOutputVM_Proj.txt", "Delimiter", ",");
+Table_Stokes_SA= readtable("./DragModelsTest/Output/20220517/StokesOutputVM_SA.txt", "Delimiter", ",");
+Table_Stokes_Proj= readtable("./DragModelsTest/Output/20220517/StokesOutputVM_Proj.txt", "Delimiter", ",");
 
 MaxT_StokesSA = max(Table_Stokes_SA.Time);
 MaxT_StokesProj = max(Table_Stokes_Proj.Time);
 
-Table_BB_SA= readtable("./DragModelsTest/Output/BagheriOutputVM_SA.txt", "Delimiter", ",");
-Table_BB_Proj= readtable("./DragModelsTest/Output/BagheriOutputVM_Proj.txt", "Delimiter", ",");
+Table_BB_SA= readtable("./DragModelsTest/Output/20220517/BagheriOutputVM_SA.txt", "Delimiter", ",");
+Table_BB_Proj= readtable("./DragModelsTest/Output/20220517/BagheriOutputVM_Proj.txt", "Delimiter", ",");
 
 MaxT_BBSA = max(Table_BB_SA.Time);
 MaxT_BBProj = max(Table_BB_Proj.Time);
 
-Table_Dio_SA= readtable("./DragModelsTest/Output/DioguardiOutputVM_SA.txt", "Delimiter", ",");
-Table_Dio_Proj= readtable("./DragModelsTest/Output/DioguardiOutputVM_SA.txt", "Delimiter", ",");
+Table_Dio_SA= readtable("./DragModelsTest/Output/20220517/DioguardiOutputVM_SA.txt", "Delimiter", ",");
+Table_Dio_Proj= readtable("./DragModelsTest/Output/20220517/DioguardiOutputVM_SA.txt", "Delimiter", ",");
 
 MaxT_DioSA = max(Table_Dio_SA.Time);
 MaxT_DioProj = max(Table_Dio_Proj.Time);
 
-Table_Zhang_SA= readtable("./DragModelsTest/Output/ZhangOutputVM_SA.txt", "Delimiter", ",");
-Table_Zhang_Proj= readtable("./DragModelsTest/Output/ZhangOutputVM_Proj.txt", "Delimiter", ",");
+Table_Zhang_SA= readtable("./DragModelsTest/Output/20220517/ZhangOutputVM_SA.txt", "Delimiter", ",");
+Table_Zhang_Proj= readtable("./DragModelsTest/Output/20220517/ZhangOutputVM_Proj.txt", "Delimiter", ",");
 
 MaxT_ZhangSA = max(Table_Stokes_SA.Time);
 MaxT_ZhangProj = max(Table_Stokes_Proj.Time);
 
+%% 
 MaxTime = zeros(4, 4);
 MaxTime(1, 1) = MaxT_StokesSA;
 MaxTime(1, 2) = 0.0002;
@@ -57,5 +58,5 @@ Names_T = cell2table(Names);
 Table_Implicit_Time = [Names_T Table_Implicit_Time];
 Table_Implicit_Time.Properties.VariableNames(1) = {'Model'};
 
-writetable(Table_Implicit_Time, './DragModelsTest/Output/ImplicitTimes.txt', 'Delimiter', ',', 'WriteRowNames', true);
-writetable(Table_Implicit_Time, './DragModelsTest/Output/ImplicitTimes.xls', 'WriteRowNames', true);
+writetable(Table_Implicit_Time, './DragModelsTest/Output/20220517/ImplicitTimes.txt', 'Delimiter', ',', 'WriteRowNames', true);
+writetable(Table_Implicit_Time, './DragModelsTest/Output/20220517/ImplicitTimes.xls', 'WriteRowNames', true);

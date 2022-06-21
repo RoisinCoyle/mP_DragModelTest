@@ -88,6 +88,7 @@ writetable(Table_Yu, './DragModelsTest/Output/YuOutputDio.xls', 'WriteRowNames',
 
 %% Plot Yu output
 % <<<<<<<<<<<<<<<<<<<
+clear
 Table_Yu= readtable("./DragModelsTest/Output/YuOutputDio.txt", "Delimiter", ",");
 
 %% A1) wt against ESD
@@ -104,7 +105,7 @@ ylabel('Terminal settling velocity (m/s)')
 xlabel('Particle size (m)')
    
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/YuDio_ESDVsW.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20220517/YuDio_ESDVsW.jpg', 'Resolution', 300)
 
 %% A2) wt against ESD
 % =====================
@@ -122,7 +123,7 @@ xlabel('Particle size (m)')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/YuVM_ESDVsW_Shapes.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20220517/YuDio_ESDVsW_Shapes.jpg', 'Resolution', 300)
 
 %% B1) wt against CSF
 % ====================
@@ -140,7 +141,7 @@ xlabel('CSF')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/YuDio_CSFVsW.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220517/YuDio_CSFVsW.jpg', 'Resolution', 300);
 
 %% B2) wt against CSF
 % ====================
@@ -158,7 +159,7 @@ xlabel('CSF')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/YuDio_CSFVsW_Shapes.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220517/YuDio_CSFVsW_Shapes.jpg', 'Resolution', 300);
 
 %% C) wt against wt measured
 % ============================
@@ -181,7 +182,7 @@ set(gca,'XLim', [0, MaxW*1.1] )
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/YuDio_MeasVsCalc.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220517/YuDio_MeasVsCalc.jpg', 'Resolution', 300);
 
 %% D) wt against wt measured with fitted lines
 % ===============================================
@@ -210,4 +211,36 @@ set(gca, 'Xlim', [0, 1.1*MaxW])
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/YuDio_MeasVsCalc_Eqn.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220517/YuDio_MeasVsCalc_Eqn.jpg', 'Resolution', 300);
+
+%% D2) wt against wt measured using Matlab fitlm function
+% ========================================================
+
+% Fit linear model through the intercept: SA
+lm_YuSA = fitlm(Table_Yu.Wt_Meas, Table_Yu.Wt, 'y~-1+x1');
+m_YuSA = lm_YuSA.Coefficients.Estimate(1);
+fitY_YuSA = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_Yu.Wt), max(Table_Yu.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq = lm_YuSA.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_YuSA(i) = m_YuSA * nVal(i);
+end
+
+plot(Table_Yu.Wt_Meas, Table_Yu.Wt, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+ylabel('Estimated settling velocity (m/s)')
+xlabel('Measured settling velocity (m/s)')
+title('Yu Model, Surface Area')
+hold on
+plot(nVal, nVal, '--r')
+plot(nVal, fitY_YuSA, '-g')
+legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_YuSA, r_sq), 'location', 'best');
+set(gca,'YLim', [0, nMax*1.1] )
+set(gca,'XLim', [0, nMax*1.1] )
+hold off
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20220517/YuDio_MeasVsCalc_Fit.jpg', 'Resolution', 300);

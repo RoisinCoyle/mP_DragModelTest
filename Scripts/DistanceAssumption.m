@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: DistanceAssumption
 % Date created: 17.05.22
-% Date last mostified: 17.05.22
+% Date last mostified: 20.05.22
 % Purpose: To test the assumption that the distance travelled until the
 % particles reach terminal settling vleocity is not significantly different
 % than the distance travelled in that time if the particle was always at
