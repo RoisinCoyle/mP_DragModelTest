@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: DietrichScript: VM
 % Date created: 23.04.22
-% Date last mostified: 23.04.22
+% Date last mostified: 22.06.22
 % Purpose: To test the implementation of the Dietrich drag model on a range of
 %          particle shapes
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -15,7 +15,7 @@ VM_Dataset = readtable("SettlingVelocity calc\VanMelkebekeSIDataset.txt");
 rho_p = table2array(VM_Dataset(:, "ParticleDensity"));
 rho_f = table2array(VM_Dataset(:, "FluidDensity"));
 vis_dyn = table2array(VM_Dataset(:, "DynamicViscosity"));
-vis_kin = table2array(VM_Dataset(:, "KinematicVisvosity"));
+vis_kin = table2array(VM_Dataset(:, "KinematicViscosity"));
 
 d_equi = table2array(VM_Dataset(:, "ParticleSize"));
 size_a = table2array(VM_Dataset(:, "a"));
@@ -41,7 +41,6 @@ Mass_mP = zeros(140, 1);
 CSF = zeros(140, 1);
 rho_rel = zeros(140, 1);
 ProjA_ESD = zeros(140, 1);
-g=9.81;
 
 for i=1:140
     SA_EqSph(i) = 4.0*pi()*((d_equi(i)/2.0)^2.0);
@@ -53,7 +52,7 @@ for i=1:140
     ProjA_ESD(i) = pi()*(d_equi(i)^2)*0.25;
 end
 
-%% Dietrich' method 1
+%% Dietrich
 % <<<<<<<<<<<<<<<<<
 % Dietrich's model cannot be used when CSF<0.2
 % This is not an interative procedure, it just calculates the terminal velocity.
@@ -102,8 +101,8 @@ Table_Dietrich = array2table(Results_Dietrich, "VariableNames", ...
 Table_Dietrich = [VM_Dataset.Shape Table_Dietrich];
 Table_Dietrich.Properties.VariableNames(1) = {'Shape'};
 
-writetable(Table_Dietrich, './DragModelsTest/Output/DietrichOutputVM.txt', 'Delimiter', ',', 'WriteRowNames', true);
-writetable(Table_Dietrich, './DragModelsTest/Output/DietrichOutputVM.xls', 'WriteRowNames', true);
+writetable(Table_Dietrich, './DragModelsTest/Output/20220621/Dietrich/DietrichOutputVM.txt', 'Delimiter', ',', 'WriteRowNames', true);
+writetable(Table_Dietrich, './DragModelsTest/Output/20220621/Dietrich/DietrichOutputVM.xls', 'WriteRowNames', true);
 
 %% Removing NaN values
 n=0;
@@ -117,7 +116,7 @@ for i = 1:140
     end
 end
 
-NewShape = Table_Dietrich.Shape([Particle_Num]);
+NewShape = Table_Dietrich.Shape(Particle_Num);
 NewShape_T = array2table(NewShape);
 Table_Dietrich_NaN = array2table(Results_NaN_Dietrich, "VariableNames", ...
     {'ESD', 'CSF', 'Wt', 'Wt_Meas'});
@@ -125,19 +124,49 @@ Table_Dietrich_NaN = array2table(Results_NaN_Dietrich, "VariableNames", ...
 Table_Dietrich_NaN = [NewShape_T Table_Dietrich_NaN];
 Table_Dietrich_NaN.Properties.VariableNames(1) = {'Shape'};
 
-writetable(Table_Dietrich_NaN, './DragModelsTest/Output/DietrichOutputVM_NaN.txt', 'Delimiter', ',', 'WriteRowNames', true);
-writetable(Table_Dietrich_NaN, './DragModelsTest/Output/DietrichOutputVM_NaN.xls', 'WriteRowNames', true);
+writetable(Table_Dietrich_NaN, './DragModelsTest/Output/20220621/Dietrich/DietrichOutputVM_NaN.txt', 'Delimiter', ',', 'WriteRowNames', true);
+writetable(Table_Dietrich_NaN, './DragModelsTest/Output/20220621/Dietrich/DietrichOutputVM_NaN.xls', 'WriteRowNames', true);
+
+%% Calculate average error and RMSE
+
+% A) All shapes
+residual = zeros(140, 1);
+Percentage_Error = zeros(140, 1);
+AE_Sum = 0.0;
+Percentage_Error_sq = zeros(140, 1);
+RMSE_Sum = 0.0;
+
+for i=1:42
+    residual(i) = (Table_Dietrich_NaN.Wt(i)- Table_Dietrich_NaN.Wt_Meas(i));
+    Percentage_Error(i) = abs((residual(i) / Table_Dietrich_NaN.Wt_Meas(i))*100);
+    AE_Sum = AE_Sum + Percentage_Error(i);
+    Percentage_Error_sq(i) = ((residual(i)/Table_Dietrich_NaN.Wt_Meas(i))^2)*100;
+    RMSE_Sum = RMSE_Sum + Percentage_Error_sq(i);
+end
+
+AE = AE_Sum/140;
+RMSE = sqrt(RMSE_Sum/140);
+
+Error_table_shape = ["All"];
+Error_table_AE = [AE];
+Error_table_RMSE = [RMSE];
+
+Error_table = table(Error_table_shape, Error_table_AE, Error_table_RMSE);
+
+writetable(Error_table, './DragModelsTest/Output/20220621/Dietrich/DietrichErrorTableVM.txt', 'Delimiter', ',', 'WriteRowNames', true);
+writetable(Error_table, './DragModelsTest/Output/20220621/Dietrich/DietrichErrorTableVM.xls', 'WriteRowNames', true);
 
 %% Plot Dietrich output
 % <<<<<<<<<<<<<<<<<<<
-Table_Dietrich= readtable("./DragModelsTest/Output/DietrichOutputVM.txt", "Delimiter", ",");
-Table_Dietrich_New = readtable('./DragModelsTest/Output/DietrichOutputVM_NaN.txt', 'Delimiter', ',');
+clear
+Table_Dietrich= readtable("./DragModelsTest/Output/20220621/Dietrich/DietrichOutputVM.txt", "Delimiter", ",");
+Table_Dietrich_New = readtable('./DragModelsTest/Output/20220621/Dietrich/DietrichOutputVM_NaN.txt', 'Delimiter', ',');
 
 %% A1) wt against ESD
 % =====================
 
-plot(Table_Dietrich.('ESD'), Table_Dietrich.('Wt_Meas'), 'ok', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'k')
+plot(Table_Dietrich.('ESD'), Table_Dietrich.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 hold on
 plot(Table_Dietrich.('ESD'), Table_Dietrich.('Wt'), 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
@@ -147,14 +176,14 @@ ylabel('Terminal settling velocity (m/s)')
 xlabel('Particle size (m)')
    
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/DietrichVM_ESDVsW.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_ESDVsW.jpg', 'Resolution', 300)
 
 %% A2) wt against ESD
 % =====================
 
 % Method 1: Shapes Plotted Separately
-plot(Table_Dietrich.('ESD'), Table_Dietrich.('Wt_Meas'), 'ok', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'k')
+plot(Table_Dietrich.('ESD'), Table_Dietrich.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 hold on
 plot(Table_Dietrich{1:80, "ESD"}, Table_Dietrich{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
@@ -170,14 +199,14 @@ xlabel('Particle size (m)')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/DietrichVM_ESDVsW_Shapes.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_ESDVsW_Shapes.jpg', 'Resolution', 300)
 
 %% B1) wt against CSF
 % ====================
 
 % Method 1: Plotting all 
-plot(Table_Dietrich.('CSF'), Table_Dietrich.('Wt_Meas'), 'ok', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'k')
+plot(Table_Dietrich.('CSF'), Table_Dietrich.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 hold on
 plot(Table_Dietrich.('CSF'), Table_Dietrich.('Wt'), 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
@@ -188,14 +217,14 @@ xlabel('CSF')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/DietrichVM_CSFVsW.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_CSFVsW.jpg', 'Resolution', 300);
 
 %% B2) wt against CSF
 % ====================
 
 % Method 1: Shapes Plotted Separately
-plot(Table_Dietrich.('CSF'), Table_Dietrich.('Wt_Meas'), 'ok', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'k')
+plot(Table_Dietrich.('CSF'), Table_Dietrich.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 hold on
 plot(Table_Dietrich{1:80, "CSF"}, Table_Dietrich{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
@@ -211,7 +240,7 @@ xlabel('CSF')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/DietrichVM_CSFVsW_Shapes.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_CSFVsW_Shapes.jpg', 'Resolution', 300);
 
 %% C) wt against wt measured
 % ============================
@@ -221,9 +250,9 @@ MaxW = max(Highest);
 yx=linspace(0, MaxW, 100);
 
 % Method 1: Plot shapes separately
-plot(yx, yx)
+plot(yx, yx, '-k')
 hold on
-plot(Table_Dietrich{1:80, "Wt_Meas"}, Table_Dietrich{1:80, "Wt"}, 'ob', ...
+plot(Table_Dietrich{1:80, "Wt_Meas"}, Table_Dietrich{1:80, "Wt"}, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 plot(Table_Dietrich{81:100, "Wt_Meas"}, Table_Dietrich{81:100, "Wt"}, 'or',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
@@ -238,36 +267,7 @@ set(gca,'XLim', [0, MaxW*1.1] )
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/DietrichVM_MeasVsCalc.jpg', 'Resolution', 300);
-
-%% D1) wt against wt measured with fitted lines
-% ===============================================
-
-plot(Table_Dietrich.('Wt_Meas'), Table_Dietrich.('Wt'), 'ob', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-hold on
-plot(yx, yx, '-k')
-p=polyfit(Table_Dietrich.('Wt_Meas'), Table_Dietrich.('Wt'), 1);
-px=[min(Table_Dietrich.('Wt_Meas')) max(Table_Dietrich.('Wt_Meas'))];
-py=polyval(p, px);
-plot(px, py, '-b')
-text(px(2), 0.9*py(2), (sprintf('y = %.4fx %+.4f', p(1), p(2))), ...
-    'Color', 'b', 'FontSize', 7.5, 'FontWeight', 'Bold', 'HorizontalAlignment', 'left');
-m=Table_Dietrich.("Wt_Meas")\Table_Dietrich.("Wt");
-mx = m*Table_Dietrich.("Wt_Meas");
-plot(Table_Dietrich.('Wt_Meas'), mx, '-g');
-text(px(2), 0.9*max(mx), (sprintf('y = %.4fx', m)), ...
-    'Color', 'g', 'FontSize', 7.5, 'FontWeight', 'Bold', 'HorizontalAlignment', 'left');
-title('Dietrich Model.')
-xlabel('Measured Wt (m/s)')
-ylabel('Calculated Wt (m/s)')
-legend('', 'y=x', 'Linear fit', 'Linear fit forced', 'location', 'best')
-set(gca, 'Ylim', [0, 1.1*MaxW])
-set(gca, 'Xlim', [0, 1.1*MaxW])
-hold off
-
-set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/DietrichVM_MeasVsCalc_Eqn.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_MeasVsCalc.jpg', 'Resolution', 300);
 
 %% E) Plot output after removing NaN Values
 % E1) Wt Meas Vs Wt Calc with equation
@@ -302,20 +302,18 @@ set(gca, 'Xlim', [0, 1.1*MaxW])
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/DietrichVM_MeasVsCalc_Eqn_NaN.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_MeasVsCalc_Eqn_NaN.jpg', 'Resolution', 300);
 
 %% E2) CSF Vs Wt Meas
 % =================
 subplot(1, 2, 1)
-plot(Table_Dietrich.('CSF'), Table_Dietrich.('Wt_Meas'), 'ok', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'k')
+plot(Table_Dietrich_New.('CSF'), Table_Dietrich_New.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 hold on
-plot(Table_Dietrich{1:80, "CSF"}, Table_Dietrich{1:80, "Wt"}, 'ob', ...
+plot(Table_Dietrich_New{1:41, "CSF"}, Table_Dietrich_New{1:41, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-plot(Table_Dietrich{81:100, "CSF"}, Table_Dietrich{81:100, "Wt"}, 'or', ...
+plot(Table_Dietrich_New{42, "CSF"}, Table_Dietrich_New{42, "Wt"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-plot(Table_Dietrich{101:140, "CSF"}, Table_Dietrich{101:140, "Wt"}, 'og', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 legend('Measured Wt', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
        'Calculated Wt, Film', 'NumColumns', 2, 'location', 'southoutside')
 title('Dietrich Model.')
@@ -324,15 +322,13 @@ xlabel('CSF')
 hold off
 
 subplot(1, 2, 2)
-plot(Table_Dietrich.('ESD'), Table_Dietrich.('Wt_Meas'), 'ok', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'k')
+plot(Table_Dietrich_New.('ESD'), Table_Dietrich_New.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 hold on
-plot(Table_Dietrich{1:80, "ESD"}, Table_Dietrich{1:80, "Wt"}, 'ob', ...
+plot(Table_Dietrich_New{1:41, "ESD"}, Table_Dietrich_New{1:41, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-plot(Table_Dietrich{81:100, "ESD"}, Table_Dietrich{81:100, "Wt"}, 'or', ...
+plot(Table_Dietrich_New{42, "ESD"}, Table_Dietrich_New{42, "Wt"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-plot(Table_Dietrich{101:140, "ESD"}, Table_Dietrich{101:140, "Wt"}, 'og', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 legend('Measured Wt', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
        'Calculated Wt, Film', 'NumColumns', 2, 'location', 'southoutside')
 title('Dietrich Model.')
@@ -341,7 +337,7 @@ xlabel('Particle size (m)')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/DietrichVM_ESDV_CSF_NaN.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_ESDV_CSF_NaN.jpg', 'Resolution', 300)
 
 %% E3) wt against wt measured using Matlab fitlm function
 % ========================================================
@@ -359,18 +355,18 @@ for i=1:140
     fitY_Dietrich(i) = m_Dietrich * nVal(i);
 end
 
-plot(Table_Dietrich_New.Wt_Meas, Table_Dietrich_New.Wt, 'ob', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+plot(Table_Dietrich_New.Wt_Meas, Table_Dietrich_New.Wt, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
 title('Dietrich Model')
 hold on
-plot(nVal, nVal, '--r')
-plot(nVal, fitY_Dietrich, '-g')
+plot(nVal, nVal, '-k')
+plot(nVal, fitY_Dietrich, '--k')
 legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Dietrich, r_sq), 'location', 'best');
 set(gca,'YLim', [0, nMax*1.1] )
 set(gca,'XLim', [0, nMax*1.1] )
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/DietrichVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);

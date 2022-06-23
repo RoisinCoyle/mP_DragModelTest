@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: YuScript: VM
 % Date created: 23.04.22
-% Date last mostified: 23.04.22
+% Date last mostified: 23.06.22
 % Purpose: To test the implementation of the Yu drag model on a range of
 %          particle shapes
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -15,7 +15,7 @@ VM_Dataset = readtable("SettlingVelocity calc\VanMelkebekeSIDataset.txt");
 rho_p = table2array(VM_Dataset(:, "ParticleDensity"));
 rho_f = table2array(VM_Dataset(:, "FluidDensity"));
 vis_dyn = table2array(VM_Dataset(:, "DynamicViscosity"));
-vis_kin = table2array(VM_Dataset(:, "KinematicVisvosity"));
+vis_kin = table2array(VM_Dataset(:, "KinematicViscosity"));
 
 d_equi = table2array(VM_Dataset(:, "ParticleSize"));
 size_a = table2array(VM_Dataset(:, "a"));
@@ -84,19 +84,102 @@ Table_Yu = array2table(Results_Yu, "VariableNames", ...
 Table_Yu = [VM_Dataset.Shape Table_Yu];
 Table_Yu.Properties.VariableNames(1) = {'Shape'};
 
-writetable(Table_Yu, './DragModelsTest/Output/YuOutputVM.txt', 'Delimiter', ',', 'WriteRowNames', true);
-writetable(Table_Yu, './DragModelsTest/Output/YuOutputVM.xls', 'WriteRowNames', true);
+writetable(Table_Yu, './DragModelsTest/Output/20220621/Yu/YuOutputVM.txt', 'Delimiter', ',', 'WriteRowNames', true);
+writetable(Table_Yu, './DragModelsTest/Output/20220621/Yu/YuOutputVM.xls', 'WriteRowNames', true);
+
+%% Calculate average error and RMSE
+
+% A) All shapes
+residual = zeros(140, 1);
+Percentage_Error = zeros(140, 1);
+AE_Sum = 0.0;
+Percentage_Error_sq = zeros(140, 1);
+RMSE_Sum = 0.0;
+
+for i=1:140
+    residual(i) = (wvel_Yu(i) - wvel_meas(i));
+    Percentage_Error(i) = abs((residual(i) / wvel_meas(i))*100);
+    AE_Sum = AE_Sum + Percentage_Error(i);
+    Percentage_Error_sq(i) = ((residual(i)/wvel_meas(i))^2)*100;
+    RMSE_Sum = RMSE_Sum + Percentage_Error_sq(i);
+end
+
+AE = AE_Sum/140;
+RMSE = sqrt(RMSE_Sum/140);
+
+% B) Fragments
+residual_F3= zeros(80, 1);
+Percentage_Error_F3 = zeros(80, 1);
+AE_Sum_F3 = 0.0;
+Percentage_Error_sq_F3= zeros(80, 1);
+RMSE_Sum_F3 = 0.0;
+
+for i=1:80
+    residual_F3(i) = (wvel_Yu(i) - wvel_meas(i));
+    Percentage_Error_F3(i) = abs((residual_F3(i) / wvel_meas(i))*100);
+    AE_Sum_F3 = AE_Sum_F3 + Percentage_Error_F3(i);
+    Percentage_Error_sq_F3(i) = ((residual_F3(i)/wvel_meas(i))^2)*100;
+    RMSE_Sum_F3 = RMSE_Sum_F3 + Percentage_Error_sq_F3(i);
+end
+
+AE_F3 = AE_Sum_F3/80;
+RMSE_F3 = sqrt(RMSE_Sum_F3/80);
+
+% C) Fibres 
+residual_F2= zeros(20, 1);
+Percentage_Error_F2 = zeros(20, 1);
+AE_Sum_F2 = 0.0;
+Percentage_Error_sq_F2= zeros(20, 1);
+RMSE_Sum_F2 = 0.0;
+
+for i=81:100
+    residual_F2(i) = (wvel_Yu(i) - wvel_meas(i));
+    Percentage_Error_F2(i) = abs((residual_F2(i) / wvel_meas(i))*100);
+    AE_Sum_F2 = AE_Sum_F2 + Percentage_Error_F2(i);
+    Percentage_Error_sq_F2(i) = ((residual_F2(i)/wvel_meas(i))^2)*100;
+    RMSE_Sum_F2 = RMSE_Sum_F2 + Percentage_Error_sq_F2(i);
+end
+
+AE_F2 = AE_Sum_F2/20;
+RMSE_F2 = sqrt(RMSE_Sum_F2/20);
+
+% D) Films
+residual_F1= zeros(40, 1);
+Percentage_Error_F1 = zeros(40, 1);
+AE_Sum_F1 = 0.0;
+Percentage_Error_sq_F1= zeros(40, 1);
+RMSE_Sum_F1 = 0.0;
+
+for i=101:140
+    residual_F1(i) = (wvel_Yu(i) - wvel_meas(i));
+    Percentage_Error_F1(i) = abs((residual_F1(i) / wvel_meas(i))*100);
+    AE_Sum_F1 = AE_Sum_F1 + Percentage_Error_F1(i);
+    Percentage_Error_sq_F1(i) = ((residual_F1(i)/wvel_meas(i))^2)*100;
+    RMSE_Sum_F1 = RMSE_Sum_F1 + Percentage_Error_sq_F1(i);
+end
+
+AE_F1 = AE_Sum_F1/40;
+RMSE_F1 = sqrt(RMSE_Sum_F1/40);
+
+Error_table_shape = ["All"; "Fragment"; "Fibre"; "Film"];
+Error_table_AE = [AE; AE_F3; AE_F2; AE_F1];
+Error_table_RMSE = [RMSE; RMSE_F3; RMSE_F2; RMSE_F1];
+
+Error_table = table(Error_table_shape, Error_table_AE, Error_table_RMSE);
+
+writetable(Error_table, './DragModelsTest/Output/20220621/Yu/YuErrorTableVM.txt', 'Delimiter', ',', 'WriteRowNames', true);
+writetable(Error_table, './DragModelsTest/Output/20220621/Yu/YuErrorTableVM.xls', 'WriteRowNames', true);
 
 %% Plot Yu output
 % <<<<<<<<<<<<<<<<<<<
 clear
-Table_Yu= readtable("./DragModelsTest/Output/YuOutputVM.txt", "Delimiter", ",");
+Table_Yu= readtable("./DragModelsTest/Output/20220621/Yu/YuOutputVM.txt", "Delimiter", ",");
 
 %% A1) wt against ESD
 % =====================
 
-plot(Table_Yu.('ESD'), Table_Yu.('Wt_Meas'), 'ok', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'k')
+plot(Table_Yu.('ESD'), Table_Yu.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 hold on
 plot(Table_Yu.('ESD'), Table_Yu.('Wt'), 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
@@ -106,14 +189,14 @@ ylabel('Terminal settling velocity (m/s)')
 xlabel('Particle size (m)')
    
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/YuVM_ESDVsW.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_ESDVsW.jpg', 'Resolution', 300)
 
 %% A2) wt against ESD
 % =====================
 
 % Method 1: Shapes Plotted Separately
-plot(Table_Yu.('ESD'), Table_Yu.('Wt_Meas'), 'ok', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'k')
+plot(Table_Yu.('ESD'), Table_Yu.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 hold on
 plot(Table_Yu{1:80, "ESD"}, Table_Yu{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
@@ -129,14 +212,14 @@ xlabel('Particle size (m)')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/YuVM_ESDVsW_Shapes.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_ESDVsW_Shapes.jpg', 'Resolution', 300)
 
 %% B1) wt against CSF
 % ====================
 
 % Method 1: Plotting all 
-plot(Table_Yu.('CSF'), Table_Yu.('Wt_Meas'), 'ok', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'k')
+plot(Table_Yu.('CSF'), Table_Yu.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 hold on
 plot(Table_Yu.('CSF'), Table_Yu.('Wt'), 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
@@ -147,14 +230,14 @@ xlabel('CSF')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/YuVM_CSFVsW.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_CSFVsW.jpg', 'Resolution', 300);
 
 %% B2) wt against CSF
 % ====================
 
 % Method 1: Shapes Plotted Separately
-plot(Table_Yu.('CSF'), Table_Yu.('Wt_Meas'), 'ok', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'k')
+plot(Table_Yu.('CSF'), Table_Yu.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 hold on
 plot(Table_Yu{1:80, "CSF"}, Table_Yu{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
@@ -170,7 +253,7 @@ xlabel('CSF')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/YuVM_CSFVsW_Shapes.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_CSFVsW_Shapes.jpg', 'Resolution', 300);
 
 %% C) wt against wt measured
 % ============================
@@ -180,7 +263,7 @@ MaxW = max(Highest);
 yx=linspace(0, MaxW, 100);
 
 % Method 1: Plot shapes separately
-plot(yx, yx)
+plot(yx, yx, '-k')
 hold on
 plot(Table_Yu{1:80, "Wt_Meas"}, Table_Yu{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
@@ -197,7 +280,7 @@ set(gca,'XLim', [0, MaxW*1.1] )
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/YuVM_MeasVsCalc.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_MeasVsCalc.jpg', 'Resolution', 300);
 
 %% D) wt against wt measured with fitted lines
 % ===============================================
@@ -226,10 +309,41 @@ set(gca, 'Xlim', [0, 1.1*MaxW])
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/YuVM_MeasVsCalc_Eqn.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_MeasVsCalc_Eqn.jpg', 'Resolution', 300);
 
 %% D2) wt against wt measured using Matlab fitlm function
 % ========================================================
+%% D2 A) All shapes together
+% Fit linear model through the intercept: 
+lm_Yu = fitlm(Table_Yu.Wt_Meas, Table_Yu.Wt, 'y~-1+x1');
+m_Yu = lm_Yu.Coefficients.Estimate(1);
+fitY_Yu = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_Yu.Wt), max(Table_Yu.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq = lm_Yu.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_Yu(i) = m_Yu * nVal(i);
+end
+
+plot(Table_Yu.Wt_Meas, Table_Yu.Wt, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
+ylabel('Estimated settling velocity (m/s)')
+xlabel('Measured settling velocity (m/s)')
+title('Yu Model')
+hold on
+plot(nVal, nVal, '-k')
+plot(nVal, fitY_Yu, '--k')
+legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Yu, r_sq), 'location', 'best');
+set(gca,'YLim', [0, nMax*1.1] )
+set(gca,'XLim', [0, nMax*1.1] )
+hold off
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);
+
+%% D2 B) Plot all shapes separately with fitted model
 
 % Fit linear model through the intercept: SA
 lm_YuSA = fitlm(Table_Yu.Wt_Meas, Table_Yu.Wt, 'y~-1+x1');
@@ -244,18 +358,116 @@ for i=1:140
     fitY_YuSA(i) = m_YuSA * nVal(i);
 end
 
-plot(Table_Yu.Wt_Meas, Table_Yu.Wt, 'ob', ...
+plot(Table_Yu{1:80, "Wt_Meas"}, Table_Yu{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Yu Model, Surface Area')
+title('Yu Model.')
 hold on
-plot(nVal, nVal, '--r')
-plot(nVal, fitY_YuSA, '-g')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_YuSA, r_sq), 'location', 'best');
+plot(Table_Yu{81:100, "Wt_Meas"}, Table_Yu{81:100, "Wt"}, 'or',...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
+plot(Table_Yu{101:140, "Wt_Meas"}, Table_Yu{101:140, "Wt"}, 'og',...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
+plot(nVal, nVal, '-k')
+plot(nVal, fitY_YuSA, '--k')
+legend('Fragment', 'Fibre', 'Film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_YuSA, r_sq), 'location', 'best');
 set(gca,'YLim', [0, nMax*1.1] )
 set(gca,'XLim', [0, nMax*1.1] )
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/YuVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_MeasVsCalc_FitShapes.jpg', 'Resolution', 300);
+
+%% D2 C) Plot Fragments only with fitted model
+
+% Fit linear model through the intercept: SA
+lm_YuSAF3 = fitlm(Table_Yu{1:80, "Wt_Meas"}, Table_Yu{1:80, "Wt"}, 'y~-1+x1');
+m_YuSAF3 = lm_YuSAF3.Coefficients.Estimate(1);
+fitY_YuSAF3 = zeros(140, 1);
+% Generate data using linear model:
+n1_F3=[max(Table_Yu{1:80, "Wt"}), max(Table_Yu{1:80, "Wt_Meas"})] ;
+nMax_F3 = max(n1_F3);
+nVal_F3=linspace(0, nMax_F3, 140);
+r_sq_F3 = lm_YuSAF3.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_YuSAF3(i) = m_YuSAF3 * nVal_F3(i);
+end
+
+plot(Table_Yu{1:80, "Wt_Meas"}, Table_Yu{1:80, "Wt"}, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+ylabel('Estimated settling velocity (m/s)')
+xlabel('Measured settling velocity (m/s)')
+title('Yu Model.')
+hold on
+plot(nVal_F3, nVal_F3, '-k')
+plot(nVal_F3, fitY_YuSAF3, '--b')
+legend('Fragments', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_YuSAF3, r_sq_F3), 'location', 'best');
+set(gca,'YLim', [0, nMax_F3*1.1] )
+set(gca,'XLim', [0, nMax_F3*1.1] )
+hold off
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_MeasVsCalc_FitF3.jpg', 'Resolution', 300);
+
+%% D2 D) Plot fibres separately with fitted model
+
+% Fit linear model through the intercept:
+lm_YuSAF2 = fitlm(Table_Yu{81:100, "Wt_Meas"}, Table_Yu{81:100, "Wt"}, 'y~-1+x1');
+m_YuSAF2 = lm_YuSAF2.Coefficients.Estimate(1);
+fitY_YuSAF2 = zeros(140, 1);
+% Generate data using linear model:
+n1_F2=[max(Table_Yu{81:100, "Wt"}), max(Table_Yu{81:100, "Wt_Meas"})] ;
+nMax_F2 = max(n1_F2);
+nVal_F2=linspace(0, nMax_F2, 140);
+r_sq_F2 = lm_YuSAF2.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_YuSAF2(i) = m_YuSAF2 * nVal_F2(i);
+end
+
+plot(Table_Yu{81:100, "Wt_Meas"}, Table_Yu{81:100, "Wt"}, 'or', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
+ylabel('Estimated settling velocity (m/s)')
+xlabel('Measured settling velocity (m/s)')
+title('Yu Model.')
+hold on
+plot(nVal_F2, nVal_F2, '-k')
+plot(nVal_F2, fitY_YuSAF2, '--r')
+legend('Fibres', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_YuSAF2, r_sq_F2), 'location', 'best');
+set(gca,'YLim', [0, nMax_F2*1.1] )
+set(gca,'XLim', [0, nMax_F2*1.1] )
+hold off
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_MeasVsCalc_FitF2.jpg', 'Resolution', 300);
+
+%% D2 E) Plot film separately with fitted model
+
+% Fit linear model through the intercept
+lm_YuSAF1 = fitlm(Table_Yu{101:140, "Wt_Meas"}, Table_Yu{101:140, "Wt"}, 'y~-1+x1');
+m_YuSAF1 = lm_YuSAF1.Coefficients.Estimate(1);
+fitY_YuSAF1 = zeros(140, 1);
+% Generate data using linear model:
+n1_F1=[max(Table_Yu{101:140, "Wt"}), max(Table_Yu{101:140, "Wt_Meas"})] ;
+nMax_F1 = max(n1_F1);
+nVal_F1=linspace(0, nMax_F1, 140);
+r_sq_F1 = lm_YuSAF1.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_YuSAF1(i) = m_YuSAF1 * nVal_F1(i);
+end
+
+plot(Table_Yu{101:140, "Wt_Meas"}, Table_Yu{101:140, "Wt"}, 'og', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
+ylabel('Estimated settling velocity (m/s)')
+xlabel('Measured settling velocity (m/s)')
+title('Yu Model.')
+hold on
+plot(nVal_F1, nVal_F1, '-k')
+plot(nVal_F1, fitY_YuSAF1, '--g')
+legend('film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_YuSAF1, r_sq_F1), 'location', 'best');
+set(gca,'YLim', [0, nMax_F1*1.1] )
+set(gca,'XLim', [0, nMax_F1*1.1] )
+hold off
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_MeasVsCalc_FitF1.jpg', 'Resolution', 300);
+

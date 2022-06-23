@@ -150,25 +150,26 @@ for n = 1:140
 end
 
 % Store output in one array
-Results_ZC = zeros(140, 10);
+Results_ZC = zeros(140, 12);
 
 for i=1:140
     Results_ZC(i, 1) = d_equi(i);
     Results_ZC(i, 2) = CSF(i);
-    Results_ZC(i, 3) = wtFinal_ZC(i);
-    Results_ZC(i, 4) = wvel_meas(i);
-    Results_ZC(i, 5) = FinalTime_ZC(i);
-    Results_ZC(i, 6) = DistTot_ZC(i);
-    Results_ZC(i, 7) = timestep;
-    Results_ZC(i, 8) = Reynolds(i);
-    Results_ZC(i, 9) = ReFinal_ZC(i);
-    Results_ZC(i, 10) = Cd_meas(i);
-    Results_ZC(i, 11) = CdFinal_ZC(i);
+    Results_ZC(i, 3) = shape_ASF(i);
+    Results_ZC(i, 4) = wtFinal_ZC(i);
+    Results_ZC(i, 5) = wvel_meas(i);
+    Results_ZC(i, 6) = FinalTime_ZC(i);
+    Results_ZC(i, 7) = DistTot_ZC(i);
+    Results_ZC(i, 8) = timestep;
+    Results_ZC(i, 9) = Reynolds(i);
+    Results_ZC(i, 10) = ReFinal_ZC(i);
+    Results_ZC(i, 11) = Cd_meas(i);
+    Results_ZC(i, 12) = CdFinal_ZC(i);
     
 end 
 
 Table_ZC_SA = array2table(Results_ZC, "VariableNames", ...
-    {'ESD', 'CSF', 'Wt','Wt_Meas', 'Time', ...
+    {'ESD', 'CSF', 'ASF', 'Wt','Wt_Meas', 'Time', ...
     'Distance', 'Timestep', 'Re_Meas', ...
     'Re_Calc', 'Cd_Meas', 'Cd_Calc'});
 
@@ -346,25 +347,26 @@ for n = 1:140
 end
 
 % Store output in one array
-Results_ZC = zeros(140, 11);
+Results_ZC = zeros(140, 12);
 
 for i=1:140
     Results_ZC(i, 1) = d_equi(i);
     Results_ZC(i, 2) = CSF(i);
-    Results_ZC(i, 3) = wtFinal_ZC(i);
-    Results_ZC(i, 4) = wvel_meas(i);
-    Results_ZC(i, 5) = FinalTime_ZC(i);
-    Results_ZC(i, 6) = DistTot_ZC(i);
-    Results_ZC(i, 7) = timestep;
-    Results_ZC(i, 8) = Reynolds(i);
-    Results_ZC(i, 9) = ReFinal_ZC(i);
-    Results_ZC(i, 10) = Cd_meas(i);
-    Results_ZC(i, 11) = CdFinal_ZC(i);
+    Results_ZC(i, 3) = shape_ASF(i);
+    Results_ZC(i, 4) = wtFinal_ZC(i);
+    Results_ZC(i, 5) = wvel_meas(i);
+    Results_ZC(i, 6) = FinalTime_ZC(i);
+    Results_ZC(i, 7) = DistTot_ZC(i);
+    Results_ZC(i, 8) = timestep;
+    Results_ZC(i, 9) = Reynolds(i);
+    Results_ZC(i, 10) = ReFinal_ZC(i);
+    Results_ZC(i, 11) = Cd_meas(i);
+    Results_ZC(i, 12) = CdFinal_ZC(i);
     
 end 
 
 Table_ZC_Proj = array2table(Results_ZC, "VariableNames", ...
-    {'ESD', 'CSF', 'Wt','Wt_Meas', 'Time', ...
+    {'ESD', 'CSF', 'ASF', 'Wt','Wt_Meas', 'Time', ...
     'Distance', 'Timestep', 'Re_Meas', ...
     'Re_Calc', 'Cd_Meas', 'Cd_Calc'});
 
@@ -737,15 +739,15 @@ for i=1:140
 end
 
 subplot(1, 2, 1)
-plot(Table_Zhang_SA.Wt_Meas, Table_Zhang_SA.Wt, 'ob', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+plot(Table_Zhang_SA.Wt_Meas, Table_Zhang_SA.Wt, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
 title('Zhang Model. Using particle Surface Area')
 hold on
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_ZCSA, '--k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_ZCSA, r_sq), 'location', 'best');
+legend('', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_ZCSA, r_sq), 'location', 'best');
 set(gca,'YLim', [0, nMax*1.1] )
 set(gca,'XLim', [0, nMax*1.1] )
 hold off
@@ -764,15 +766,15 @@ for i=1:140
 end
 
 subplot(1, 2, 2)
-plot(Table_Zhang_Proj.Wt_Meas, Table_Zhang_Proj.Wt, 'ob', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+plot(Table_Zhang_Proj.Wt_Meas, Table_Zhang_Proj.Wt, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
 title('Zhang Model. Estimated projection area using max CSA.')
 hold on
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_ZCProj, '--k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_ZCProj, r_sq), 'location', 'best');
+legend('', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_ZCProj, r_sq), 'location', 'best');
 set(gca,'YLim', [0, nMax*1.1] )
 set(gca,'XLim', [0, nMax*1.1] )
 hold off
@@ -1110,3 +1112,162 @@ hold off
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Zhang/ZhangVM_ReVsCd_Shapes.jpg', 'Resolution', 300);
 
+%% F1) ESD against Cd (ALL)
+% =========================
+
+% Method 1: Plotting all 
+subplot(1, 2, 1)
+plot(Table_Zhang_SA.('ESD'), Table_Zhang_SA.('Cd_Meas'), 's', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7 .7 .7]')
+hold on
+plot(Table_Zhang_SA.('ESD'), Table_Zhang_SA.('Cd_Calc'), 's', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+legend('Measured Cd', 'Calculated Cd', 'location', 'best')
+title('Zhang Model. Using Particle Surface Area.')
+ylabel('Cd')
+xlabel('ESD (m)')
+set(gca, 'YScale', 'log')
+
+hold off
+
+% Method 2: Plotting all
+subplot(1, 2, 2)
+plot(Table_Zhang_Proj.('ESD'), Table_Zhang_Proj.('Cd_Meas'), 's', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7 .7 .7]')
+hold on
+plot(Table_Zhang_Proj.('ESD'), Table_Zhang_Proj.('Cd_Calc'), 's', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+legend('Measured Cd', 'Calculated Cd', 'location', 'best')
+title('Zhang Model. Estimated projection area using max CSA.')
+ylabel('Cd')
+xlabel('ESD (m)')
+set(gca, 'YScale', 'log')
+hold off
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Zhang/ZhangVM_ESDVsCd.jpg', 'Resolution', 300);
+
+
+%% F2) ESD against Re (SHAPES)
+% =============================
+
+% Method 1: Shapes Plotted Separately
+subplot(1, 2, 1)
+plot(Table_Zhang_SA.('ESD'), Table_Zhang_SA.('Cd_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7 .7 .7]')
+hold on
+plot(Table_Zhang_SA{1:80, "ESD"}, Table_Zhang_SA{1:80, "Cd_Calc"}, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+plot(Table_Zhang_SA{81:100, "ESD"}, Table_Zhang_SA{81:100, "Cd_Calc"}, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
+plot(Table_Zhang_SA{101:140, "ESD"}, Table_Zhang_SA{101:140, "Cd_Calc"}, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
+legend('Measured Cd', 'Calculated Cd, Fragment', 'Calculated Cd, Fibre', ...
+       'Calculated Cd, Film', 'NumColumns', 2, 'location', 'southoutside')
+title('Zhang Model. Using Particle Surface Area')
+ylabel('Cd')
+xlabel('ESD (m)')
+set(gca, 'YScale', 'log')
+%set(gca, 'Xlim', [0.01, 10000])
+%set(gca, 'Ylim', [0.01, 10000])
+hold off
+
+% Method 2: Shapes plotted separately
+subplot(1, 2, 2)
+plot(Table_Zhang_Proj.('ESD'), Table_Zhang_Proj.('Cd_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7 .7 .7]')
+hold on
+plot(Table_Zhang_Proj{1:80, "ESD"}, Table_Zhang_Proj{1:80, "Cd_Calc"}, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+plot(Table_Zhang_Proj{81:100, "ESD"}, Table_Zhang_Proj{81:100, "Cd_Calc"}, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
+plot(Table_Zhang_Proj{101:140, "ESD"}, Table_Zhang_Proj{101:140, "Cd_Calc"}, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
+legend('Measured Cd', 'Calculated Cd, Fragment', 'Calculated Cd, Fibre', ...
+       'Calculated Cd, Film', 'NumColumns', 2, 'location', 'southoutside')
+title('Zhang Model. Using Projected Area of Equivalent Sphere')
+ylabel('Cd')
+xlabel('ESD (m)')
+set(gca, 'YScale', 'log')
+hold off
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Zhang/ZhangVM_ESDVsCd_Shapes.jpg', 'Resolution', 300);
+
+%% G1) wt against ASF
+% ====================
+
+% Method 1: Plotting all 
+subplot(1, 2, 1)
+plot(Table_Zhang_SA.('ASF'), Table_Zhang_SA.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
+hold on
+plot(Table_Zhang_SA.('ASF'), Table_Zhang_SA.('Wt'), 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+legend('Measured Wt', 'Calculated Wt', 'location', 'best')
+title('Zhang and Choi Model. Using Particle Surface Area.')
+ylabel('Terminal settling velocity (m/s)')
+xlabel('ASF')
+set(gca, 'XScale', 'log')
+hold off
+
+% Method 2: Plotting all
+subplot(1, 2, 2)
+plot(Table_Zhang_Proj.('ASF'), Table_Zhang_Proj.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
+hold on
+plot(Table_Zhang_Proj.('ASF'), Table_Zhang_Proj.('Wt'), 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+legend('Measured Wt', 'Calculated Wt', 'location', 'best')
+title('Zhang and Choi Model. Estimated projection area using max CSA.')
+ylabel('Terminal settling velocity (m/s)')
+xlabel('ASF')
+set(gca, 'XScale', 'log')
+hold off
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Zhang/ZhangVM_ASFVsW.jpg', 'Resolution', 300);
+
+%% G2) wt against ASF: Shapes separate
+% ======================================
+
+% Method 1: Shapes Plotted Separately
+subplot(1, 2, 1)
+plot(Table_Zhang_SA.('ASF'), Table_Zhang_SA.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
+hold on
+plot(Table_Zhang_SA{1:80, "ASF"}, Table_Zhang_SA{1:80, "Wt"}, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+plot(Table_Zhang_SA{81:100, "ASF"}, Table_Zhang_SA{81:100, "Wt"}, 'or', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
+plot(Table_Zhang_SA{101:140, "ASF"}, Table_Zhang_SA{101:140, "Wt"}, 'og', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
+legend('Measured Wt', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
+       'Calculated Wt, Film', 'NumColumns', 2, 'location', 'southoutside')
+title('Zhang and Choi Model. Using Particle Surface Area.')
+ylabel('Terminal settling velocity (m/s)')
+xlabel('ASF')
+set(gca, 'XScale', 'log')
+hold off
+
+% Method 2: Shapes plotted separately
+subplot(1, 2, 2)
+plot(Table_Zhang_Proj.('ASF'), Table_Zhang_Proj.('Wt_Meas'), 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
+hold on
+plot(Table_Zhang_Proj{1:80, "ASF"}, Table_Zhang_Proj{1:80, "Wt"}, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+plot(Table_Zhang_Proj{81:100, "ASF"}, Table_Zhang_Proj{81:100, "Wt"}, 'or', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
+plot(Table_Zhang_Proj{101:140, "ASF"}, Table_Zhang_Proj{101:140, "Wt"}, 'og', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
+legend('Measured Wt', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
+       'Calculated Wt, Film', 'NumColumns', 2, 'location', 'southoutside')
+title('Zhang and Choi Model. Estimated projection area using max CSA.')
+ylabel('Terminal settling velocity (m/s)')
+xlabel('ASF')
+set(gca, 'XScale', 'log')
+hold off
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Zhang/ZhangVM_ASFVsW_Shapes.jpg', 'Resolution', 300);
