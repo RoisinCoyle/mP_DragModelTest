@@ -1,2 +1,2 @@
-Error_table_shape,Error_table_AE,Error_table_RMSE
-All,5.8275226584037,1.5590686000274
+Error_table_shape,Error_table_AE,Error_table_Abs_AE,Error_table_RMSE
+All,-14.695498183816,19.4250755280123,28.4645680311002

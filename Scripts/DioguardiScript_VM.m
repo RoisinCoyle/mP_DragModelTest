@@ -1,13 +1,13 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: DioguardiScript: VM
 % Date created: 23.04.22
-% Date last mostified: 22.06.22
+% Date last mostified: 22.07.22
 % Purpose: To test the implementation of the Dioguardi drag model on a range of
 %          particle shapes
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 %% Read in data file
-
+clear
 % Van Mekelebeke (2020) DOI: 10.1021/acs.est.9b07378
 % ====================================================
 VM_Dataset = readtable("SettlingVelocity calc\VanMelkebekeSIDataset.txt");
@@ -174,79 +174,92 @@ writetable(Table_Dio_SA, './DragModelsTest/Output/20220621/Dioguardi/DioguardiOu
 residual = zeros(140, 1);
 Percentage_Error = zeros(140, 1);
 AE_Sum = 0.0;
+Abs_AE_Sum = 0.0;
 Percentage_Error_sq = zeros(140, 1);
 RMSE_Sum = 0.0;
 
 for i=1:140
     residual(i) = (wtFinal_Dio(i) - wvel_meas(i));
-    Percentage_Error(i) = (abs(residual(i)) / wvel_meas(i))*100;
+    Percentage_Error(i) = ((residual(i)) / wvel_meas(i))*100;
     AE_Sum = AE_Sum + Percentage_Error(i);
-    Percentage_Error_sq(i) = ((residual(i)/wvel_meas(i))^2)*100;
+    Abs_AE_Sum = Abs_AE_Sum + abs(Percentage_Error(i));
+    Percentage_Error_sq(i) = (Percentage_Error(i))^2;
     RMSE_Sum = RMSE_Sum + Percentage_Error_sq(i);
 end
 
 AE_SA = AE_Sum/140;
+Abs_AE_SA = Abs_AE_Sum/140;
 RMSE_SA = sqrt(RMSE_Sum/140);
 
 % B) Fragments
 residual_F3= zeros(80, 1);
 Percentage_Error_F3 = zeros(80, 1);
 AE_Sum_F3 = 0.0;
+Abs_AE_Sum_F3 = 0.0;
 Percentage_Error_sq_F3= zeros(80, 1);
 RMSE_Sum_F3 = 0.0;
 
 for i=1:80
     residual_F3(i) = (wtFinal_Dio(i) - wvel_meas(i));
-    Percentage_Error_F3(i) = (abs(residual_F3(i)) / wvel_meas(i))*100;
+    Percentage_Error_F3(i) = ((residual_F3(i)) / wvel_meas(i))*100;
     AE_Sum_F3 = AE_Sum_F3 + Percentage_Error_F3(i);
-    Percentage_Error_sq_F3(i) = ((residual_F3(i)/wvel_meas(i))^2)*100;
+    Abs_AE_Sum_F3 = Abs_AE_Sum_F3 + abs(Percentage_Error_F3(i));
+    Percentage_Error_sq_F3(i) = (Percentage_Error_F3(i))^2;
     RMSE_Sum_F3 = RMSE_Sum_F3 + Percentage_Error_sq_F3(i);
 end
 
 AE_SA_F3 = AE_Sum_F3/80;
+Abs_AE_SA_F3 = Abs_AE_Sum_F3/80;
 RMSE_SA_F3 = sqrt(RMSE_Sum_F3/80);
 
 % C) Fibres 
 residual_F2= zeros(20, 1);
 Percentage_Error_F2 = zeros(20, 1);
 AE_Sum_F2 = 0.0;
+Abs_AE_Sum_F2 = 0.0;
 Percentage_Error_sq_F2= zeros(20, 1);
 RMSE_Sum_F2 = 0.0;
 
 for i=81:100
     residual_F2(i) = (wtFinal_Dio(i) - wvel_meas(i));
-    Percentage_Error_F2(i) = (abs(residual_F2(i)) / wvel_meas(i))*100;
+    Percentage_Error_F2(i) = ((residual_F2(i)) / wvel_meas(i))*100;
     AE_Sum_F2 = AE_Sum_F2 + Percentage_Error_F2(i);
-    Percentage_Error_sq_F2(i) = ((residual_F2(i)/wvel_meas(i))^2)*100;
+    Abs_AE_Sum_F2 = Abs_AE_Sum_F2 + abs(Percentage_Error_F2(i));
+    Percentage_Error_sq_F2(i) = (Percentage_Error_F2(i))^2;
     RMSE_Sum_F2 = RMSE_Sum_F2 + Percentage_Error_sq_F2(i);
 end
 
 AE_SA_F2 = AE_Sum_F2/20;
+Abs_AE_SA_F2 = Abs_AE_Sum_F2/20;
 RMSE_SA_F2 = sqrt(RMSE_Sum_F2/20);
 
 % D) Films
 residual_F1= zeros(40, 1);
 Percentage_Error_F1 = zeros(40, 1);
 AE_Sum_F1 = 0.0;
+Abs_AE_Sum_F1 = 0.0;
 Percentage_Error_sq_F1= zeros(40, 1);
 RMSE_Sum_F1 = 0.0;
 
 for i=101:140
     residual_F1(i) = (wtFinal_Dio(i) - wvel_meas(i));
-    Percentage_Error_F1(i) = (abs(residual_F1(i)) / wvel_meas(i))*100;
+    Percentage_Error_F1(i) = ((residual_F1(i)) / wvel_meas(i))*100;
     AE_Sum_F1 = AE_Sum_F1 + Percentage_Error_F1(i);
-    Percentage_Error_sq_F1(i) = ((residual_F1(i)/wvel_meas(i))^2)*100;
+    Abs_AE_Sum_F1 = Abs_AE_Sum_F1 + abs(Percentage_Error_F1(i));
+    Percentage_Error_sq_F1(i) = (Percentage_Error_F1(i))^2;
     RMSE_Sum_F1 = RMSE_Sum_F1 + Percentage_Error_sq_F1(i);
 end
 
 AE_SA_F1 = AE_Sum_F1/40;
+Abs_AE_SA_F1 = Abs_AE_Sum_F1/40;
 RMSE_SA_F1 = sqrt(RMSE_Sum_F1/40);
 
 Error_table_shape = ["All"; "Fragment"; "Fibre"; "Film"];
 Error_table_AE = [AE_SA; AE_SA_F3; AE_SA_F2; AE_SA_F1];
+Error_table_Abs_AE = [Abs_AE_SA; Abs_AE_SA_F3; Abs_AE_SA_F2; Abs_AE_SA_F1];
 Error_table_RMSE = [RMSE_SA; RMSE_SA_F3; RMSE_SA_F2; RMSE_SA_F1];
 
-Error_table = table(Error_table_shape, Error_table_AE, Error_table_RMSE);
+Error_table = table(Error_table_shape, Error_table_AE, Error_table_Abs_AE, Error_table_RMSE);
 
 writetable(Error_table, './DragModelsTest/Output/20220621/Dioguardi/DioguardiErrorTableVM_SA.txt', 'Delimiter', ',', 'WriteRowNames', true);
 writetable(Error_table, './DragModelsTest/Output/20220621/Dioguardi/DioguardiErrorTableVM_SA.xls', 'WriteRowNames', true);
@@ -367,88 +380,145 @@ Table_Dio_Proj.Properties.VariableNames(1) = {'Shape'};
 writetable(Table_Dio_Proj, './DragModelsTest/Output/20220621/Dioguardi/DioguardiOutputVM_Proj.txt', 'Delimiter', ',', 'WriteRowNames', true);
 writetable(Table_Dio_Proj, './DragModelsTest/Output/20220621/Dioguardi/DioguardiOutputVM_Proj.xls', 'WriteRowNames', true);
 
+%% Distance assumption calculation and plot
+
+DistConst_Dio = zeros(140, 1);
+
+for i=1:140
+    DistConst_Dio(i) = FinalTime_Dio(i) * wtFinal_Dio(i);
+end
+
+% Fit linear model through the intercept: SA
+lm_DioDist = fitlm(DistTot_Dio, DistConst_Dio, 'y~-1+x1');
+m_DioDist = lm_DioDist.Coefficients.Estimate(1);
+fitY_DioDist = zeros(1000, 1);
+% Generate data using linear model:
+n1=[max(DistTot_Dio), max(DistConst_Dio)] ;
+nMax = max(n1);
+
+nVal=linspace(0.00001, nMax, 1000);
+r_sq_Dist = lm_DioDist.Rsquared.Ordinary(1);
+for i=1:1000
+    fitY_DioDist(i) = m_DioDist * nVal(i);
+end
+
+subplot(1, 2, 2)
+plot(DistTot_Dio, DistConst_Dio, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[1, 1, 0]')
+ylabel('Distance travelled at constant velocity (m)')
+xlabel('Distance travelled in attaining terminal velocity (m)')
+title('Dioguardi et al (2018): Using Particle Projected Area.')
+hold on
+plot(nVal, nVal, '-k')
+plot(nVal, fitY_DioDist, '--k')
+plot(nVal, 0.7*nVal, ':k')
+plot(nVal, 1.3*nVal, ':k')
+legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioDist, r_sq_Dist), '', '', 'location', 'best');
+set(gca,'YLim', [0.00001, nMax*1.3] )
+set(gca,'XLim', [0.00001, nMax*1.3] )
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
+hold off
+
+set(gcf, 'WindowState', 'Maximized')
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Distance/Dio_DistanceProj.jpg', 'Resolution', 300)
+
 %% Calculate average error and RMSE
 
 % A) All shapes
 residual = zeros(140, 1);
 Percentage_Error = zeros(140, 1);
 AE_Sum = 0.0;
+Abs_AE_Sum = 0.0;
 Percentage_Error_sq = zeros(140, 1);
 RMSE_Sum = 0.0;
 
 for i=1:140
     residual(i) = (wtFinal_Dio(i) - wvel_meas(i));
-    Percentage_Error(i) = (abs(residual(i))/ wvel_meas(i))*100;
+    Percentage_Error(i) = ((residual(i)) / wvel_meas(i))*100;
     AE_Sum = AE_Sum + Percentage_Error(i);
-    Percentage_Error_sq(i) = ((residual(i)/wvel_meas(i))^2)*100;
+    Abs_AE_Sum = Abs_AE_Sum + abs(Percentage_Error(i));
+    Percentage_Error_sq(i) = (Percentage_Error(i))^2;
     RMSE_Sum = RMSE_Sum + Percentage_Error_sq(i);
 end
 
 AE_Proj = AE_Sum/140;
+Abs_AE_Proj = Abs_AE_Sum/140;
 RMSE_Proj = sqrt(RMSE_Sum/140);
 
 % B) Fragments
 residual_F3= zeros(80, 1);
 Percentage_Error_F3 = zeros(80, 1);
 AE_Sum_F3 = 0.0;
+Abs_AE_Sum_F3 = 0.0;
 Percentage_Error_sq_F3= zeros(80, 1);
 RMSE_Sum_F3 = 0.0;
 
 for i=1:80
     residual_F3(i) = (wtFinal_Dio(i) - wvel_meas(i));
-    Percentage_Error_F3(i) = (abs(residual_F3(i)) / wvel_meas(i))*100;
+    Percentage_Error_F3(i) = ((residual_F3(i)) / wvel_meas(i))*100;
     AE_Sum_F3 = AE_Sum_F3 + Percentage_Error_F3(i);
-    Percentage_Error_sq_F3(i) = ((residual_F3(i)/wvel_meas(i))^2)*100;
+    Abs_AE_Sum_F3 = Abs_AE_Sum_F3 + abs(Percentage_Error_F3(i));
+    Percentage_Error_sq_F3(i) = (Percentage_Error_F3(i))^2;
     RMSE_Sum_F3 = RMSE_Sum_F3 + Percentage_Error_sq_F3(i);
 end
 
 AE_Proj_F3 = AE_Sum_F3/80;
+Abs_AE_Proj_F3 = Abs_AE_Sum_F3/80;
 RMSE_Proj_F3 = sqrt(RMSE_Sum_F3/80);
 
 % C) Fibres 
 residual_F2= zeros(20, 1);
 Percentage_Error_F2 = zeros(20, 1);
 AE_Sum_F2 = 0.0;
+Abs_AE_Sum_F2 = 0.0;
 Percentage_Error_sq_F2= zeros(20, 1);
 RMSE_Sum_F2 = 0.0;
 
 for i=81:100
     residual_F2(i) = (wtFinal_Dio(i) - wvel_meas(i));
-    Percentage_Error_F2(i) = (abs(residual_F2(i)) / wvel_meas(i))*100;
+    Percentage_Error_F2(i) = ((residual_F2(i)) / wvel_meas(i))*100;
     AE_Sum_F2 = AE_Sum_F2 + Percentage_Error_F2(i);
-    Percentage_Error_sq_F2(i) = ((residual_F2(i)/wvel_meas(i))^2)*100;
+    Abs_AE_Sum_F2 = Abs_AE_Sum_F2 + abs(Percentage_Error_F2(i));
+    Percentage_Error_sq_F2(i) = (Percentage_Error_F2(i))^2;
     RMSE_Sum_F2 = RMSE_Sum_F2 + Percentage_Error_sq_F2(i);
 end
 
 AE_Proj_F2 = AE_Sum_F2/20;
+Abs_AE_Proj_F2 = Abs_AE_Sum_F2/20;
 RMSE_Proj_F2 = sqrt(RMSE_Sum_F2/20);
 
 % D) Films
 residual_F1= zeros(40, 1);
 Percentage_Error_F1 = zeros(40, 1);
 AE_Sum_F1 = 0.0;
+Abs_AE_Sum_F1 = 0.0;
 Percentage_Error_sq_F1= zeros(40, 1);
 RMSE_Sum_F1 = 0.0;
 
 for i=101:140
     residual_F1(i) = (wtFinal_Dio(i) - wvel_meas(i));
-    Percentage_Error_F1(i) = (abs(residual_F1(i)) / wvel_meas(i))*100;
+    Percentage_Error_F1(i) = ((residual_F1(i)) / wvel_meas(i))*100;
     AE_Sum_F1 = AE_Sum_F1 + Percentage_Error_F1(i);
-    Percentage_Error_sq_F1(i) = ((residual_F1(i)/wvel_meas(i))^2)*100;
+    Abs_AE_Sum_F1 = Abs_AE_Sum_F1 + abs(Percentage_Error_F1(i));
+    Percentage_Error_sq_F1(i) = (Percentage_Error_F1(i))^2;
     RMSE_Sum_F1 = RMSE_Sum_F1 + Percentage_Error_sq_F1(i);
 end
 
 AE_Proj_F1 = AE_Sum_F1/40;
+Abs_AE_Proj_F1 = Abs_AE_Sum_F1/40;
 RMSE_Proj_F1 = sqrt(RMSE_Sum_F1/40);
 
 Error_table_shape = ["All"; "Fragment"; "Fibre"; "Film"];
 Error_table_AE = [AE_Proj; AE_Proj_F3; AE_Proj_F2; AE_Proj_F1];
+Error_table_Abs_AE = [Abs_AE_Proj; Abs_AE_Proj_F3; Abs_AE_Proj_F2; Abs_AE_Proj_F1];
 Error_table_RMSE = [RMSE_Proj; RMSE_Proj_F3; RMSE_Proj_F2; RMSE_Proj_F1];
 
-Error_table = table(Error_table_shape, Error_table_AE, Error_table_RMSE);
+Error_table = table(Error_table_shape, Error_table_AE, Error_table_Abs_AE, Error_table_RMSE);
 
 writetable(Error_table, './DragModelsTest/Output/20220621/Dioguardi/DioguardiErrorTableVM_Proj.txt', 'Delimiter', ',', 'WriteRowNames', true);
 writetable(Error_table, './DragModelsTest/Output/20220621/Dioguardi/DioguardiErrorTableVM_Proj.xls', 'WriteRowNames', true);
+
 %% Note that the shapes are in the following rows of the table:
 % Fragments: 1:80
 % Fibres: 81:100
@@ -606,125 +676,22 @@ hold off
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioguardiVM_CSFVsW_Shapes.jpg', 'Resolution', 300);
 
-%% C) wt against wt measured
-% ============================
-Highest_SA(1) = max(Table_Dio_SA.Wt);
-Highest_SA(2) = max(Table_Dio_SA.Wt_Meas);
-Highest_Proj(1) =  max(Table_Dio_Proj.Wt);
-Highest_Proj(2) = max(Table_Dio_Proj.Wt_Meas);
-MaxW_SA = max(Highest_SA);
-MaxW_Proj = max(Highest_Proj);
-yx_SA=linspace(0, MaxW_SA, 100);
-yx_Proj=linspace(0, MaxW_Proj, 100);
 
-% Method 1: Plot shapes separately
-subplot(1, 2, 1)
-plot(yx_SA, yx_SA)
-hold on
-plot(Table_Dio_SA{1:80, "Wt_Meas"}, Table_Dio_SA{1:80, "Wt"}, 'ob', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-plot(Table_Dio_SA{81:100, "Wt_Meas"}, Table_Dio_SA{81:100, "Wt"}, 'or',...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-plot(Table_Dio_SA{101:140, "Wt_Meas"}, Table_Dio_SA{101:140, "Wt"}, 'og',...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-title('Dioguardi Model. Using Particle Surface Area')
-xlabel('Measured Velocity (m/s)')
-ylabel('Calculated Velocity (m/s)')
-legend('', 'Fragment', 'Fibre', 'Film', 'location', 'best')
-set(gca,'YLim', [0, MaxW_SA*1.1] )
-set(gca,'XLim', [0, MaxW_SA*1.1] )
-hold off
-
-% Method 2: Plot shapes separately
-subplot(1, 2, 2)
-plot(yx_Proj, yx_Proj)
-hold on
-plot(Table_Dio_Proj{1:80, "Wt_Meas"}, Table_Dio_Proj{1:80, "Wt"}, 'ob', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-plot(Table_Dio_Proj{81:100, "Wt_Meas"}, Table_Dio_Proj{81:100, "Wt"}, 'or',...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-plot(Table_Dio_Proj{101:140, "Wt_Meas"}, Table_Dio_Proj{101:140, "Wt"}, 'og',...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-title('Dioguardi Model. Using Projected Area of Equivalent Sphere')
-xlabel('Measured Velocity (m/s)')
-ylabel('Calculated Velocity (m/s)')
-legend('', 'Fragment', 'Fibre', 'Film', 'location', 'best')
-set(gca,'YLim', [0, MaxW_Proj*1.1] )
-set(gca,'XLim', [0, MaxW_Proj*1.1] )
-hold off
-
-set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioguardiVM_MeasVsCalc.jpg', 'Resolution', 300);
-
-%% D) wt against wt measured with fitted lines
-% ===============================================
-
-subplot(1, 2, 1)
-plot(Table_Dio_SA.('Wt_Meas'), Table_Dio_SA.('Wt'), 'ob', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-hold on
-plot(yx_SA, yx_SA, '-k')
-p=polyfit(Table_Dio_SA.('Wt_Meas'), Table_Dio_SA.('Wt'), 1);
-px=[min(Table_Dio_SA.('Wt_Meas')) max(Table_Dio_SA.('Wt_Meas'))];
-py=polyval(p, px);
-plot(px, py, '-b')
-text(0.45*px(2), 0.75*py(2), (sprintf('y = %.4fx %+.4f', p(1), p(2))), ...
-    'Color', 'b', 'FontSize', 10, 'FontWeight', 'Bold', 'HorizontalAlignment', 'left');
-m=Table_Dio_SA.("Wt_Meas")\Table_Dio_SA.("Wt");
-mx = m*Table_Dio_SA.("Wt_Meas");
-plot(Table_Dio_SA.('Wt_Meas'), mx, '-g');
-text(0.5*px(2), 0.45*max(mx), (sprintf('y = %.4fx', m)), ...
-    'Color', 'g', 'FontSize', 10, 'FontWeight', 'Bold', 'HorizontalAlignment', 'left');
-title('Dioguardi Model. Using Particle Surface Area')
-xlabel('Measured Wt (m/s)')
-ylabel('Calculated Wt (m/s)')
-legend('', 'y=x', 'Linear fit', 'Linear fit forced', 'location', 'best')
-set(gca, 'Ylim', [0, 1.1*MaxW_SA])
-set(gca, 'Xlim', [0, 1.1*MaxW_SA])
-hold off
-
-subplot(1, 2, 2)
-plot(Table_Dio_Proj.('Wt_Meas'), Table_Dio_Proj.('Wt'), 'ob', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-hold on
-plot(yx_Proj, yx_Proj, '-k')
-p=polyfit(Table_Dio_Proj.('Wt_Meas'), Table_Dio_Proj.('Wt'), 1);
-px=[min(Table_Dio_Proj.('Wt_Meas')) max(Table_Dio_Proj.('Wt_Meas'))];
-py=polyval(p, px);
-plot(px, py, '-b')
-text(0.35*px(2), 0.7*py(2), (sprintf('y = %.4fx %+.4f', p(1), p(2))), ...
-    'Color', 'b', 'FontSize', 10, 'FontWeight', 'Bold', 'HorizontalAlignment', 'left');
-m=Table_Dio_Proj.("Wt_Meas")\Table_Dio_Proj.("Wt");
-mx = m*Table_Dio_Proj.("Wt_Meas");
-plot(Table_Dio_Proj.('Wt_Meas'), mx, '-g');
-text(0.55*px(2), 0.5*max(mx), (sprintf('y = %.4fx', m)), ...
-    'Color', 'g', 'FontSize', 10, 'FontWeight', 'Bold', 'HorizontalAlignment', 'left');
-title('Dioguardi Model. Using Projected Area of Equivalent Sphere')
-xlabel('Measured Wt (m/s)')
-ylabel('Calculated Wt (m/s)')
-legend('', 'y=x', 'Linear fit', 'Linear fit forced', 'location', 'best')
-set(gca, 'Ylim', [0, 1.1*MaxW_Proj])
-set(gca, 'Xlim', [0, 1.1*MaxW_Proj])
-hold off
-
-set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioguardiVM_MeasVsCalc_Eqn.jpg', 'Resolution', 300);
-
-%% D2) wt against wt measured using Matlab fitlm function
+%% C) wt against wt measured using Matlab fitlm function
 % ========================================================
 
-% D2 A) All shapes
+% C A) All shapes
 
 % Fit linear model through the intercept: SA
 lm_DioSA = fitlm(Table_Dio_SA.Wt_Meas, Table_Dio_SA.Wt, 'y~-1+x1');
 m_DioSA = lm_DioSA.Coefficients.Estimate(1);
-fitY_DioSA = zeros(140, 1);
+fitY_DioSA = zeros(1000, 1);
 % Generate data using linear model:
 n1=[max(Table_Dio_SA.Wt), max(Table_Dio_SA.Wt_Meas)] ;
 nMax = max(n1);
-nVal=linspace(0, nMax, 140);
-r_sq = lm_DioSA.Rsquared.Ordinary(1);
-for i=1:140
+nVal=linspace(0.0001, nMax, 1000);
+r_sq_SA = lm_DioSA.Rsquared.Ordinary(1);
+for i=1:1000
     fitY_DioSA(i) = m_DioSA * nVal(i);
 end
 
@@ -737,21 +704,25 @@ title('Dioguardi Model: Using particle surface area.')
 hold on
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_DioSA, '--k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSA, r_sq), 'location', 'best');
-set(gca,'YLim', [0, nMax*1.1] )
-set(gca,'XLim', [0, nMax*1.1] )
+plot(nVal, 1.3*nVal, ':k')
+plot(nVal, 0.7*nVal, ':k')
+legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSA, r_sq_SA), '', '', 'location', 'best');
+set(gca,'YLim', [0.0003, nMax*1.1] )
+set(gca,'XLim', [0.0003, nMax*1.1] )
+set(gca, 'XScale', 'log')
+set(gca, 'YScale', 'log')
 hold off
 
 % Fit linear model through the intercept: Projected area
 lm_DioProj = fitlm(Table_Dio_Proj.Wt_Meas, Table_Dio_Proj.Wt, 'y~-1+x1');
 m_DioProj = lm_DioProj.Coefficients.Estimate(1);
-fitY_DioProj = zeros(140, 1);
+fitY_DioProj = zeros(1000, 1);
 % Generate data using linear model:
 n1=[max(Table_Dio_Proj.Wt), max(Table_Dio_Proj.Wt_Meas)] ;
 nMax = max(n1);
-nVal=linspace(0, nMax, 140);
-r_sq = lm_DioProj.Rsquared.Ordinary(1);
-for i=1:140
+nVal=linspace(0.001, nMax, 1000);
+r_sq_Proj = lm_DioProj.Rsquared.Ordinary(1);
+for i=1:1000
     fitY_DioProj(i) = m_DioProj * nVal(i);
 end
 
@@ -764,26 +735,30 @@ title('Dioguardi Model: Using projection area of equivalent sphere.')
 hold on
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_DioProj, '--k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProj, r_sq), 'location', 'best');
-set(gca,'YLim', [0, nMax*1.1] )
-set(gca,'XLim', [0, nMax*1.1] )
+plot(nVal, 1.3*nVal, ':k')
+plot(nVal, 0.7*nVal, ':k')
+legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProj, r_sq_Proj), '', '', 'location', 'best');
+set(gca,'YLim', [0.003, nMax*1.1] )
+set(gca,'XLim', [0.003, nMax*1.1] )
+set(gca, 'XScale', 'log')
+set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioguardiVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);
 
-%% D2 B) Plot all shapes separately with fitted model
+%% C B) Plot all shapes separately with fitted model
 
 % Fit linear model through the intercept: SA
 lm_DioSA = fitlm(Table_Dio_SA.Wt_Meas, Table_Dio_SA.Wt, 'y~-1+x1');
 m_DioSA = lm_DioSA.Coefficients.Estimate(1);
-fitY_DioSA = zeros(140, 1);
+fitY_DioSA = zeros(1000, 1);
 % Generate data using linear model:
 n1=[max(Table_Dio_SA.Wt), max(Table_Dio_SA.Wt_Meas)] ;
 nMax = max(n1);
-nVal=linspace(0, nMax, 140);
-r_sq = lm_DioSA.Rsquared.Ordinary(1);
-for i=1:140
+nVal=linspace(0.0001, nMax, 1000);
+r_sq_SA = lm_DioSA.Rsquared.Ordinary(1);
+for i=1:1000
     fitY_DioSA(i) = m_DioSA * nVal(i);
 end
 
@@ -800,20 +775,24 @@ plot(Table_Dio_SA{101:140, "Wt_Meas"}, Table_Dio_SA{101:140, "Wt"}, 'og',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_DioSA, '--k')
-legend('Fragment', 'Fibre', 'Film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSA, r_sq), 'location', 'best');
-set(gca,'YLim', [0, nMax*1.1] )
-set(gca,'XLim', [0, nMax*1.1] )
+plot(nVal, 1.3*nVal, ':k')
+plot(nVal, 0.7*nVal, ':k')
+legend('Fragment', 'Fibre', 'Film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSA, r_sq_SA), '', '', 'location', 'best');
+set(gca,'YLim', [0.0003, nMax*1.3] )
+set(gca,'XLim', [0.0003, nMax*1.3] )
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
 hold off
 
 % Fit linear model through the intercept: Projected area
 lm_DioProj = fitlm(Table_Dio_Proj.Wt_Meas, Table_Dio_Proj.Wt, 'y~-1+x1');
 m_DioProj = lm_DioProj.Coefficients.Estimate(1);
-fitY_DioProj = zeros(140, 1);
+fitY_DioProj = zeros(1000, 1);
 % Generate data using linear model:
 n1=[max(Table_Dio_Proj.Wt), max(Table_Dio_Proj.Wt_Meas)] ;
 nMax = max(n1);
-nVal=linspace(0, nMax, 140);
-r_sq = lm_DioProj.Rsquared.Ordinary(1);
+nVal=linspace(0.0001, nMax, 1000);
+r_sq_Proj = lm_DioProj.Rsquared.Ordinary(1);
 for i=1:140
     fitY_DioProj(i) = m_DioProj * nVal(i);
 end
@@ -831,26 +810,30 @@ plot(Table_Dio_Proj{101:140, "Wt_Meas"}, Table_Dio_Proj{101:140, "Wt"}, 'og',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_DioProj, '--k')
-legend('Fragment', 'Fibre', 'Film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProj, r_sq), 'location', 'best');
-set(gca,'YLim', [0, nMax*1.1] )
-set(gca,'XLim', [0, nMax*1.1] )
+plot(nVal, 1.3*nVal, ':k')
+plot(nVal, 0.7*nVal, ':k')
+legend('Fragment', 'Fibre', 'Film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProj, r_sq_Proj), 'location', 'best');
+set(gca,'YLim', [0.003, nMax*1.3] )
+set(gca,'XLim', [0.003, nMax*1.3] )
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioVM_MeasVsCalc_FitShapes.jpg', 'Resolution', 300);
 
-%% D2 C) Plot Fragments only with fitted model
+%% C C) Plot Fragments only with fitted model
 
 % Fit linear model through the intercept: SA
 lm_DioSAF3 = fitlm(Table_Dio_SA{1:80, "Wt_Meas"}, Table_Dio_SA{1:80, "Wt"}, 'y~-1+x1');
 m_DioSAF3 = lm_DioSAF3.Coefficients.Estimate(1);
-fitY_DioSAF3 = zeros(140, 1);
+fitY_DioSAF3 = zeros(1000, 1);
 % Generate data using linear model:
 n1_F3=[max(Table_Dio_SA{1:80, "Wt"}), max(Table_Dio_SA{1:80, "Wt_Meas"})] ;
 nMax_F3 = max(n1_F3);
-nVal_F3=linspace(0, nMax_F3, 140);
-r_sq_F3 = lm_DioSAF3.Rsquared.Ordinary(1);
-for i=1:140
+nVal_F3=linspace(0, nMax_F3, 1000);
+r_sq_SAF3 = lm_DioSAF3.Rsquared.Ordinary(1);
+for i=1:1000
     fitY_DioSAF3(i) = m_DioSAF3 * nVal_F3(i);
 end
 
@@ -863,21 +846,25 @@ title('Dioguardi Model: Using Particle Surface Area.')
 hold on
 plot(nVal_F3, nVal_F3, '-k')
 plot(nVal_F3, fitY_DioSAF3, '--b')
-legend('Fragments', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSAF3, r_sq_F3), 'location', 'best');
-set(gca,'YLim', [0, nMax_F3*1.1] )
-set(gca,'XLim', [0, nMax_F3*1.1] )
+plot(nVal_F3, 1.3*nVal_F3, ':k')
+plot(nVal_F3, 0.7*nVal_F3, ':k')
+legend('Fragments', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSAF3, r_sq_SAF3), '', '', 'location', 'best');
+set(gca,'YLim', [0.0003, nMax_F3*1.1] )
+set(gca,'XLim', [0.0003, nMax_F3*1.1] )
+set(gca, 'XScale', 'log')
+set(gca, 'YScale', 'log')
 hold off
 
 % Fit linear model through the intercept: Projected area
 lm_DioProjF3 = fitlm(Table_Dio_Proj{1:80, "Wt_Meas"}, Table_Dio_Proj{1:80, "Wt"}, 'y~-1+x1');
 m_DioProjF3 = lm_DioProjF3.Coefficients.Estimate(1);
-fitY_DioProjF3 = zeros(140, 1);
+fitY_DioProjF3 = zeros(1000, 1);
 % Generate data using linear model:
 n1_F3=[max(Table_Dio_Proj{1:80, "Wt"}), max(Table_Dio_Proj{1:80, "Wt_Meas"})] ;
 nMax_F3 = max(n1_F3);
-nVal_F3=linspace(0, nMax_F3, 140);
-r_sq_F3 = lm_DioProjF3.Rsquared.Ordinary(1);
-for i=1:140
+nVal_F3=linspace(0.0001, nMax_F3, 1000);
+r_sq_ProjF3 = lm_DioProjF3.Rsquared.Ordinary(1);
+for i=1:1000
     fitY_DioProjF3(i) = m_DioProjF3 * nVal_F3(i);
 end
 
@@ -890,26 +877,30 @@ title('Dioguardi Model: Using projection area of equivalent sphere.')
 hold on
 plot(nVal_F3, nVal_F3, '-k')
 plot(nVal_F3, fitY_DioProjF3, '--b')
-legend('Fragments', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProjF3, r_sq_F3), 'location', 'best');
-set(gca,'YLim', [0, nMax_F3*1.1] )
-set(gca,'XLim', [0, nMax_F3*1.1] )
+plot(nVal_F3, 1.3*nVal_F3, ':k')
+plot(nVal_F3, 0.7*nVal_F3, ':k')
+legend('Fragments', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProjF3, r_sq_ProjF3), '', '', 'location', 'best');
+set(gca,'YLim', [0.003, nMax_F3*1.1] )
+set(gca,'XLim', [0.003, nMax_F3*1.1] )
+set(gca, 'XScale', 'log')
+set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioVM_MeasVsCalc_FitF3.jpg', 'Resolution', 300);
 
-%% D2 D) Plot fibres separately with fitted model
+%% C D) Plot fibres separately with fitted model
 
 % Fit linear model through the intercept: SA
 lm_DioSAF2 = fitlm(Table_Dio_SA{81:100, "Wt_Meas"}, Table_Dio_SA{81:100, "Wt"}, 'y~-1+x1');
 m_DioSAF2 = lm_DioSAF2.Coefficients.Estimate(1);
-fitY_DioSAF2 = zeros(140, 1);
+fitY_DioSAF2 = zeros(1000, 1);
 % Generate data using linear model:
 n1_F2=[max(Table_Dio_SA{81:100, "Wt"}), max(Table_Dio_SA{81:100, "Wt_Meas"})] ;
 nMax_F2 = max(n1_F2);
-nVal_F2=linspace(0, nMax_F2, 140);
-r_sq_F2 = lm_DioSAF2.Rsquared.Ordinary(1);
-for i=1:140
+nVal_F2=linspace(0.0001, nMax_F2, 1000);
+r_sq_SAF2 = lm_DioSAF2.Rsquared.Ordinary(1);
+for i=1:1000
     fitY_DioSAF2(i) = m_DioSAF2 * nVal_F2(i);
 end
 
@@ -922,21 +913,26 @@ title('Dioguardi Model: Using Particle Surface Area.')
 hold on
 plot(nVal_F2, nVal_F2, '-k')
 plot(nVal_F2, fitY_DioSAF2, '--r')
-legend('Fibres', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSAF2, r_sq_F2), 'location', 'best');
-set(gca,'YLim', [0, nMax_F2*1.1] )
-set(gca,'XLim', [0, nMax_F2*1.1] )
+plot(nVal_F2, 1.3*nVal_F2, ':k')
+plot(nVal_F2, 0.7*nVal_F2, ':k')
+legend('Fibres', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSAF2, r_sq_SAF2), '', '', 'location', 'best');
+set(gca,'YLim', [0.0003, nMax_F2*1.1] )
+set(gca,'XLim', [0.0003, nMax_F2*1.1] )
+set(gca, 'XScale', 'log')
+set(gca, 'YScale', 'log')
+
 hold off
 
 % Fit linear model through the intercept: Projected area
 lm_DioProjF2 = fitlm(Table_Dio_Proj{81:100, "Wt_Meas"}, Table_Dio_Proj{81:100, "Wt"}, 'y~-1+x1');
 m_DioProjF2 = lm_DioProjF2.Coefficients.Estimate(1);
-fitY_DioProjF2 = zeros(140, 1);
+fitY_DioProjF2 = zeros(1000, 1);
 % Generate data using linear model:
 n1_F2=[max(Table_Dio_Proj{81:100, "Wt"}), max(Table_Dio_Proj{81:100, "Wt_Meas"})] ;
 nMax_F2 = max(n1_F2);
-nVal_F2=linspace(0, nMax_F2, 140);
-r_sq_F2 = lm_DioProjF2.Rsquared.Ordinary(1);
-for i=1:140
+nVal_F2=linspace(0.0001, nMax_F2, 1000);
+r_sq_ProjF2 = lm_DioProjF2.Rsquared.Ordinary(1);
+for i=1:1000
     fitY_DioProjF2(i) = m_DioProjF2 * nVal_F2(i);
 end
 
@@ -949,26 +945,30 @@ title('Dioguardi Model: Using projection area of equivalent sphere.')
 hold on
 plot(nVal_F2, nVal_F2, '-k')
 plot(nVal_F2, fitY_DioProjF2, '--r')
-legend('Fibres', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProjF2, r_sq_F2), 'location', 'best');
-set(gca,'YLim', [0, nMax_F2*1.1] )
-set(gca,'XLim', [0, nMax_F2*1.1] )
+plot(nVal_F2, 1.3*nVal_F2, ':k')
+plot(nVal_F2, 0.7*nVal_F2, ':k')
+legend('Fibres', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProjF2, r_sq_ProjF2), '', '', 'location', 'best');
+set(gca,'YLim', [0.003, nMax_F2*1.1] )
+set(gca,'XLim', [0.003, nMax_F2*1.1] )
+set(gca, 'XScale', 'log')
+set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioVM_MeasVsCalc_FitF2.jpg', 'Resolution', 300);
 
-%% D2 E) Plot film separately with fitted model
+%% C E) Plot film separately with fitted model
 
 % Fit linear model through the intercept: SA
 lm_DioSAF1 = fitlm(Table_Dio_SA{101:140, "Wt_Meas"}, Table_Dio_SA{101:140, "Wt"}, 'y~-1+x1');
 m_DioSAF1 = lm_DioSAF1.Coefficients.Estimate(1);
-fitY_DioSAF1 = zeros(140, 1);
+fitY_DioSAF1 = zeros(1000, 1);
 % Generate data using linear model:
 n1_F1=[max(Table_Dio_SA{101:140, "Wt"}), max(Table_Dio_SA{101:140, "Wt_Meas"})] ;
 nMax_F1 = max(n1_F1);
-nVal_F1=linspace(0, nMax_F1, 140);
-r_sq_F1 = lm_DioSAF1.Rsquared.Ordinary(1);
-for i=1:140
+nVal_F1=linspace(0.0001, nMax_F1, 1000);
+r_sq_SAF1 = lm_DioSAF1.Rsquared.Ordinary(1);
+for i=1:1000
     fitY_DioSAF1(i) = m_DioSAF1 * nVal_F1(i);
 end
 
@@ -981,21 +981,25 @@ title('Dioguardi Model: Using Particle Surface Area.')
 hold on
 plot(nVal_F1, nVal_F1, '-k')
 plot(nVal_F1, fitY_DioSAF1, '--g')
-legend('film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSAF1, r_sq_F1), 'location', 'best');
-set(gca,'YLim', [0, nMax_F1*1.1] )
-set(gca,'XLim', [0, nMax_F1*1.1] )
+plot(nVal_F1, 1.3*nVal_F1, ':k')
+plot(nVal_F1, 0.7*nVal_F1, ':k')
+legend('film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSAF1, r_sq_SAF1), '', '',  'location', 'best');
+set(gca,'YLim', [0.0003, nMax_F1*1.1] )
+set(gca,'XLim', [0.0003, nMax_F1*1.1] )
+set(gca, 'XScale', 'log')
+set(gca, 'YScale', 'log')
 hold off
 
 % Fit linear model through the intercept: Projected area
 lm_DioProjF1 = fitlm(Table_Dio_Proj{101:140, "Wt_Meas"}, Table_Dio_Proj{101:140, "Wt"}, 'y~-1+x1');
 m_DioProjF1 = lm_DioProjF1.Coefficients.Estimate(1);
-fitY_DioProjF1 = zeros(140, 1);
+fitY_DioProjF1 = zeros(1000, 1);
 % Generate data using linear model:
 n1_F1=[max(Table_Dio_Proj{101:140, "Wt"}), max(Table_Dio_Proj{101:140, "Wt_Meas"})] ;
 nMax_F1 = max(n1_F1);
-nVal_F1=linspace(0, nMax_F1, 140);
-r_sq_F1 = lm_DioProjF1.Rsquared.Ordinary(1);
-for i=1:140
+nVal_F1=linspace(0.0001, nMax_F1, 1000);
+r_sq_ProjF1 = lm_DioProjF1.Rsquared.Ordinary(1);
+for i=1:1000
     fitY_DioProjF1(i) = m_DioProjF1 * nVal_F1(i);
 end
 
@@ -1008,15 +1012,56 @@ title('Dioguardi Model: Using projection area of equivalent sphere.')
 hold on
 plot(nVal_F1, nVal_F1, '-k')
 plot(nVal_F1, fitY_DioProjF1, '--g')
-legend('film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProjF1, r_sq_F1), 'location', 'best');
-set(gca,'YLim', [0, nMax_F1*1.1] )
-set(gca,'XLim', [0, nMax_F1*1.1] )
+plot(nVal_F1, 1.3*nVal_F1, ':k')
+plot(nVal_F1, 0.7*nVal_F1, ':k')
+legend('film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProjF1, r_sq_ProjF1), '', '', 'location', 'best');
+set(gca,'YLim', [0.003, nMax_F1*1.1] )
+set(gca,'XLim', [0.003, nMax_F1*1.1] )
+set(gca, 'XScale', 'log')
+set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioguardiVM_MeasVsCalc_FitF1.jpg', 'Resolution', 300);
 
-%% E1) Re against Cd (ALL)
+%% Combine all m and r_sq values into the error table: Projected Area
+Error_table = readtable("./DragModelsTest/Output/20220621/Dioguardi/DioguardiErrorTableVM_Proj.txt", 'Delimiter', ',', ReadVariableNames=true, ReadRowNames=true);
+
+Col_names = ["m", "r_sq"];
+Row_names = ["All", "Fragment", "Fibre", "Film"];
+Var_types = ["double","double"];
+
+Dio_rsq_proj = [r_sq_Proj; r_sq_ProjF3; r_sq_ProjF2; r_sq_ProjF1];
+Dio_m_proj = [m_DioProj; m_DioProjF3; m_DioProjF2; m_DioProjF1];
+
+Dio_Proj_Table = array2table([Dio_m_proj Dio_rsq_proj]);
+Dio_Proj_Table.Properties.VariableNames = Col_names;
+Dio_Proj_Table.Properties.RowNames = Row_names;
+
+Error_table_Proj = [Error_table Dio_Proj_Table];
+
+writetable(Error_table_Proj, './DragModelsTest/Output/20220621/Dioguardi/DioFinalTableVM_Proj.txt', 'Delimiter', ',', 'WriteRowNames', true);
+writetable(Error_table_Proj, './DragModelsTest/Output/20220621/Dioguardi/DioFinalTableVM_Proj.xls', 'WriteRowNames', true);
+
+%% Combine all m and r_sq values into the error table: Surface Area
+Error_table = readtable("./DragModelsTest/Output/20220621/Dioguardi/DioguardiErrorTableVM_SA.txt", 'Delimiter', ',', ReadVariableNames=true, ReadRowNames=true);
+
+Col_names = ["m", "r_sq"];
+Row_names = ["All", "Fragment", "Fibre", "Film"];
+Var_types = ["double","double"];
+
+Dio_rsq_SA = [r_sq_SA; r_sq_SAF3; r_sq_SAF2; r_sq_SAF1];
+Dio_m_SA = [m_DioSA; m_DioSAF3; m_DioSAF2; m_DioSAF1];
+
+Dio_SA_Table = array2table([Dio_m_SA Dio_rsq_SA]);
+Dio_SA_Table.Properties.VariableNames = Col_names;
+Dio_SA_Table.Properties.RowNames = Row_names;
+
+Error_table_SA = [Error_table Dio_SA_Table];
+
+writetable(Error_table_SA, './DragModelsTest/Output/20220621/Dioguardi/DioFinalTableVM_SA.txt', 'Delimiter', ',', 'WriteRowNames', true);
+writetable(Error_table_SA, './DragModelsTest/Output/20220621/Dioguardi/DioFinalTableVM_SA.xls', 'WriteRowNames', true);
+%% D1) Re against Cd (ALL)
 % =========================
 
 % Method 1: Plotting all 
@@ -1053,7 +1098,7 @@ hold off
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioguardiVM_ReVsCd.jpg', 'Resolution', 300);
 
-%% E2) wt against CSF (SHAPES)
+%% D2) Re against Cd (SHAPES)
 % =============================
 
 % Method 1: Shapes Plotted Separately
@@ -1101,7 +1146,7 @@ hold off
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioguardiVM_ReVsCd_Shapes.jpg', 'Resolution', 300);
 
-%% F1) Re against Cd (ALL)
+%% E) ESD against Cd (ALL)
 % =========================
 
 % Method 1: Plotting all 
@@ -1136,7 +1181,7 @@ hold off
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioguardiVM_ESDVsCd.jpg', 'Resolution', 300);
 
-%% F2) wt against CSF (SHAPES)
+%% E2) wt against CSF (SHAPES)
 % =============================
 
 % Method 1: Shapes Plotted Separately

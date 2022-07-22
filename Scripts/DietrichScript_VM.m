@@ -1,13 +1,13 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: DietrichScript: VM
 % Date created: 23.04.22
-% Date last mostified: 22.06.22
+% Date last mostified: 22.07.22
 % Purpose: To test the implementation of the Dietrich drag model on a range of
 %          particle shapes
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 %% Read in data file
-
+clear
 % Van Mekelebeke (2020) DOI: 10.1021/acs.est.9b07378
 % ====================================================
 VM_Dataset = readtable("SettlingVelocity calc\VanMelkebekeSIDataset.txt");
@@ -130,28 +130,32 @@ writetable(Table_Dietrich_NaN, './DragModelsTest/Output/20220621/Dietrich/Dietri
 %% Calculate average error and RMSE
 
 % A) All shapes
-residual = zeros(140, 1);
-Percentage_Error = zeros(140, 1);
+residual = zeros(42, 1);
+Percentage_Error = zeros(42, 1);
 AE_Sum = 0.0;
-Percentage_Error_sq = zeros(140, 1);
+Abs_AE_Sum = 0.0;
+Percentage_Error_sq = zeros(42, 1);
 RMSE_Sum = 0.0;
 
 for i=1:42
     residual(i) = (Table_Dietrich_NaN.Wt(i)- Table_Dietrich_NaN.Wt_Meas(i));
-    Percentage_Error(i) = abs((residual(i) / Table_Dietrich_NaN.Wt_Meas(i))*100);
+    Percentage_Error(i) = (residual(i) / Table_Dietrich_NaN.Wt_Meas(i))*100;
     AE_Sum = AE_Sum + Percentage_Error(i);
-    Percentage_Error_sq(i) = ((residual(i)/Table_Dietrich_NaN.Wt_Meas(i))^2)*100;
+    Abs_AE_Sum = Abs_AE_Sum + abs(Percentage_Error(i));
+    Percentage_Error_sq(i) = (Percentage_Error(i))^2;
     RMSE_Sum = RMSE_Sum + Percentage_Error_sq(i);
 end
 
-AE = AE_Sum/140;
-RMSE = sqrt(RMSE_Sum/140);
+AE = AE_Sum/42;
+Abs_AE = Abs_AE_Sum/42;
+RMSE = sqrt(RMSE_Sum/42);
 
 Error_table_shape = ["All"];
 Error_table_AE = [AE];
+Error_table_Abs_AE = [Abs_AE];
 Error_table_RMSE = [RMSE];
 
-Error_table = table(Error_table_shape, Error_table_AE, Error_table_RMSE);
+Error_table = table(Error_table_shape, Error_table_AE, Error_table_Abs_AE, Error_table_RMSE);
 
 writetable(Error_table, './DragModelsTest/Output/20220621/Dietrich/DietrichErrorTableVM.txt', 'Delimiter', ',', 'WriteRowNames', true);
 writetable(Error_table, './DragModelsTest/Output/20220621/Dietrich/DietrichErrorTableVM.xls', 'WriteRowNames', true);
@@ -201,8 +205,8 @@ hold off
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_ESDVsW_Shapes.jpg', 'Resolution', 300)
 
-%% B1) wt against CSF
-% ====================
+%% B1) wt against CSF: All
+% =========================
 
 % Method 1: Plotting all 
 plot(Table_Dietrich.('CSF'), Table_Dietrich.('Wt_Meas'), 'o', ...
@@ -219,8 +223,8 @@ hold off
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_CSFVsW.jpg', 'Resolution', 300);
 
-%% B2) wt against CSF
-% ====================
+%% B2) wt against CSF: Shapes
+% ============================
 
 % Method 1: Shapes Plotted Separately
 plot(Table_Dietrich.('CSF'), Table_Dietrich.('Wt_Meas'), 'o', ...
@@ -242,69 +246,8 @@ hold off
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_CSFVsW_Shapes.jpg', 'Resolution', 300);
 
-%% C) wt against wt measured
-% ============================
-Highest(1) = max(Table_Dietrich.Wt);
-Highest(2) = max(Table_Dietrich.Wt_Meas);
-MaxW = max(Highest);
-yx=linspace(0, MaxW, 100);
-
-% Method 1: Plot shapes separately
-plot(yx, yx, '-k')
-hold on
-plot(Table_Dietrich{1:80, "Wt_Meas"}, Table_Dietrich{1:80, "Wt"}, 'o', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-plot(Table_Dietrich{81:100, "Wt_Meas"}, Table_Dietrich{81:100, "Wt"}, 'or',...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-plot(Table_Dietrich{101:140, "Wt_Meas"}, Table_Dietrich{101:140, "Wt"}, 'og',...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-title('Dietrich Model.')
-xlabel('Measured Velocity (m/s)')
-ylabel('Calculated Velocity (m/s)')
-legend('', 'Fragment', 'Fibre', 'Film', 'location', 'best')
-set(gca,'YLim', [0, MaxW*1.1] )
-set(gca,'XLim', [0, MaxW*1.1] )
-hold off
-
-set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_MeasVsCalc.jpg', 'Resolution', 300);
-
-%% E) Plot output after removing NaN Values
-% E1) Wt Meas Vs Wt Calc with equation
-% ======================================
-
-Highest(1) = max(Table_Dietrich_New.Wt);
-Highest(2) = max(Table_Dietrich_New.Wt_Meas);
-MaxW = max(Highest);
-yx=linspace(0, MaxW, 100);
-
-plot(Table_Dietrich_New.('Wt_Meas'), Table_Dietrich_New.('Wt'), 'ob', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-hold on
-plot(yx, yx, '-k')
-p=polyfit(Table_Dietrich_New.('Wt_Meas'), Table_Dietrich_New.('Wt'), 1);
-px=[min(Table_Dietrich_New.('Wt_Meas')) max(Table_Dietrich_New.('Wt_Meas'))];
-py=polyval(p, px);
-plot(px, py, '-b')
-text(px(2), 1.05*py(2), (sprintf('y = %.4fx %+.4f', p(1), p(2))), ...
-    'Color', 'b', 'FontSize', 10, 'FontWeight', 'Bold', 'HorizontalAlignment', 'left');
-m=Table_Dietrich_New.("Wt_Meas")\Table_Dietrich_New.("Wt");
-mx = m*Table_Dietrich_New.("Wt_Meas");
-plot(Table_Dietrich_New.('Wt_Meas'), mx, '-g');
-text(px(2), max(mx), (sprintf('y = %.4fx', m)), ...
-    'Color', 'g', 'FontSize', 10, 'FontWeight', 'Bold', 'HorizontalAlignment', 'left');
-title('Dietrich Model.')
-xlabel('Measured Wt (m/s)')
-ylabel('Calculated Wt (m/s)')
-legend('', 'y=x', 'Linear fit', 'Linear fit forced', 'location', 'best')
-set(gca, 'Ylim', [0, 1.1*MaxW])
-set(gca, 'Xlim', [0, 1.1*MaxW])
-hold off
-
-set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_MeasVsCalc_Eqn_NaN.jpg', 'Resolution', 300);
-
-%% E2) CSF Vs Wt Meas
+%% C) Plot output after removing NaN Values
+%% C1) CSF Vs Wt Meas
 % =================
 subplot(1, 2, 1)
 plot(Table_Dietrich_New.('CSF'), Table_Dietrich_New.('Wt_Meas'), 'o', ...
@@ -339,34 +282,62 @@ hold off
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_ESDV_CSF_NaN.jpg', 'Resolution', 300)
 
-%% E3) wt against wt measured using Matlab fitlm function
+%% C2) wt against wt measured using Matlab fitlm function
 % ========================================================
 
-% Fit linear model through the intercept: SA
+% Fit linear model through the intercept
 lm_Dietrich = fitlm(Table_Dietrich_New.Wt_Meas, Table_Dietrich_New.Wt, 'y~-1+x1');
 m_Dietrich = lm_Dietrich.Coefficients.Estimate(1);
-fitY_Dietrich = zeros(140, 1);
+fitY_Dietrich = zeros(1000, 1);
 % Generate data using linear model:
 n1=[max(Table_Dietrich_New.Wt), max(Table_Dietrich_New.Wt_Meas)] ;
 nMax = max(n1);
-nVal=linspace(0, nMax, 140);
+nVal=linspace(0.0001, nMax, 1000);
 r_sq = lm_Dietrich.Rsquared.Ordinary(1);
-for i=1:140
+for i=1:1000
     fitY_Dietrich(i) = m_Dietrich * nVal(i);
 end
 
-plot(Table_Dietrich_New.Wt_Meas, Table_Dietrich_New.Wt, 'o', ...
-    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
+subplot(1, 2, 2)
+plot(Table_Dietrich_New{1:40, "Wt_Meas"}, Table_Dietrich_New{1:40, "Wt"}, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+hold on
+plot(Table_Dietrich{41, "Wt_Meas"}, Table_Dietrich{41, "Wt"}, 'or',...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
 title('Dietrich Model')
 hold on
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_Dietrich, '--k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Dietrich, r_sq), 'location', 'best');
-set(gca,'YLim', [0, nMax*1.1] )
-set(gca,'XLim', [0, nMax*1.1] )
+plot(nVal, 1.3*nVal, ':k')
+plot(nVal, 0.7*nVal, ':k')
+legend('', '', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Dietrich, r_sq), 'location', 'best');
+set(gca,'YLim', [0.003, nMax*1.3] )
+set(gca,'XLim', [0.003, nMax*1.3] )
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);
+
+%% Combine all m and r_sq values into the error table
+Error_table = readtable("./DragModelsTest/Output/20220621/Dietrich/DietrichErrorTableVM.txt", 'Delimiter', ',', ReadVariableNames=true, ReadRowNames=true);
+
+Col_names = ["m", "r_sq"];
+Row_names = ["All"];
+Var_types = ["double","double"];
+
+Dietrich_rsq = [r_sq];
+Dietrich_m = [m_Dietrich];
+
+Dietrich_Table = array2table([Dietrich_m Dietrich_rsq]);
+Dietrich_Table.Properties.VariableNames = Col_names;
+Dietrich_Table.Properties.RowNames = Row_names;
+
+Error_table = [Error_table Dietrich_Table];
+
+writetable(Error_table, './DragModelsTest/Output/20220621/Dietrich/DietrichFinalTableVM.txt', 'Delimiter', ',', 'WriteRowNames', true);
+writetable(Error_table, './DragModelsTest/Output/20220621/Dietrich/DietrichFinalTableVM.xls', 'WriteRowNames', true);
+
