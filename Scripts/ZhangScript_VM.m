@@ -179,6 +179,47 @@ Table_ZC_SA.Properties.VariableNames(1) = {'Shape'};
 writetable(Table_ZC_SA, './DragModelsTest/Output/20220621/Zhang/ZhangOutputVM_SA.txt', 'Delimiter', ',', 'WriteRowNames', true);
 writetable(Table_ZC_SA, './DragModelsTest/Output/20220621/Zhang/ZhangOutputVM_SA.xls', 'WriteRowNames', true);
 
+%% Distance assumption calculation and plot
+
+DistConst_ZC = zeros(140, 1);
+
+for i=1:140
+    DistConst_ZC(i) = FinalTime_ZC(i) * wtFinal_ZC(i);
+end
+
+% Fit linear model through the intercept: SA
+lm_ZCDist = fitlm(DistTot_ZC, DistConst_ZC, 'y~-1+x1');
+m_ZCDist = lm_ZCDist.Coefficients.Estimate(1);
+fitY_ZCDist = zeros(1000, 1);
+% Generate data using linear model:
+n1=[max(DistTot_ZC), max(DistConst_ZC)] ;
+nMax = max(n1);
+nVal=linspace(0.00001, nMax, 1000);
+r_sq_Dist = lm_ZCDist.Rsquared.Ordinary(1);
+for i=1:1000
+    fitY_ZCDist(i) = m_ZCDist * nVal(i);
+end
+
+subplot(1, 2, 2)
+plot(DistTot_ZC, DistConst_ZC, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[1, 1, 0]')
+ylabel('Distance travelled at constant velocity (m)')
+xlabel('Distance travelled in attaining terminal velocity (m)')
+title('Zhang and Choi (2021): Using Particle Surface Area.')
+hold on
+plot(nVal, nVal, '-k')
+plot(nVal, fitY_ZCDist, '--k')
+plot(nVal, 0.7*nVal, ':k')
+plot(nVal, 1.3*nVal, ':k')
+legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_ZCDist, r_sq_Dist), '', '', 'location', 'best');
+set(gca,'YLim', [0.00005, nMax*1.3] )
+set(gca,'XLim', [0.00005, nMax*1.3] )
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
+hold off
+
+set(gcf, 'WindowState', 'Maximized')
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Distance/ZC_DistanceSA.jpg', 'Resolution', 300)
 %% Calculate average error and RMSE
 
 % A) All shapes
@@ -847,7 +888,7 @@ plot(Table_Zhang_SA{1:80, "Wt_Meas"}, Table_Zhang_SA{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Zhang Model: Using Particle Surface Area.')
+title('Zhang and Choi (2021): Using Particle Surface Area.')
 hold on
 plot(nVal_F3, nVal_F3, '-k')
 plot(nVal_F3, fitY_ZCSAF3, '--b')
@@ -878,7 +919,7 @@ plot(Table_Zhang_Proj{1:80, "Wt_Meas"}, Table_Zhang_Proj{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Zhang Model: Estimated projection area using max CSA.')
+title('Zhang and Choi (2021): Estimated Projected Area using Max CSA.')
 hold on
 plot(nVal_F3, nVal_F3, '-k')
 plot(nVal_F3, fitY_ZCProjF3, '--b')
@@ -914,7 +955,7 @@ plot(Table_Zhang_SA{81:100, "Wt_Meas"}, Table_Zhang_SA{81:100, "Wt"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Zhang Model: Using Particle Surface Area.')
+title('Zhang and Choi (2021): Using Particle Surface Area.')
 hold on
 plot(nVal_F2, nVal_F2, '-k')
 plot(nVal_F2, fitY_ZCSAF2, '--r')
@@ -945,7 +986,7 @@ plot(Table_Zhang_Proj{81:100, "Wt_Meas"}, Table_Zhang_Proj{81:100, "Wt"}, 'or', 
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Zhang Model: Estimated projection area using max CSA.')
+title('Zhang and Choi (2021): Estimated Projection Area using Max CSA.')
 hold on
 plot(nVal_F2, nVal_F2, '-k')
 plot(nVal_F2, fitY_ZCProjF2, '--r')
@@ -981,7 +1022,7 @@ plot(Table_Zhang_SA{101:140, "Wt_Meas"}, Table_Zhang_SA{101:140, "Wt"}, 'og', ..
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Zhang Model: Using Particle Surface Area.')
+title('Zhang and Choi (2021): Using Particle Surface Area.')
 hold on
 plot(nVal_F1, nVal_F1, '-k')
 plot(nVal_F1, fitY_ZCSAF1, '--g')
@@ -1012,7 +1053,7 @@ plot(Table_Zhang_Proj{101:140, "Wt_Meas"}, Table_Zhang_Proj{101:140, "Wt"}, 'og'
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Zhang Model: Estimated projection area using max CSA.')
+title('Zhang and Choi (2021): Estimated Projection Area using Max CSA.')
 hold on
 plot(nVal_F1, nVal_F1, '-k')
 plot(nVal_F1, fitY_ZCProjF1, '--g')

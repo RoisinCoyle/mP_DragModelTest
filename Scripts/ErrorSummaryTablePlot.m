@@ -288,8 +288,11 @@ results_t = readtable('./Output/20220621/OverallSummaryTable.txt', ...
 results_m = table2array(results_t);
 %% Make labels for graph
 
-tick_label = ["Stokes:Proj", "Stokes:SA",  "Dio:Proj", "Dio:SA", "BB:Proj", ...
-              "BB:SA", "Zhang:Proj", "Zhang:SA",  "Dietrich", "Francalanci", "Yu"];
+tick_label = [sprintf("Stokes (1851) Projected Area"), sprintf("Stokes"), ...
+    sprintf("Dioguardi"), sprintf("Dioguardi et al (2018) Surface Area"), ...
+    sprintf("Bagheri"), sprintf("Bagheri and Bonadonna (2016) Surface Area"), ...
+    sprintf("Zhang:Proj"), sprintf("Zhang:SA"), ...
+    sprintf("Dietrich"),  sprintf("Francalanci"),  sprintf("Yu")];
 
 labelsAE_All = "";
 a = num2str(results_m(1, 1), '%7.2f');
@@ -505,7 +508,7 @@ b=bar(sorted_data([1 2 3 4 5 6 7 10]), 'FaceColor', '[.7, .7, .7]');
 hold on
 set(gca, 'XTickLabel', tick_labelAbs_AE_All([1 2 3 4 5 6 7 10]))
 set(gca, 'Ylim', [0 200]);
-ylabel("Absolute Average Error (%)")
+ylabel("Absolute Average Relative Error (%)")
 xtips1 = b(1).XEndPoints;
 ytips1 = b(1).YEndPoints;
 for i=1:8
@@ -517,7 +520,7 @@ for i=1:8
 end
 text(xtips1,ytips1,SortlabelsAbs_AE_All([1 2 3 4 5 6 7 10]), 'HorizontalAlignment','center',...
     'VerticalAlignment','bottom')
-title('Overall')
+title('Considering All mP Particles in dataset by Van Melkebeke et al (2020)')
 
 subplot(3, 3, 7)
 [sorted_data, new_indices] = sort(results_m(7, :)); % sorts in *ascending* order
@@ -527,7 +530,7 @@ b=bar(sorted_data([1 2 3 4 5 6 9]), 'b');
 b(1).BaseValue = 0;
 hold on
 set(gca, 'XTickLabel', tick_labelAbs_AE_F3([1 2 3 4 5 6 9]))
-ylabel("Absolute Average Error (%)")
+ylabel(sprintf("Absolute Average \n Relative Error (%c)", '%'))
 set(gca, 'Ylim', [0 200]);
 xtips1 = b(1).XEndPoints;
 ytips1 = b(1).YEndPoints;
@@ -540,7 +543,7 @@ for i=1:7
 end
 text(xtips1,ytips1,SortlabelsAbs_AE_F3([1 2 3 4 5 6 9]), 'HorizontalAlignment','center',...
     'VerticalAlignment','bottom', 'FontSize', 8)
-title('Fragments Only')
+title('Considering Only Fragment Particles')
 
 subplot(3, 3, 8)
 [sorted_data, new_indices] = sort(results_m(17, :)); % sorts in *ascending* order
@@ -549,7 +552,7 @@ tick_labelAbs_AE_F2 = tick_label(new_indices);
 b=bar(sorted_data([1 2 3 4 5 6 9]), 'g');
 hold on
 set(gca, 'XTickLabel', tick_labelAbs_AE_F2([1 2 3 4 5 6 9]))
-ylabel("Absolute Average Error (%)")
+ylabel(sprintf("Absolute Average \n Relative Error (%c)", '%'))
 set(gca, 'Ylim', [0 200]);
 xtips1 = b(1).XEndPoints;
 ytips1 = b(1).YEndPoints;
@@ -562,7 +565,7 @@ for i=1:7
 end
 text(xtips1,ytips1,SortlabelsAbs_AE_F2([1 2 3 4 5 6 9]), 'HorizontalAlignment','center',...
     'VerticalAlignment','bottom', 'FontSize', 8)
-title('Films Only')
+title('Considering Only Film Particles')
 
 subplot(3, 3, 9)
 [sorted_data, new_indices] = sort(results_m(12, :)); % sorts in *ascending* order
@@ -571,7 +574,7 @@ tick_labelAbs_AE_F1 = tick_label(new_indices);
 b=bar(sorted_data([1 2 3 4 5 6 9]), 'r');
 hold on
 set(gca, 'XTickLabel', tick_labelAbs_AE_F1([1 2 3 4 5 6 9]))
-ylabel("Absolute Average Error (%)")
+ylabel(sprintf("Absolute Average \n Relative Error (%c)", '%'))
 set(gca, 'Ylim', [0 200]);
 xtips1 = b(1).XEndPoints;
 ytips1 = b(1).YEndPoints;
@@ -584,9 +587,9 @@ for i=1:7
 end
 text(xtips1,ytips1, SortlabelsAbs_AE_F1([1 2 3 4 5 6 9]), 'HorizontalAlignment','center',...
     'VerticalAlignment','bottom', 'FontSize', 8)
-title('Fibres Only')
+title('Considering Only Fibrous Particles')
 
-sgtitle(sprintf('Evaluation of Models: Absolute Average Error (|AE|) \r\n between Measured and Calculated Velocity'));
+sgtitle(sprintf('Evaluation of Models: Absolute Average Relative Error (|AE|) of Estimated Terminal Settling Velocity \r\n compared to Measured Terminal Settling Velocity for each model evaluated'), 'FontWeight', 'Bold');
 
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './Output/20220621/Abs_AE_Bar7.jpg', 'Resolution', 300)
@@ -606,7 +609,7 @@ xtips1 = b(1).XEndPoints;
 ytips1 = b(1).YEndPoints;
 text(xtips1,ytips1,SortlabelsRMSE_All([1 2 3 4 5 6 7 10]), 'HorizontalAlignment','center',...
     'VerticalAlignment','bottom')
-title('Overall')
+title('Considering All mP Particles in dataset by Van Melkebeke et al (2020)')
 
 subplot(3, 3, 7)
 [sorted_data, new_indices] = sort(results_m(8, :)); % sorts in *ascending* order
@@ -621,7 +624,7 @@ xtips1 = b(1).XEndPoints;
 ytips1 = b(1).YEndPoints;
 text(xtips1,ytips1,SortlabelsRMSE_F3([1 2 3 4 5 8 9]), 'HorizontalAlignment','center',...
     'VerticalAlignment','bottom', 'FontSize', 9)
-title('Fragments Only')
+title('Considering Fragment Particles Only')
 
 subplot(3, 3, 8)
 [sorted_data, new_indices] = sort(results_m(18, :)); % sorts in *ascending* order
@@ -636,7 +639,7 @@ xtips1 = b(1).XEndPoints;
 ytips1 = b(1).YEndPoints;
 text(xtips1,ytips1,SortlabelsRMSE_F2([1 2 3 4 5 6 9]), 'HorizontalAlignment','center',...
     'VerticalAlignment','bottom', 'FontSize', 9)
-title('Films Only')
+title('Considering Film Particles Only')
 
 subplot(3, 3, 9)
 [sorted_data, new_indices] = sort(results_m(13, :)); % sorts in *ascending* order
@@ -651,9 +654,9 @@ xtips1 = b(1).XEndPoints;
 ytips1 = b(1).YEndPoints;
 text(xtips1,ytips1,SortlabelsRMSE_F1([1 2 3 4 5 6 9]), 'HorizontalAlignment','center',...
     'VerticalAlignment','bottom', 'FontSize', 9)
-title('Fibres Only')
+title('Considering Fibrous Particles Only')
 
-sgtitle(sprintf('Evaluation of Models: Root Mean Square Error (RMSE) \r\n between Measured and Calculated Velocity'));
+sgtitle(sprintf('Evaluation of Models: Root Mean Square Error (RMSE) of Estimated Terminal Settling Velocity \r\n compared to Measured Terminal Settling Velocity for each model evaluated'), 'FontWeight', 'Bold');
 
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './Output/20220621/RMSE_Bar7.jpg', 'Resolution', 300)

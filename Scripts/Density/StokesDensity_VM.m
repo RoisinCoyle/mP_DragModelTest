@@ -173,9 +173,10 @@ end
 label_t = array2table(label_m);
 new_table = [Table_Stokes label_t];
 
+
 boxplot(new_table.Wt, new_table.label_m)
 ylabel('Terminal Settling Velocity (m/s)')
-title('Stokes (1851)')
+title(sprintf('Stokes (1851): Using Particle Surface area \n\r %s_f = %5.2f to %5.2f kg/m^3', '\rho', Table_Stokes.rho_f(1), Table_Stokes.rho_f(6)))
 set(gcf, 'WindowState', 'maximized');
 
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Stokes_Boxplot.jpg', 'Resolution', 300)
@@ -236,7 +237,7 @@ legend(sprintf('Fragment, %4.1f kg/m^{3}, ESD %4.4f m', Table_Stokes.rho_p(1), T
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_Stokes.rho_p(43), Table_Stokes.ESD(43)), ...
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_Stokes.rho_p(49), Table_Stokes.ESD(49)), ...
     'NumColumns', 3, 'location', 'southoutside')
-title('Stokes Model: USing Particle SA.')
+title('Stokes (1851): Using Particle Surface Area.')
 ylabel('Terminal settling velocity (m/s)')
 xlabel('Fluid Density (kg/m^{3})')
    

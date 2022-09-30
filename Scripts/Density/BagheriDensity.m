@@ -174,10 +174,10 @@ for i=1:54
     if(i<=18)
         label = sprintf('Fragment, %4.1f kg/m3, ESD %4.4fm', Table_BB.rho_p(i), Table_BB.ESD(i));
         label_m{i, 1} = label;
-    elseif(i>=19 & i<=36)
+    elseif(i>=19 && i<=36)
         label = sprintf('Fibre, %4.1f kg/m3, ESD %4.4fm', Table_BB.rho_p(i), Table_BB.ESD(i));
         label_m{i, 1} = label;
-    elseif(i>=37 & i<=54)
+    elseif(i>=37 && i<=54)
         label = sprintf('Film, %4.1f kg/m3, ESD %4.4fm', Table_BB.rho_p(i), Table_BB.ESD(i));
         label_m{i, 1} = label;
     end
@@ -188,7 +188,7 @@ new_table = [Table_BB label_t];
 
 boxplot(new_table.Wt, new_table.label_m)
 ylabel('Terminal Settling Velocity (m/s)')
-title('Bagheri and Bonadonna (2016)')
+title(sprintf('Bagheri and Bonadonna (2016): Using Particle Surface area \n\r %s_f = %5.2f to %5.2f kg/m^3', '\rho', Table_BB.rho_f(1), Table_BB.rho_f(6)))
 set(gcf, 'WindowState', 'maximized');
 
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Bagheri_Boxplot.jpg', 'Resolution', 300)

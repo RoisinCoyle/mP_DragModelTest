@@ -713,14 +713,14 @@ plot(Table_Yu{1:80, "Wt_Meas"}, Table_Yu{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel(sprintf('Estimated settling \r\n velocity (m/s)'))
 xlabel('Measured settling velocity (m/s)')
-title('Yu et al. (2022)')
+title('A. Yu et al. (2022)')
 hold on
-plot(Table_Yu{81:100, "Wt_Meas"}, Table_Yu{81:100, "Wt"}, 'or',...
+plot(Table_Yu{81:100, "Wt_Meas"}, Table_Yu{81:100, "Wt"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-plot(Table_Yu{101:140, "Wt_Meas"}, Table_Yu{101:140, "Wt"}, 'og',...
+plot(Table_Yu{101:140, "Wt_Meas"}, Table_Yu{101:140, "Wt"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 plot(nVal, nVal, '-k')
-plot(nVal, fitY_Yu, '--k')
+plot(nVal, fitY_Yu, '--k', 'LineWidth', 1)
 plot(nVal, 1.3*nVal, ':k')
 plot(nVal, 0.7*nVal, ':k')
 legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Yu, r_sq), '', '', 'location', 'best');
@@ -749,14 +749,14 @@ plot(Table_Dio_Proj{1:80, "Wt_Meas"}, Table_Dio_Proj{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel(sprintf('Estimated settling \r\n velocity (m/s)'))
 xlabel('Measured settling velocity (m/s)')
-title(sprintf('Dioguardi et al. (2018): \r\n Projected Area of Volume Equivalent Sphere'))
+title(sprintf('B. Dioguardi et al. (2018): \r\n Projected Area of Volume Equivalent Sphere'))
 hold on
-plot(Table_Dio_Proj{81:100, "Wt_Meas"}, Table_Dio_Proj{81:100, "Wt"}, 'or',...
+plot(Table_Dio_Proj{81:100, "Wt_Meas"}, Table_Dio_Proj{81:100, "Wt"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-plot(Table_Dio_Proj{101:140, "Wt_Meas"}, Table_Dio_Proj{101:140, "Wt"}, 'og',...
+plot(Table_Dio_Proj{101:140, "Wt_Meas"}, Table_Dio_Proj{101:140, "Wt"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 plot(nVal, nVal, '-k')
-plot(nVal, fitY_DioProj, '--k')
+plot(nVal, fitY_DioProj, '--k', 'LineWidth', 1)
 plot(nVal, 1.3*nVal, ':k')
 plot(nVal, 0.7*nVal, ':k')
 legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProj, r_sq_Proj), '', '', 'location', 'best');
@@ -785,14 +785,14 @@ plot(Table_BB_Proj{1:80, "Wt_Meas"}, Table_BB_Proj{1:80, "Wt_Calc"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel(sprintf('Estimated settling \r\n velocity (m/s)'))
 xlabel('Measured settling velocity (m/s)')
-title(sprintf('Bagheri and Bonadonna (2016): \r\n Projected Area of Volume Equivalent Sphere'))
+title(sprintf('C. Bagheri and Bonadonna (2016): \r\n Projected Area of Volume Equivalent Sphere'))
 hold on
-plot(Table_BB_Proj{81:100, "Wt_Meas"}, Table_BB_Proj{81:100, "Wt_Calc"}, 'or',...
+plot(Table_BB_Proj{81:100, "Wt_Meas"}, Table_BB_Proj{81:100, "Wt_Calc"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-plot(Table_BB_Proj{101:140, "Wt_Meas"}, Table_BB_Proj{101:140, "Wt_Calc"}, 'og',...
+plot(Table_BB_Proj{101:140, "Wt_Meas"}, Table_BB_Proj{101:140, "Wt_Calc"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 plot(nVal, nVal, '-k')
-plot(nVal, fitY_BBProj, '--k')
+plot(nVal, fitY_BBProj, '--k', 'LineWidth', 1)
 plot(nVal, 1.3*nVal, ':k')
 plot(nVal, 0.7*nVal, ':k')
 legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_BBProj, r_sq_Proj), '', '', 'location', 'best');
@@ -821,14 +821,14 @@ plot(Table_Frn{1:80, "Wt_Meas"}, Table_Frn{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel(sprintf('Estimated settling \r\n velocity (m/s)'))
 xlabel('Measured settling velocity (m/s)')
-title('Francalanci et al. (2021)')
+title('D. Francalanci et al. (2021)')
 hold on
-plot(Table_Frn{81:100, "Wt_Meas"}, Table_Frn{81:100, "Wt"}, 'or',...
+plot(Table_Frn{81:100, "Wt_Meas"}, Table_Frn{81:100, "Wt"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-plot(Table_Frn{101:140, "Wt_Meas"}, Table_Frn{101:140, "Wt"}, 'og',...
+plot(Table_Frn{101:140, "Wt_Meas"}, Table_Frn{101:140, "Wt"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 plot(nVal, nVal, '-k')
-plot(nVal, fitY_Frn, '--k')
+plot(nVal, fitY_Frn, '--k', 'LineWidth', 1)
 plot(nVal, 1.3*nVal, ':k')
 plot(nVal, 0.7*nVal, ':k')
 legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Frn, r_sq), '', '', 'location', 'best');
@@ -857,14 +857,14 @@ plot(Table_Zhang_Proj{1:80, "Wt_Meas"}, Table_Zhang_Proj{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel(sprintf('Estimated settling \r\n velocity (m/s)'))
 xlabel('Measured settling velocity (m/s)')
-title(sprintf('Zhang and Choi (2021): \r\n Projected Area using Max CSA'))
+title(sprintf('E. Zhang and Choi (2021): \r\n Projected Area using Max CSA'))
 hold on
-plot(Table_Zhang_Proj{81:100, "Wt_Meas"}, Table_Zhang_Proj{81:100, "Wt"}, 'or',...
+plot(Table_Zhang_Proj{81:100, "Wt_Meas"}, Table_Zhang_Proj{81:100, "Wt"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-plot(Table_Zhang_Proj{101:140, "Wt_Meas"}, Table_Zhang_Proj{101:140, "Wt"}, 'og',...
+plot(Table_Zhang_Proj{101:140, "Wt_Meas"}, Table_Zhang_Proj{101:140, "Wt"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 plot(nVal, nVal, '-k')
-plot(nVal, fitY_ZCProj, '--k')
+plot(nVal, fitY_ZCProj, '--k', 'LineWidth', 1)
 plot(nVal, 1.3*nVal, ':k')
 plot(nVal, 0.7*nVal, ':k')
 legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_ZCProj, r_sq_Proj), '', '', 'location', 'best');
@@ -893,14 +893,14 @@ plot(Table_Zhang_SA{1:80, "Wt_Meas"}, Table_Zhang_SA{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel(sprintf('Estimated settling \r\n velocity (m/s)'))
 xlabel('Measured settling velocity (m/s)')
-title(sprintf('Zhang and Choi (2021): \r\n Particle Surface Area'))
+title(sprintf('F. Zhang and Choi (2021): \r\n Particle Surface Area'))
 hold on
-plot(Table_Zhang_SA{81:100, "Wt_Meas"}, Table_Zhang_SA{81:100, "Wt"}, 'or',...
+plot(Table_Zhang_SA{81:100, "Wt_Meas"}, Table_Zhang_SA{81:100, "Wt"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-plot(Table_Zhang_SA{101:140, "Wt_Meas"}, Table_Zhang_SA{101:140, "Wt"}, 'og',...
+plot(Table_Zhang_SA{101:140, "Wt_Meas"}, Table_Zhang_SA{101:140, "Wt"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 plot(nVal, nVal, '-k')
-plot(nVal, fitY_ZCSA, '--k')
+plot(nVal, fitY_ZCSA, '--k', 'LineWidth', 1)
 plot(nVal, 1.3*nVal, ':k')
 plot(nVal, 0.7*nVal, ':k')
 legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_ZCSA, r_sq_SA), '', '', 'location', 'best');
@@ -928,13 +928,13 @@ end
 plot(Table_Dietrich_New{1:41, "Wt_Meas"}, Table_Dietrich_New{1:41, "Wt"}, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 hold on
-plot(Table_Dietrich{42, "Wt_Meas"}, Table_Dietrich{42, "Wt"}, 'or',...
+plot(Table_Dietrich{42, "Wt_Meas"}, Table_Dietrich{42, "Wt"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 ylabel(sprintf('Estimated settling \r\n velocity (m/s)'))
 xlabel('Measured settling velocity (m/s)')
-title('Dietrich (1982)')
+title('G. Dietrich (1982)')
 plot(nVal, nVal, '-k')
-plot(nVal, fitY_Dietrich, '--k')
+plot(nVal, fitY_Dietrich, '--k', 'LineWidth', 1)
 plot(nVal, 1.3*nVal, ':k')
 plot(nVal, 0.7*nVal, ':k')
 legend('', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Dietrich, r_sq), '', '', 'location', 'best');
@@ -963,16 +963,16 @@ plot(Table_Stokes_SA{1:80, "Wt_Meas"}, Table_Stokes_SA{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel(sprintf('Estimated settling \r\n velocity (m/s)'))
 xlabel('Measured settling velocity (m/s)')
-title('Stokes (1851): Particle Surface Area')
+title('H. Stokes (1851): Particle Surface Area')
 hold on
-plot(Table_Stokes_SA{81:100, "Wt_Meas"}, Table_Stokes_SA{81:100, "Wt"}, 'or',...
+plot(Table_Stokes_SA{81:100, "Wt_Meas"}, Table_Stokes_SA{81:100, "Wt"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-plot(Table_Stokes_SA{101:140, "Wt_Meas"}, Table_Stokes_SA{101:140, "Wt"}, 'og',...
+plot(Table_Stokes_SA{101:140, "Wt_Meas"}, Table_Stokes_SA{101:140, "Wt"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 plot(nVal, nVal, '-k')
 plot(nVal, 1.3*nVal, ':k')
 plot(nVal, 0.7*nVal, ':k')
-lgnd = legend('Fragment', 'Fibre', 'Film', 'Calculated Velocity = Measured Velocity', '+/- 30%', '', 'NumColumns', 2);
+lgnd = legend('Fragment', 'Fibre', 'Film', 'Calculated Velocity = Measured Velocity', 'Measured velocity +/- 30%', '', 'NumColumns', 2);
 lgnd.Position(1) = 0.6916;
 lgnd.Position(2) = 0.1126;
 lgnd.Position(3) = 0.2134;
@@ -987,7 +987,7 @@ hold off
 subplot(3, 3, 9)
 plot(nVal, nVal, '-k')
 hold on
-plot(nVal, fitY_StokesSA, '--k')
+plot(nVal, fitY_StokesSA, '--k', 'LineWidth', 1)
 plot(nVal, 1.3*nVal, ':k')
 plot(nVal, 0.7*nVal, ':k')
 set(gca,'YLim', [0.0005, nMax*1.3] )

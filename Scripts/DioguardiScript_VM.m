@@ -842,7 +842,7 @@ plot(Table_Dio_SA{1:80, "Wt_Meas"}, Table_Dio_SA{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Dioguardi Model: Using Particle Surface Area.')
+title('Dioguardi et al (2018): Using Particle Surface Area.')
 hold on
 plot(nVal_F3, nVal_F3, '-k')
 plot(nVal_F3, fitY_DioSAF3, '--b')
@@ -873,7 +873,7 @@ plot(Table_Dio_Proj{1:80, "Wt_Meas"}, Table_Dio_Proj{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Dioguardi Model: Using projection area of equivalent sphere.')
+title('Dioguardi et al (2018): Using Projected Area of Volume Equivalent Sphere.')
 hold on
 plot(nVal_F3, nVal_F3, '-k')
 plot(nVal_F3, fitY_DioProjF3, '--b')
@@ -909,7 +909,7 @@ plot(Table_Dio_SA{81:100, "Wt_Meas"}, Table_Dio_SA{81:100, "Wt"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Dioguardi Model: Using Particle Surface Area.')
+title('Dioguardi et al (2018):  Using Particle Surface Area.')
 hold on
 plot(nVal_F2, nVal_F2, '-k')
 plot(nVal_F2, fitY_DioSAF2, '--r')
@@ -941,7 +941,7 @@ plot(Table_Dio_Proj{81:100, "Wt_Meas"}, Table_Dio_Proj{81:100, "Wt"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Dioguardi Model: Using projection area of equivalent sphere.')
+title('Dioguardi et al (2018): Using Projected Area of Volume Equivalent Sphere.')
 hold on
 plot(nVal_F2, nVal_F2, '-k')
 plot(nVal_F2, fitY_DioProjF2, '--r')
@@ -977,7 +977,7 @@ plot(Table_Dio_SA{101:140, "Wt_Meas"}, Table_Dio_SA{101:140, "Wt"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Dioguardi Model: Using Particle Surface Area.')
+title('Dioguardi et al (2018): Using Particle Surface Area.')
 hold on
 plot(nVal_F1, nVal_F1, '-k')
 plot(nVal_F1, fitY_DioSAF1, '--g')
@@ -1008,7 +1008,7 @@ plot(Table_Dio_Proj{101:140, "Wt_Meas"}, Table_Dio_Proj{101:140, "Wt"}, 'og', ..
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Dioguardi Model: Using projection area of equivalent sphere.')
+title('Dioguardi et al (2018): Using Projected Area of Volume Equivalent Sphere.')
 hold on
 plot(nVal_F1, nVal_F1, '-k')
 plot(nVal_F1, fitY_DioProjF1, '--g')
@@ -1022,7 +1022,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioguardiVM_MeasVsCalc_FitF1.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioVM_MeasVsCalc_FitF1.jpg', 'Resolution', 300);
 
 %% Combine all m and r_sq values into the error table: Projected Area
 Error_table = readtable("./DragModelsTest/Output/20220621/Dioguardi/DioguardiErrorTableVM_Proj.txt", 'Delimiter', ',', ReadVariableNames=true, ReadRowNames=true);

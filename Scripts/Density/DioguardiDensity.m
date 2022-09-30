@@ -182,7 +182,7 @@ new_table = [Table_Dio label_t];
 
 boxplot(new_table.Wt, new_table.label_m)
 ylabel('Terminal Settling Velocity (m/s)')
-title('Dioguardi et al (2018): Using Particle Projection Area')
+title(sprintf('Dioguardi et al (2018): Using Particle Surface area \n\r %s_f = %5.2f to %5.2f kg/m^3', '\rho', Table_Dio.rho_f(1), Table_Dio.rho_f(6)))
 set(gcf, 'WindowState', 'maximized');
 
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Dio_Boxplot.jpg', 'Resolution', 300)

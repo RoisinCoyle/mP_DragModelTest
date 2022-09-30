@@ -116,10 +116,10 @@ end
 
 label_t = array2table(label_m);
 new_table = [Table_Yu label_t];
-
+%%
 boxplot(new_table.Wt, new_table.label_m)
 ylabel('Terminal Settling Velocity (m/s)')
-title('Yu et al (2022)')
+title(sprintf('Yu et al (2022). \n\r %s_f = %5.2f to %5.2f kg/m^3', '\rho', Table_Yu.rho_f(1), Table_Yu.rho_f(6)))
 set(gcf, 'WindowState', 'maximized');
 
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Yu_Boxplot.jpg', 'Resolution', 300)

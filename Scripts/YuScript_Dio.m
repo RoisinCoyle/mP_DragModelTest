@@ -111,8 +111,9 @@ RMSE = sqrt(RMSE_Sum/200);
 Error_table_shape = ["All"];
 Error_table_AE = [AE];
 Error_table_RMSE = [RMSE];
+Error_table_Abs_AE = [Abs_AE];
 
-Error_table = table(Error_table_shape, Error_table_AE, Error_table_RMSE);
+Error_table = table(Error_table_shape, Error_table_AE, Error_table_Abs_AE, Error_table_RMSE);
 
 writetable(Error_table, './DragModelsTest/Output/20220621/Yu_Dio/YuDioErrorTable.txt', 'Delimiter', ',', 'WriteRowNames', true);
 writetable(Error_table, './DragModelsTest/Output/20220621/Yu_Dio/YuDioErrorTable.xls', 'WriteRowNames', true);
@@ -181,13 +182,13 @@ plot(Table_Yu.Wt_Meas, Table_Yu.Wt, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Yu (2022): Using Dioguardi Dataset')
+title('Yu (2022): Re-evaluation using dataset from Dioguradi et al (2018)')
 hold on
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_Yu, '--k')
 plot(nVal, 1.3*nVal, ':k')
 plot(nVal, 0.7*nVal, ':k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Yu, r_sq), '+/- 30%', 'location', 'best');
+legend('All mPs', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Yu, r_sq), '+/- 30%', 'location', 'best');
 set(gca,'YLim', [0.0015, nMax*1.1] )
 set(gca,'XLim', [0.0015, nMax*1.1] )
 set(gca, 'XScale', 'log')

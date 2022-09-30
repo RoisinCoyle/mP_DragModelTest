@@ -284,11 +284,12 @@ for i=1:1000
     fitY_Yu(i) = m_Yu * nVal(i);
 end
 
+subplot(1, 2, 1)
 plot(Table_Yu.Wt_Meas, Table_Yu.Wt, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Yu Model')
+title('Yu et al (2022).')
 hold on
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_Yu, '--k')
@@ -319,11 +320,12 @@ for i=1:1000
     fitY_Yu(i) = m_Yu * nVal(i);
 end
 
+subplot(1, 2, 1)
 plot(Table_Yu{1:80, "Wt_Meas"}, Table_Yu{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Yu Model.')
+title('Yu et al (2022).')
 hold on
 plot(Table_Yu{81:100, "Wt_Meas"}, Table_Yu{81:100, "Wt"}, 'or',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
@@ -358,11 +360,12 @@ for i=1:1000
     fitY_YuF3(i) = m_YuF3 * nVal_F3(i);
 end
 
+subplot(1, 2, 1)
 plot(Table_Yu{1:80, "Wt_Meas"}, Table_Yu{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Yu Model.')
+title('Yu et al (2022)')
 hold on
 plot(nVal_F3, nVal_F3, '-k')
 plot(nVal_F3, fitY_YuF3, '--b')
@@ -393,12 +396,12 @@ for i=1:1000
     fitY_YuF1(i) = m_YuF1 * nVal_F1(i);
 end
 
-subplot(1, 2, 2)
+subplot(1, 2, 1)
 plot(Table_Yu{81:100, "Wt_Meas"}, Table_Yu{81:100, "Wt"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Yu Model.')
+title('Yu et al (2022)')
 hold on
 plot(nVal_F1, nVal_F1, '-k')
 plot(nVal_F1, fitY_YuF1, '--r')
@@ -429,11 +432,12 @@ for i=1:1000
     fitY_YuF2(i) = m_YuF2 * nVal_F2(i);
 end
 
+subplot(1, 2, 1)
 plot(Table_Yu{101:140, "Wt_Meas"}, Table_Yu{101:140, "Wt"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Yu Model.')
+title('Yu et al (2022)')
 hold on
 plot(nVal_F2, nVal_F2, '-k')
 plot(nVal_F2, fitY_YuF2, '--g')

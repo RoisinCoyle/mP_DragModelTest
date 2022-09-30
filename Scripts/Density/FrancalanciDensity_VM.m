@@ -148,10 +148,10 @@ end
 
 label_t = array2table(label_m);
 new_table = [Table_Frn label_t];
-
+%%
 boxplot(new_table.Wt, new_table.label_m)
 ylabel('Terminal Settling Velocity (m/s)')
-title('Francalanci et al (2021)')
+title(sprintf('Francalanci et al (2021) \n\r %s_f = %5.2f to %5.2f kg/m^3', '\rho', Table_Frn.rho_f(1), Table_Frn.rho_f(6)))
 set(gcf, 'WindowState', 'maximized');
 
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Francalanci_Boxplot.jpg', 'Resolution', 300)
@@ -199,7 +199,7 @@ legend(sprintf('Fragment, %4.1f kg/m^{3}, ESD %4.4f m', Table_Frn.rho_p(1), Tabl
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_Frn.rho_p(43), Table_Frn.ESD(43)), ...
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_Frn.rho_p(49), Table_Frn.ESD(49)), ...
     'NumColumns', 3, 'location', 'southoutside')
-title('Francalanci (2021).')
+title('Francalanci et al (2021).')
 ylabel('Terminal settling velocity (m/s)')
 xlabel('Fluid Density (kg/m^{3})')
    

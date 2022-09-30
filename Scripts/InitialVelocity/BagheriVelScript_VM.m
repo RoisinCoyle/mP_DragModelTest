@@ -169,6 +169,10 @@ Table_BB_Proj.Properties.VariableNames(1) = {'Shape'};
 writetable(Table_BB_Proj, './DragModelsTest/Output/20220621/Velocity/BagheriVelOutputVM_Proj.txt', 'Delimiter', ',', 'WriteRowNames', true);
 writetable(Table_BB_Proj, './DragModelsTest/Output/20220621/Velocity/BagheriVelOutputVM_Proj.xls', 'WriteRowNames', true);
 
+%% Read in data to plot
+clear
+Table_BB_Proj = readtable('./DragModelsTest/Output/20220621/Velocity/BagheriVelOutputVM_Proj.txt', 'Delimiter', ',');
+
 %% Plot the 3 plots
 
 subplot(3, 2, 1)
@@ -264,7 +268,7 @@ lgnd = legend(sprintf('%4.2e', wvel_BB(31, 1)), sprintf('%4.2e', wvel_BB(32, 1))
     sprintf('%4.2e', wvel_BB(35, 1)), sprintf('%4.2e', wvel_BB(36, 1)), 'Location', 'best', 'NumColumns', 2);
 title(lgnd, 'Initial Velocity (m/s)', 'FontWeight', 'bold');
 
-sgtitle(sprintf('Impact of initial velocity on calculated terminal settling velocity. \r\n Bagheri et al (2016): Using Particle Projection Area'), 'FontWeight', 'Bold');
+sgtitle(sprintf('Impact of initial velocity on calculated terminal settling velocity. \r\n Bagheri and Bonadonna (2016): Using Particle Projection Area'), 'FontWeight', 'Bold');
 
 set(gcf, 'WindowState', 'maximized')
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Velocity/BBx6.jpeg', 'Resolution', 300)

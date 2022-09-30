@@ -711,7 +711,7 @@ plot(Table_BB_SA.Wt_Meas, Table_BB_SA.Wt_Calc, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri Model: Using Particle Surface Area.')
+title('Bagheri and Bonadonna (2016): Using Particle Surface Area.')
 hold on
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_BBSA, '--k')
@@ -742,7 +742,7 @@ plot(Table_BB_Proj.Wt_Meas, Table_BB_Proj.Wt_Calc, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri Model: Using Projected Area of Volume Equivalent Sphere.')
+title('Bagheri and Bonadonna (2016): Using Projected Area of Volume Equivalent Sphere.')
 hold on
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_BBProj, '--k')
@@ -778,7 +778,7 @@ plot(Table_BB_SA{1:80, "Wt_Meas"}, Table_BB_SA{1:80, "Wt_Calc"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri Model:. Using particle Surface Area.')
+title('Bagheri and Bonadonna (2016): Using particle Surface Area.')
 hold on
 plot(Table_BB_SA{81:100, "Wt_Meas"}, Table_BB_SA{81:100, "Wt_Calc"}, 'or',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
@@ -813,7 +813,7 @@ plot(Table_BB_Proj{1:80, "Wt_Meas"}, Table_BB_Proj{1:80, "Wt_Calc"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri Model: Using Projected Area of Volume Equivalent Sphere.')
+title('Bagheri and Bonadonna (2016): Using Projected Area of Volume Equivalent Sphere.')
 hold on
 plot(Table_BB_Proj{81:100, "Wt_Meas"}, Table_BB_Proj{81:100, "Wt_Calc"}, 'or',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
@@ -853,7 +853,7 @@ plot(Table_BB_SA{1:80, "Wt_Meas"}, Table_BB_SA{1:80, "Wt_Calc"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri Model:: Using Particle Surface Area.')
+title('Bagheri and Bonadonna (2016): Using Particle Surface Area.')
 hold on
 plot(nVal_F3, nVal_F3, '-k')
 plot(nVal_F3, fitY_BBSAF3, '--b')
@@ -884,7 +884,7 @@ plot(Table_BB_Proj{1:80, "Wt_Meas"}, Table_BB_Proj{1:80, "Wt_Calc"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri Model: Using Projected Area of Volume Equivalent Sphere.')
+title('Bagheri and Bonadonna (2016): Using Projected Area of Volume Equivalent Sphere.')
 hold on
 plot(nVal_F3, nVal_F3, '-k')
 plot(nVal_F3, fitY_BBProjF3, '--b')
@@ -920,7 +920,7 @@ plot(Table_BB_SA{81:100, "Wt_Meas"}, Table_BB_SA{81:100, "Wt_Calc"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri Model: Using Particle Surface Area.')
+title('Bagheri and Bonadonna (2016): Using Particle Surface Area.')
 hold on
 plot(nVal_F2, nVal_F2, '-k')
 plot(nVal_F2, fitY_BBSAF2, '--r')
@@ -951,7 +951,7 @@ plot(Table_BB_Proj{81:100, "Wt_Meas"}, Table_BB_Proj{81:100, "Wt_Calc"}, 'or', .
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri Model: Using Projected Area of Volume Equivalent Sphere.')
+title('Bagheri and Bonadonna (2016): Using Projected Area of Volume Equivalent Sphere.')
 hold on
 plot(nVal_F2, nVal_F2, '-k')
 plot(nVal_F2, fitY_BBProjF2, '--r')
@@ -987,7 +987,7 @@ plot(Table_BB_SA{101:140, "Wt_Meas"}, Table_BB_SA{101:140, "Wt_Calc"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri Model:: Using Particle Surface Area.')
+title('Bagheri and Bonadonna (2016): Using Particle Surface Area.')
 hold on
 plot(nVal_F1, nVal_F1, '-k')
 plot(nVal_F1, fitY_BBSAF1, '--g')
@@ -1018,7 +1018,7 @@ plot(Table_BB_Proj{101:140, "Wt_Meas"}, Table_BB_Proj{101:140, "Wt_Calc"}, 'og',
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri Model: Using Projected Area of Volume Equivalent Sphere.')
+title('Bagheri and Bonadonna (2016): Using Projected Area of Volume Equivalent Sphere.')
 hold on
 plot(nVal_F1, nVal_F1, '-k')
 plot(nVal_F1, fitY_BBProjF1, '--g')

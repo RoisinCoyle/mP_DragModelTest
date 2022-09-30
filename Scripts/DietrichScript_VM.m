@@ -238,7 +238,7 @@ plot(Table_Dietrich{101:140, "CSF"}, Table_Dietrich{101:140, "Wt"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 legend('Measured Wt', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
        'Calculated Wt, Film', 'NumColumns', 2, 'location', 'southoutside')
-title('Dietrich Model.')
+title('Dietrich (1982)')
 ylabel('Terminal settling velocity (m/s)')
 xlabel('CSF')
 hold off
@@ -259,7 +259,7 @@ plot(Table_Dietrich_New{42, "CSF"}, Table_Dietrich_New{42, "Wt"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 legend('Measured Wt', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
        'Calculated Wt, Film', 'NumColumns', 2, 'location', 'southoutside')
-title('Dietrich Model.')
+title('Dietrich (1982)')
 ylabel('Terminal settling velocity (m/s)')
 xlabel('CSF')
 hold off
@@ -274,7 +274,7 @@ plot(Table_Dietrich_New{42, "ESD"}, Table_Dietrich_New{42, "Wt"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 legend('Measured Wt', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
        'Calculated Wt, Film', 'NumColumns', 2, 'location', 'southoutside')
-title('Dietrich Model.')
+title('Dietrich (1982)')
 ylabel('Terminal settling velocity (m/s)')
 xlabel('Particle size (m)')
 hold off
@@ -282,8 +282,8 @@ hold off
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_ESDV_CSF_NaN.jpg', 'Resolution', 300)
 
-%% C2) wt against wt measured using Matlab fitlm function
-% ========================================================
+%% C2) wt against wt measured using Matlab fitlm function alongside CSF
+% ======================================================================
 
 % Fit linear model through the intercept
 lm_Dietrich = fitlm(Table_Dietrich_New.Wt_Meas, Table_Dietrich_New.Wt, 'y~-1+x1');
@@ -292,13 +292,13 @@ fitY_Dietrich = zeros(1000, 1);
 % Generate data using linear model:
 n1=[max(Table_Dietrich_New.Wt), max(Table_Dietrich_New.Wt_Meas)] ;
 nMax = max(n1);
-nVal=linspace(0.0001, nMax, 1000);
+nVal=linspace(0.0001, nMax*1.3, 1000);
 r_sq = lm_Dietrich.Rsquared.Ordinary(1);
 for i=1:1000
     fitY_Dietrich(i) = m_Dietrich * nVal(i);
 end
 
-subplot(1, 2, 2)
+subplot(1, 2, 1)
 plot(Table_Dietrich_New{1:40, "Wt_Meas"}, Table_Dietrich_New{1:40, "Wt"}, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 hold on
@@ -306,21 +306,45 @@ plot(Table_Dietrich{41, "Wt_Meas"}, Table_Dietrich{41, "Wt"}, 'or',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Dietrich Model')
+title(sprintf('Dietrich (1982): Estimated terminal settling velocity \n\r against measured terminal settling velocity'))
 hold on
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_Dietrich, '--k')
 plot(nVal, 1.3*nVal, ':k')
 plot(nVal, 0.7*nVal, ':k')
-legend('', '', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Dietrich, r_sq), 'location', 'best');
+legend('Fragment', 'Fibre', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Dietrich, r_sq), 'location', 'best');
 set(gca,'YLim', [0.003, nMax*1.3] )
 set(gca,'XLim', [0.003, nMax*1.3] )
 set(gca, 'YScale', 'log')
 set(gca, 'XScale', 'log')
 hold off
 
+subplot(1, 2, 2)
+plot(Table_Dietrich{1:80, 'CSF'}, Table_Dietrich{1:80,'Wt_Meas'}, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','b', 'MarkerFaceColor', '[.7, .7, .7]')
+hold on
+plot(Table_Dietrich{81:100, 'CSF'}, Table_Dietrich{81:100,'Wt_Meas'}, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','r', 'MarkerFaceColor', '[.7, .7, .7]')
+plot(Table_Dietrich{101:140, 'CSF'}, Table_Dietrich{101:140,'Wt_Meas'}, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','g', 'MarkerFaceColor', '[.7, .7, .7]')
+plot(Table_Dietrich_New{1:41, "CSF"}, Table_Dietrich_New{1:41, "Wt"}, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
+plot(Table_Dietrich_New{42, "CSF"}, Table_Dietrich_New{42, "Wt"}, 'or', ...
+    'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
+ymax = max(max(Table_Dietrich_New.Wt_Meas), max(Table_Dietrich_New.Wt));
+ydot = linspace(0, ymax*1.1, 100)
+xdot = linspace(0.15, 0.15, 100)
+plot(xdot, ydot, 'k:')
+legend('Measured Wt, Fragment', 'Measured Wt, Fibre', 'Measured Wt, Film', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
+       'CSF=0.15', 'NumColumns', 1, 'location', 'best')
+title(sprintf('Dietrich (1982): Corey Shape Factor \n Against Terminal Settling Velocity'))
+ylabel('Terminal settling velocity (m/s)')
+xlabel('CSF')
+set(gca, 'YLim', [0, ymax*1.1])
+hold off
+
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_MeasVsCalc_FitCSF.jpg', 'Resolution', 300);
 
 %% Combine all m and r_sq values into the error table
 Error_table = readtable("./DragModelsTest/Output/20220621/Dietrich/DietrichErrorTableVM.txt", 'Delimiter', ',', ReadVariableNames=true, ReadRowNames=true);

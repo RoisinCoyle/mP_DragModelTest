@@ -291,6 +291,7 @@ for i=1:1000
     fitY_Frn(i) = m_Frn * nVal(i);
 end
 
+subplot(1, 2, 1)
 plot(Table_Frn.Wt_Meas, Table_Frn.Wt, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
 ylabel('Estimated settling velocity (m/s)')
@@ -326,6 +327,7 @@ for i=1:1000
     fitY_Frn(i) = m_Frn * nVal(i);
 end
 
+subplot(1, 2, 1)
 plot(Table_Frn{1:80, "Wt_Meas"}, Table_Frn{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
@@ -365,11 +367,12 @@ for i=1:1000
     fitY_FrnF3(i) = m_FrnF3 * nVal_F3(i);
 end
 
+subplot(1, 2, 1)
 plot(Table_Frn{1:80, "Wt_Meas"}, Table_Frn{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Francalanci Model.')
+title('Francalanci et al (2021).')
 hold on
 plot(nVal_F3, nVal_F3, '-k')
 plot(nVal_F3, fitY_FrnF3, '--b')
@@ -400,11 +403,12 @@ for i=1:1000
     fitY_FrnF2(i) = m_FrnF2 * nVal_F2(i);
 end
 
+subplot(1, 2, 1)
 plot(Table_Frn{81:100, "Wt_Meas"}, Table_Frn{81:100, "Wt"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Francalanci Model.')
+title('Francalanci et al (2021).')
 hold on
 plot(nVal_F2, nVal_F2, '-k')
 plot(nVal_F2, fitY_FrnF2, '--r')
@@ -435,17 +439,18 @@ for i=1:1000
     fitY_FrnF1(i) = m_FrnF1 * nVal_F1(i);
 end
 
+subplot(1, 2, 1)
 plot(Table_Frn{101:140, "Wt_Meas"}, Table_Frn{101:140, "Wt"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 ylabel('Estimated settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Francalanci Model.')
+title('Francalanci et al (2021).')
 hold on
 plot(nVal_F1, nVal_F1, '-k')
 plot(nVal_F1, fitY_FrnF1, '--g')
 plot(nVal_F1, 1.3*nVal_F1, ':k')
 plot(nVal_F1, 0.7*nVal_F1, ':k')
-legend('film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_FrnF1, r_sq_F1), 'location', 'best');
+legend('Film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_FrnF1, r_sq_F1), 'location', 'best');
 set(gca,'YLim', [0.004, nMax_F1*1.1] )
 set(gca,'XLim', [0.004, nMax_F1*1.1] )
 set(gca, 'YScale', 'log')
