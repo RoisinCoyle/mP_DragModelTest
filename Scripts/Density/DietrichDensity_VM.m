@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: DietrichScript: VM
 % Date created: 23.04.22
-% Date last mostified: 21.07.22
+% Date last mostified: 02.03.23
 % Purpose: To test the implementation of the Dietrich drag model on a range of
 %          particle shapes
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -54,7 +54,7 @@ end
 %% Dietrich' method 1
 % <<<<<<<<<<<<<<<<<
 % Dietrich's model cannot be used when CSF<0.2
-% This is not an interative procedure, it just calculates the terminal velocity.
+% This is not an iterative procedure, it just calculates the terminal velocity.
 
 % Set up variable arrays
 d_dim = zeros(54, 1);
@@ -99,8 +99,8 @@ Table_Dietrich = array2table(Results_Dietrich, "VariableNames", ...
 Table_Dietrich = [Density_Dataset.Shape Table_Dietrich];
 Table_Dietrich.Properties.VariableNames(1) = {'Shape'};
 
-writetable(Table_Dietrich, './DragModelsTest/Output/20220621/Density/DietrichOutputVM_Den.txt', 'Delimiter', ',', 'WriteRowNames', true);
-writetable(Table_Dietrich, './DragModelsTest/Output/20220621/Density/DietrichOutputVM_Den.xls', 'WriteRowNames', true);
+% writetable(Table_Dietrich, './DragModelsTest/Output/20220621/Density/DietrichOutputVM_Den.txt', 'Delimiter', ',', 'WriteRowNames', true);
+% writetable(Table_Dietrich, './DragModelsTest/Output/20220621/Density/DietrichOutputVM_Den.xls', 'WriteRowNames', true);
 
 %% Removing NaN values
 n=0;
@@ -128,8 +128,8 @@ writetable(Table_Dietrich_NaN, './DragModelsTest/Output/20220621/Density/Dietric
 %% Plot Dietrich output
 % <<<<<<<<<<<<<<<<<<<
 clear
-Table_Dietrich= readtable("./DragModelsTest/Output/20220517/Density/DietrichOutputVM_Den.txt", "Delimiter", ",");
-Table_Dietrich_New = readtable('./DragModelsTest/Output/20220517/Density/DietrichOutputVM_NaNDensity.txt', 'Delimiter', ',');
+Table_Dietrich= readtable("./DragModelsTest/Output/20220621/Density/DietrichOutputVM_Den.txt", "Delimiter", ",");
+Table_Dietrich_New = readtable('./DragModelsTest/Output/20220621/Density/DietrichOutputVM_NaNDensity.txt', 'Delimiter', ',');
 
 
 %% Plot output after removing NaN Values
@@ -152,7 +152,7 @@ xlabel(sprintf('Fluid density (kg/m^{3})'))
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/2022051De7/Density/DietrichVM_NaN.jpg', 'Resolution', 300)
+%exportgraphics(gcf, './DragModelsTest/Output/2022051De7/Density/DietrichVM_NaN.jpg', 'Resolution', 300)
 
 %% E3) wt against wt measured using Matlab fitlm function
 % ========================================================
@@ -183,4 +183,4 @@ set(gca,'XLim', [0, nMax*1.1] )
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/DietrichVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/DietrichVM_MeasVsCalc_Fit.jpg', 'Resolution', 1200);

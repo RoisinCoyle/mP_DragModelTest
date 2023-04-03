@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: DioguardiScript: VM
 % Date created: 23.04.22
-% Date last mostified: 22.07.22
+% Date last mostified: 01.03.23
 % Purpose: To test the impact of initial velocity on the terminal velocity
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -155,10 +155,14 @@ Results_Dioguardi = zeros(36, 5);
 Table_Dio_Proj = [VM_Dataset.Shape Table_Dio_Proj];
 Table_Dio_Proj.Properties.VariableNames(1) = {'Shape'};
 
-writetable(Table_Dio_Proj, './DragModelsTest/Output/20220621/Velocity/DioguardiVelOutputVM_Proj.txt', 'Delimiter', ',', 'WriteRowNames', true);
-writetable(Table_Dio_Proj, './DragModelsTest/Output/20220621/Velocity/DioguardiVelOutputVM_Proj.xls', 'WriteRowNames', true);
+% writetable(Table_Dio_Proj, './DragModelsTest/Output/20220621/Velocity/DioguardiVelOutputVM_Proj.txt', 'Delimiter', ',', 'WriteRowNames', true);
+% writetable(Table_Dio_Proj, './DragModelsTest/Output/20220621/Velocity/DioguardiVelOutputVM_Proj.xls', 'WriteRowNames', true);
 
-%% Plot the 3 plots
+%% Read in data
+
+Table_Dio_Proj = readtable('./DragModelsTest/Output/20220621/Velocity/DioguardiVelOutputVM_Proj.txt', 'Delimiter', ',')
+
+%% Plot the 6 plots
 
 subplot(3, 2, 1)
 plot(timesec(1:(FinalStep_Dio(1))), wvel_Dio(1, (1:(FinalStep_Dio(1)))))
@@ -168,7 +172,7 @@ for n=2:6
 end
 hold off
 title(sprintf('Fragment, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 lgnd = legend(sprintf('%4.2e', wvel_Dio(1, 1)), sprintf('%4.2e', wvel_Dio(2, 1)), ...
     sprintf('%4.2e', wvel_Dio(3, 1)), sprintf('%4.2e', wvel_Dio(4, 1)),...
@@ -183,7 +187,7 @@ for n=8:12
 end
 hold off
 title(sprintf('Fragment, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 set(gca, 'YLim', [0 0.012])
 lgnd = legend(sprintf('%4.2e', wvel_Dio(7, 1)), sprintf('%4.2e', wvel_Dio(8, 1)), ...
@@ -199,7 +203,7 @@ for n=14:18
 end
 hold off
 title(sprintf('Fibre, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 lgnd = legend(sprintf('%4.2e', wvel_Dio(13, 1)), sprintf('%4.2e', wvel_Dio(14, 1)), ...
     sprintf('%4.2e', wvel_Dio(15, 1)), sprintf('%4.2e', wvel_Dio(16, 1)),...
@@ -214,11 +218,11 @@ for n=20:24
 end
 hold off
 title(sprintf('Fibre, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 lgnd = legend(sprintf('%4.2e', wvel_Dio(19, 1)), sprintf('%4.2e', wvel_Dio(20, 1)), ...
     sprintf('%4.2e', wvel_Dio(21, 1)), sprintf('%4.2e', wvel_Dio(22, 1)),...
-    sprintf('%4.2e', wvel_Dio(23, 1)), sprintf('%4.2e', wvel_Dio(24, 1)), 'Location', 'best', 'NumColumns', 2);
+    sprintf('%4.2e', wvel_Dio(23, 1)), sprintf('%4.2e', wvel_Dio(24, 1)), 'Location', 'east', 'NumColumns', 2);
 title(lgnd, 'Initial Velocity (m/s)', 'FontWeight', 'bold');
 
 subplot(3, 2, 5)
@@ -229,7 +233,7 @@ for n=26:30
 end
 hold off
 title(sprintf('Film, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 lgnd = legend(sprintf('%4.2e', wvel_Dio(25, 1)), sprintf('%4.2e', wvel_Dio(26, 1)), ...
     sprintf('%4.2e', wvel_Dio(27, 1)), sprintf('%4.2e', wvel_Dio(28, 1)),...
@@ -244,7 +248,7 @@ for n=32:36
 end
 hold off
 title(sprintf('Film, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 set(gca, 'YLim', [0 0.012])
 lgnd = legend(sprintf('%4.2e', wvel_Dio(31, 1)), sprintf('%4.2e', wvel_Dio(32, 1)), ...
@@ -252,7 +256,53 @@ lgnd = legend(sprintf('%4.2e', wvel_Dio(31, 1)), sprintf('%4.2e', wvel_Dio(32, 1
     sprintf('%4.2e', wvel_Dio(35, 1)), sprintf('%4.2e', wvel_Dio(36, 1)), 'Location', 'best', 'NumColumns', 2);
 title(lgnd, 'Initial Velocity (m/s)', 'FontWeight', 'bold');
 
-sgtitle(sprintf('Impact of initial velocity on calculated terminal settling velocity. \r\n Dioguardi et al (2018): Using Particle Projection Area'), 'FontWeight', 'Bold');
+sgtitle(sprintf('Graphs demonstrating that the specified initial velocity has negligible impact on the modelled terminal settling velocity. \r\n Model applied: Dioguardi et al (2018) using particle projection area as the effective area.'), 'FontWeight', 'Bold');
+
 
 set(gcf, 'WindowState', 'maximized')
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Velocity/Diox6.jpeg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Velocity/Diox6.jpeg', 'Resolution', 1200)
+
+%% New plot:
+% All particles on one plot, initial velocity on x axis (log) and terminal
+% settling velocity on the y axis (not log).
+
+PlotColor = {[0 0 1] [0 0 1] [1 0 0] [1 0 0] [0 1 0] [0 1 0]};
+
+PlotColor = num2cell(PlotColor, 3);
+
+ColorOrder_RC = [0 0 1; 1 0 0; 0 1 0];
+
+FaceOrder_RC = [0 0 1; 0 0 1; 1 0 0; 1 0 0; 0 1 0; 0 1 0];
+
+LineStyleOrder_RC = ["-o"; "-^"];
+
+for i = 1:12:36
+    plot(Table_Dio_Proj.Initial_W(i:i+5), Table_Dio_Proj.Wt(i:i+5),...
+        'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', FaceOrder_RC(((i+5)/6), :))
+    hold on
+end
+for i = 7:12:36
+    plot(Table_Dio_Proj.Initial_W(i:i+5), Table_Dio_Proj.Wt(i:i+5),...
+        'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', FaceOrder_RC(((i+5)/6), :))
+    hold on
+end
+hold off
+title(sprintf('Graphs demonstrating that the specified initial velocity has negligible impact on the modelled terminal settling velocity. \r\n Model applied: Dioguardi et al (2018) using particle projection area as the effective area.'), 'FontWeight', 'Bold');
+ylabel(sprintf('Modelled Terminal Settling \n Velocity (m/s)'))
+xlabel('Initial Settling Velocity specified (m/s)')
+ax=gca;
+ax.ColorOrder = ColorOrder_RC;
+ax.LineStyleOrder = LineStyleOrder_RC;
+set(gca, 'XScale', 'log')
+set (gca, 'Xlim', [3e-6 2e-3])
+lgnd = legend(sprintf('Fragment, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_Dio_Proj.ESD(1), '\rho', VM_Dataset.ParticleDensity(1)), ...
+    sprintf('Fibre, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_Dio_Proj.ESD(13), '\rho', VM_Dataset.ParticleDensity(13)), ...
+    sprintf('Film, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_Dio_Proj.ESD(25), '\rho', VM_Dataset.ParticleDensity(25)), ...
+    sprintf('Fragment, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_Dio_Proj.ESD(7), '\rho', VM_Dataset.ParticleDensity(7)), ...
+    sprintf('Fibre, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_Dio_Proj.ESD(19), '\rho', VM_Dataset.ParticleDensity(19)), ...
+    sprintf('Film, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_Dio_Proj.ESD(31), '\rho', VM_Dataset.ParticleDensity(31)), ...
+    'Location', 'southoutside', 'NumColumns', 2);
+title(lgnd, 'Particle Properties', 'FontWeight', 'bold');
+
+set(gcf, 'WindowState', 'maximized')
+exportgraphics(gcf, './DragModelsTest/Output/20230403/Velocity/DioxAll_Terminal_Init.jpeg', 'Resolution', 1200)

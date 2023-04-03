@@ -1,0 +1,5 @@
+Row,Results_Yu
+CPU: 1000 tests,0.390625
+Average CPU Per test,0.000390625
+Time for 1000 tests:,0.2284315
+Average time for 1 test,0.000220297

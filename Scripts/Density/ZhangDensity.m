@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: Density assumption test: Zhang
 % Date created: 26.06.22
-% Date last mostified: 27.07.22
+% Date last mostified: 02.03.23
 % Purpose: To test the model by Zhang satisfies the density and initial
 % velocity assumption
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -263,13 +263,11 @@ Table_ZC_Proj.Properties.VariableNames(1) = {'Shape'};
 
 writetable(Table_ZC_Proj, './DragModelsTest/Output/20220621/Density/ZhangOutputDensity_Proj.txt', 'Delimiter', ',', 'WriteRowNames', true);
 writetable(Table_ZC_Proj, './DragModelsTest/Output/20220621/Density/ZhangOutputDensity_Proj.xls', 'WriteRowNames', true);
-%% Plot Zhang output
+%% Read in data
 % <<<<<<<<<<<<<<<<<<<<<
 clear
 Table_ZC_SA = readtable("./DragModelsTest/Output/20220621/Density/ZhangOutputDensity_SA.txt", "Delimiter", ",");
 Table_ZC_Proj = readtable("./DragModelsTest/Output/20220621/Density/ZhangOutputDensity_Proj.txt", "Delimiter", ",");
-
-%% Plot boxplot: SA
 
 label_m = "";
 for i=1:54
@@ -288,12 +286,25 @@ end
 label_t = array2table(label_m);
 new_table = [Table_ZC_SA label_t];
 
-boxplot(new_table.Wt, new_table.label_m)
-ylabel('Terminal Settling Velocity (m/s)')
-title(sprintf('Zhang and Choi (2021):  Using Particle Surface area \n\r %s_f = %5.2f to %5.2f kg/m^3', '\rho', Table_ZC_SA.rho_f(1), Table_ZC_SA.rho_f(6)))
-set(gcf, 'WindowState', 'maximized');
+%% Plot boxplot: SA
+colors = {[0.6980 1 0.4118] [0.6980 1 0.4118] [0.6980 1 0.4118] ...
+          [1 0.6000 0.6000] [1 0.6000 0.6000] [1 0.6000 0.6000] ...
+          [0.4000 0.6980 1] [0.4000 0.6980 1] [0.4000 0.6980 1] };
 
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/ZhangSA_Boxplot.jpg', 'Resolution', 300)
+fig = figure
+hold on
+boxplot(new_table.Wt, new_table.label_m, 'position', (1:6:54), 'widths', 5, 'boxstyle', 'outline', 'Colors', 'k')
+ylim([0 0.05])
+boxes = fig.Children.Children(1,1).Children(19:27)
+for j = 1:length(boxes) % draw a colored patch behind each bar
+        patch(boxes(j).XData, boxes(j).YData, colors{j},'FaceAlpha',.5,'EdgeAlpha',0.3);
+end
+ylabel('Modelled Terminal Settling Velocity (m/s)')
+title(sprintf('Boxplots showing the range of modelled terminal settling velocity attained when fluid density varies from %s_f = %5.2f to %5.2f kg/m^3.', '\rho', Table_ZC_SA.rho_f(1), Table_ZC_SA.rho_f(6)))
+subtitle('Model applied: Zhang and Choi (2021) using particle surface area as the effective area.')
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Density/ZhangSA_Boxplot.jpg', 'Resolution', 1200)
 
 %% Range table: SA
 
@@ -319,7 +330,7 @@ range_output = [Property_table range_t];
 writetable(range_output, './DragModelsTest/Output/20220621/Density/ZhangSARangeWDensity.txt', 'Delimiter', ',');
 writetable(range_output, './DragModelsTest/Output/20220621/Density/ZhangSARangeWDensity.xls', 'WriteRowNames', true);
 
-%% Plot boxplot
+%% Read data: Proj
 
 label_m = "";
 for i=1:54
@@ -338,12 +349,25 @@ end
 label_t = array2table(label_m);
 new_table = [Table_ZC_Proj label_t];
 
-boxplot(new_table.Wt, new_table.label_m)
-ylabel('Terminal Settling Velocity (m/s)')
-title(sprintf('Zhang and Choi (2021):  Using Particle Projection area \n\r %s_f = %5.2f to %5.2f kg/m^3', '\rho', Table_ZC_SA.rho_f(1), Table_ZC_SA.rho_f(6)))
-set(gcf, 'WindowState', 'maximized');
+%% Plot boxplot: Proj
+colors = {[0.6980 1 0.4118] [0.6980 1 0.4118] [0.6980 1 0.4118] ...
+          [1 0.6000 0.6000] [1 0.6000 0.6000] [1 0.6000 0.6000] ...
+          [0.4000 0.6980 1] [0.4000 0.6980 1] [0.4000 0.6980 1] };
 
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/ZhangProj_Boxplot.jpg', 'Resolution', 300)
+fig = figure
+hold on
+boxplot(new_table.Wt, new_table.label_m, 'position', (1:6:54), 'widths', 5, 'boxstyle', 'outline', 'Colors', 'k')
+ylim([0 0.08])
+boxes = fig.Children.Children(1,1).Children(19:27)
+for j = 1:length(boxes) % draw a colored patch behind each bar
+        patch(boxes(j).XData, boxes(j).YData, colors{j},'FaceAlpha',.5,'EdgeAlpha',0.3);
+end
+ylabel('Modelled Terminal Settling Velocity (m/s)')
+title(sprintf('Boxplots showing the range of modelled terminal settling velocity attained when fluid density varies from %s_f = %5.2f to %5.2f kg/m^3.', '\rho', Table_ZC_Proj.rho_f(1), Table_ZC_Proj.rho_f(6)))
+subtitle('Model applied: Zhang and Choi (2021) using particle projection area as the effective area.')
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Density/ZhangProj_Boxplot.jpg', 'Resolution', 1200)
 %% Range table: Projected Area
 
 range_m = zeros(9, 1);
@@ -400,12 +424,13 @@ legend(sprintf('Fragment, %4.1f kg/m^{3}, ESD %4.4f m', Table_ZC_SA.rho_p(1), Ta
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_ZC_SA.rho_p(43), Table_ZC_SA.ESD(43)), ...
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_ZC_SA.rho_p(49), Table_ZC_SA.ESD(49)), ...
     'NumColumns', 3, 'location', 'southoutside')
-title('Zhang and Choi (2021): Using Particle Surface Area')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf("The impact of fluid density (%s_f) on modelled terminal settling velocity of six mP particles selected randomly from Van Melkebeke et al (2020)'s dataset.", '\rho'))
+subtitle('Model applied: Zhang and Choi (2021) using particle surface area as the effective area.')
+ylabel('Modelled Terminal settling velocity (m/s)')
 xlabel('Fluid Density (kg/m^{3})')
    
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Zhang_DensitySA.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Density/Zhang_DensitySA.jpg', 'Resolution', 1200)
 
 %% A2) wt against Density: Proj
 % ============================
@@ -439,9 +464,10 @@ legend(sprintf('Fragment, %4.1f kg/m^{3}, ESD %4.4f m', Table_ZC_SA.rho_p(1), Ta
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_ZC_SA.rho_p(43), Table_ZC_SA.ESD(43)), ...
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_ZC_SA.rho_p(49), Table_ZC_SA.ESD(49)), ...
     'NumColumns', 3, 'location', 'southoutside')
-title('Zhang and Choi (2021): Using Particle Projected Area')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf("The impact of fluid density (%s_f) on modelled terminal settling velocity of six mP particles selected randomly from Van Melkebeke et al (2020)'s dataset.", '\rho'))
+subtitle('Model applied: Zhang and Choi (2021) using particle projection area as the effective area.')
+ylabel('Modelled Terminal settling velocity (m/s)')
 xlabel('Fluid Density (kg/m^{3})')
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Zhang_DensityProj.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Density/Zhang_DensityProj.jpg', 'Resolution', 1200)

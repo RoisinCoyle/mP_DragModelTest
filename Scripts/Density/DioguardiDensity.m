@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: Density assumption test: Dioguardi
 % Date created: 26.06.22
-% Date last mostified: 21.07.22
+% Date last mostified: 02.03.23
 % Purpose: To test the model by Dioguardi satisfies the density and initial
 % velocity assumption
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -156,12 +156,10 @@ Table_Dio.Properties.VariableNames(1) = {'Shape'};
 writetable(Table_Dio, './DragModelsTest/Output/20220621/Density/DioguardiOutputDensity.txt', 'Delimiter', ',', 'WriteRowNames', true);
 writetable(Table_Dio, './DragModelsTest/Output/20220621/Density/DioguardiOutputDensity.xls', 'WriteRowNames', true);
 
-%% Plot Dioguardi output
-% <<<<<<<<<<<<<<<<<<<
+%% Read data in to plot
+% <<<<<<<<<<<<<<<<<<<<<<<
 clear
 Table_Dio= readtable("./DragModelsTest/Output/20220621/Density/DioguardiOutputDensity.txt", "Delimiter", ",");
-
-%% Plot boxplot
 
 label_m = "";
 for i=1:54
@@ -180,12 +178,26 @@ end
 label_t = array2table(label_m);
 new_table = [Table_Dio label_t];
 
-boxplot(new_table.Wt, new_table.label_m)
-ylabel('Terminal Settling Velocity (m/s)')
-title(sprintf('Dioguardi et al (2018): Using Particle Surface area \n\r %s_f = %5.2f to %5.2f kg/m^3', '\rho', Table_Dio.rho_f(1), Table_Dio.rho_f(6)))
+%% Plot boxplot
+
+colors = {[0.6980 1 0.4118] [0.6980 1 0.4118] [0.6980 1 0.4118] ...
+          [1 0.6000 0.6000] [1 0.6000 0.6000] [1 0.6000 0.6000] ...
+          [0.4000 0.6980 1] [0.4000 0.6980 1] [0.4000 0.6980 1] };
+
+fig = figure
+hold on
+boxplot(new_table.Wt, new_table.label_m, 'position', (1:6:54), 'widths', 5, 'boxstyle', 'outline', 'Colors', 'k')
+ylim([0 0.036])
+boxes = fig.Children.Children(1,1).Children(19:27)
+for j = 1:length(boxes) % draw a colored patch behind each bar
+        patch(boxes(j).XData, boxes(j).YData, colors{j},'FaceAlpha',.5,'EdgeAlpha',0.3);
+end
+ylabel('Modelled Terminal Settling Velocity (m/s)')
+title(sprintf('Boxplots showing the range of modelled terminal settling velocity attained when fluid density varies from %s_f = %5.2f to %5.2f kg/m^3.', '\rho', Table_Dio.rho_f(1), Table_Dio.rho_f(6)))
+subtitle('Model applied: Dioguardi et al (2018) using particle projection area as the effective area.')
 set(gcf, 'WindowState', 'maximized');
 
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Dio_Boxplot.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Density/Dio_Boxplot.jpg', 'Resolution', 1200)
 %% Range table
 
 range_m = zeros(9, 1);
@@ -242,9 +254,10 @@ legend(sprintf('Fragment, %4.1f kg/m^{3}, ESD %4.4f m', Table_Dio.rho_p(1), Tabl
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_Dio.rho_p(43), Table_Dio.ESD(43)), ...
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_Dio.rho_p(49), Table_Dio.ESD(49)), ...
     'NumColumns', 3, 'location', 'southoutside')
-title('Dioguardi et al (2018): Using Particle Projection Area.')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf("The impact of fluid density (%s_f) on modelled terminal settling velocity of six mP particles selected randomly from Van Melkebeke et al (2020)'s dataset.", '\rho'))
+subtitle('Model applied: Dioguardi et al (2018) using particle projection area as the effective area.')
+ylabel('Modelled Terminal settling velocity (m/s)')
 xlabel('Fluid Density (kg/m^{3})')
    
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Dioguardi_Density.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Density/Dioguardi_Density.jpg', 'Resolution', 1200)

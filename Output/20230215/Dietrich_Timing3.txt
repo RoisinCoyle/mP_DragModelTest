@@ -1,0 +1,5 @@
+Row,Results_Dietrich
+CPU: 1000 tests,0.359375
+Average CPU Per test,0.000359375
+Time for 1000 tests:,0.1623594
+Average time for 1 test,0.0001544435

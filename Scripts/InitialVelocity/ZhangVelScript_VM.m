@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: ZhangScript: VM
 % Date created: 23.04.22
-% Date last mostified: 22.07.22
+% Date last mostified: 01.03.22
 % Purpose: To test the impact of initial velocity on the terminal velocity
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -162,8 +162,11 @@ Table_ZC_SA = array2table(Results_ZC, "VariableNames", ...
 Table_ZC_SA = [VM_Dataset.Shape Table_ZC_SA];
 Table_ZC_SA.Properties.VariableNames(1) = {'Shape'};
 
-writetable(Table_ZC_SA, './DragModelsTest/Output/20220621/Velocity/ZhangVelOutputVM_SA.txt', 'Delimiter', ',', 'WriteRowNames', true);
-writetable(Table_ZC_SA, './DragModelsTest/Output/20220621/Velocity/ZhangOutputVM_SA.xls', 'WriteRowNames', true);
+% writetable(Table_ZC_SA, './DragModelsTest/Output/20220621/Velocity/ZhangVelOutputVM_SA.txt', 'Delimiter', ',', 'WriteRowNames', true);
+% writetable(Table_ZC_SA, './DragModelsTest/Output/20220621/Velocity/ZhangOutputVM_SA.xls', 'WriteRowNames', true);
+
+%% Read in data
+Table_ZC_SA = readtable('./DragModelsTest/Output/20220621/Velocity/ZhangVelOutputVM_SA.txt', 'Delimiter', ',');
 
 %% Plot the 3 plots
 
@@ -175,7 +178,7 @@ for n=2:6
 end
 hold off
 title(sprintf('Fragment, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 set(gca, 'YLim', [0 0.0035])
 lgnd = legend(sprintf('%4.2e', wvel_ZC(1, 1)), sprintf('%4.2e', wvel_ZC(2, 1)), ...
@@ -191,7 +194,7 @@ for n=8:12
 end
 hold off
 title(sprintf('Fragment, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 set(gca, 'YLim', [0 0.009])
 lgnd = legend(sprintf('%4.2e', wvel_ZC(7, 1)), sprintf('%4.2e', wvel_ZC(8, 1)), ...
@@ -207,7 +210,7 @@ for n=14:18
 end
 hold off
 title(sprintf('Fibre, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 set(gca, 'YLim', [0 0.0125])
 lgnd = legend(sprintf('%4.2e', wvel_ZC(13, 1)), sprintf('%4.2e', wvel_ZC(14, 1)), ...
@@ -223,7 +226,7 @@ for n=20:24
 end
 hold off
 title(sprintf('Fibre, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 lgnd = legend(sprintf('%4.2e', wvel_ZC(19, 1)), sprintf('%4.2e', wvel_ZC(20, 1)), ...
     sprintf('%4.2e', wvel_ZC(21, 1)), sprintf('%4.2e', wvel_ZC(22, 1)),...
@@ -238,7 +241,7 @@ for n=26:30
 end
 hold off
 title(sprintf('Film, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 set(gca, 'YLim', [0 0.007])
 lgnd = legend(sprintf('%4.2e', wvel_ZC(25, 1)), sprintf('%4.2e', wvel_ZC(26, 1)), ...
@@ -254,18 +257,63 @@ for n=32:36
 end
 hold off
 title(sprintf('Film, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 set(gca, 'YLim', [0 0.008])
 lgnd = legend(sprintf('%4.2e', wvel_ZC(31, 1)), sprintf('%4.2e', wvel_ZC(32, 1)), ...
     sprintf('%4.2e', wvel_ZC(33, 1)), sprintf('%4.2e', wvel_ZC(34, 1)),...
     sprintf('%4.2e', wvel_ZC(35, 1)), sprintf('%4.2e', wvel_ZC(36, 1)), 'Location', 'best', 'NumColumns', 2);
 title(lgnd, 'Initial Velocity (m/s)', 'FontWeight', 'bold');
+sgtitle(sprintf('Graphs demonstrating that the specified initial velocity has negligible impact on the modelled terminal settling velocity. \r\n Model applied: Zhang and Choi (2021) using particle surface area as the effective area.'), 'FontWeight', 'Bold');
 
-sgtitle(sprintf('Impact of initial velocity on calculated terminal settling velocity. \r\n Zhang and Choi (2021): Using Particle Surface Area'), 'FontWeight', 'Bold');
 
 set(gcf, 'WindowState', 'maximized')
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Velocity/ZCx6SA.jpeg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Velocity/ZCx6SA.jpeg', 'Resolution', 1200)
+
+%% New plot:
+% All particles on one plot, initial velocity on x axis (log) and terminal
+% settling velocity on the y axis (not log).
+
+PlotColor = {[0 0 1] [0 0 1] [1 0 0] [1 0 0] [0 1 0] [0 1 0]};
+
+PlotColor = num2cell(PlotColor, 3);
+
+ColorOrder_RC = [0 0 1; 1 0 0; 0 1 0];
+
+FaceOrder_RC = [0 0 1; 0 0 1; 1 0 0; 1 0 0; 0 1 0; 0 1 0];
+
+LineStyleOrder_RC = ["-o"; "-^"];
+
+for i = 1:12:36
+    plot(Table_ZC_SA.Initial_W(i:i+5), Table_ZC_SA.Wt(i:i+5),...
+        'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', FaceOrder_RC(((i+5)/6), :))
+    hold on
+end
+for i = 7:12:36
+    plot(Table_ZC_SA.Initial_W(i:i+5), Table_ZC_SA.Wt(i:i+5),...
+        'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', FaceOrder_RC(((i+5)/6), :))
+    hold on
+end
+hold off
+title(sprintf('Graphs demonstrating that the specified initial velocity has negligible impact on the modelled terminal settling velocity. \r\n Model applied: Zhang and Choi (2021) using particle surface area as the effective area.'), 'FontWeight', 'Bold');
+ylabel(sprintf('Modelled Terminal Settling \n Velocity (m/s)'))
+xlabel('Initial Settling Velocity specified (m/s)')
+ax=gca;
+ax.ColorOrder = ColorOrder_RC;
+ax.LineStyleOrder = LineStyleOrder_RC;
+set(gca, 'XScale', 'log')
+set (gca, 'Xlim', [3e-6 2e-3])
+lgnd = legend(sprintf('Fragment, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_ZC_SA.ESD(1), '\rho', VM_Dataset.ParticleDensity(1)), ...
+    sprintf('Fibre, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_ZC_SA.ESD(13), '\rho', VM_Dataset.ParticleDensity(13)), ...
+    sprintf('Film, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_ZC_SA.ESD(25), '\rho', VM_Dataset.ParticleDensity(25)), ...
+    sprintf('Fragment, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_ZC_SA.ESD(7), '\rho', VM_Dataset.ParticleDensity(7)), ...
+    sprintf('Fibre, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_ZC_SA.ESD(19), '\rho', VM_Dataset.ParticleDensity(19)), ...
+    sprintf('Film, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_ZC_SA.ESD(31), '\rho', VM_Dataset.ParticleDensity(31)), ...
+    'Location', 'southoutside', 'NumColumns', 2);
+title(lgnd, 'Particle Properties', 'FontWeight', 'bold');
+
+set(gcf, 'WindowState', 'maximized')
+exportgraphics(gcf, './DragModelsTest/Output/20230403/Velocity/ZC_SAxAll_Terminal_Init.jpeg', 'Resolution', 1200)
 
 %% Zhang Method 2
 % <<<<<<<<<<<<<<<<<<<
@@ -310,7 +358,7 @@ for i=1:36
 		
 		Cd_ZC(i,t) = (58.58*(shape_ASF(i)^0.1936))/(Re_ZC(i,t)^0.8273);
 	
-		Fd_ZC(i,t) = 0.5*rho_f(i)*SA_mP(i)*(abs(wvel_ZC(i,t))*wvel_ZC(i,t))*Cd_ZC(i,t);
+		Fd_ZC(i,t) = 0.5*rho_f(i)*ZhangProjA(i)*(abs(wvel_ZC(i,t))*wvel_ZC(i,t))*Cd_ZC(i,t);
 	
 		Fg_ZC(i,t) = Vol_mP(i)*rho_p(i)*g;
 	
@@ -350,17 +398,9 @@ for n = 1:36
 end
 
 % Store output in one array
-Results_ZC = zeros(140, 11);
+Results_ZC = zeros(36, 9);
 
-for n = 1:36
-    subplot(6, 6, n)
-    plot(timesec(1:(FinalStep_ZC(n))), wvel_ZC(n, (1:(FinalStep_ZC(n)))))
-end
-
-% Store output in one array
-Results_ZC = zeros(36, 10);
-
-for i=1:140
+for i=1:36
     Results_ZC(i, 1) = d_equi(i);
     Results_ZC(i, 2) = CSF(i);
     Results_ZC(i, 3) = wtFinal_ZC(i);
@@ -383,6 +423,10 @@ Table_ZC_Proj.Properties.VariableNames(1) = {'Shape'};
 writetable(Table_ZC_Proj, './DragModelsTest/Output/20220621/Velocity/ZhangVelOutputVM_Proj.txt', 'Delimiter', ',', 'WriteRowNames', true);
 writetable(Table_ZC_Proj, './DragModelsTest/Output/20220621/Velocity/ZhangVelOutputVM_Proj.xls', 'WriteRowNames', true);
 
+%% Read in data
+%clear
+Table_ZC_Proj = readtable('./DragModelsTest/Output/20220621/Velocity/ZhangVelOutputVM_Proj.txt', 'Delimiter', ',');
+
 %% Plot the 3 plots
 
 subplot(3, 2, 1)
@@ -393,7 +437,7 @@ for n=2:6
 end
 hold off
 title(sprintf('Fragment, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
 lgnd = legend(sprintf('%4.2e', wvel_ZC(1, 1)), sprintf('%4.2e', wvel_ZC(2, 1)), ...
     sprintf('%4.2e', wvel_ZC(3, 1)), sprintf('%4.2e', wvel_ZC(4, 1)),...
@@ -408,9 +452,9 @@ for n=8:12
 end
 hold off
 title(sprintf('Fragment, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
-set(gca, 'YLim', [0 0.009])
+set(gca, 'YLim', [0 0.015])
 lgnd = legend(sprintf('%4.2e', wvel_ZC(7, 1)), sprintf('%4.2e', wvel_ZC(8, 1)), ...
     sprintf('%4.2e', wvel_ZC(9, 1)), sprintf('%4.2e', wvel_ZC(10, 1)),...
     sprintf('%4.2e', wvel_ZC(11, 1)), sprintf('%4.2e', wvel_ZC(12, 1)), 'Location', 'best', 'NumColumns', 2);
@@ -424,9 +468,9 @@ for n=14:18
 end
 hold off
 title(sprintf('Fibre, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
-set(gca, 'YLim', [0 0.012])
+set(gca, 'YLim', [0 0.017])
 lgnd = legend(sprintf('%4.2e', wvel_ZC(13, 1)), sprintf('%4.2e', wvel_ZC(14, 1)), ...
     sprintf('%4.2e', wvel_ZC(15, 1)), sprintf('%4.2e', wvel_ZC(16, 1)),...
     sprintf('%4.2e', wvel_ZC(17, 1)), sprintf('%4.2e', wvel_ZC(18, 1)), 'Location', 'best', 'NumColumns', 2);
@@ -440,8 +484,9 @@ for n=20:24
 end
 hold off
 title(sprintf('Fibre, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
+set(gca, 'Ylim', [0 0.025])
 lgnd = legend(sprintf('%4.2e', wvel_ZC(19, 1)), sprintf('%4.2e', wvel_ZC(20, 1)), ...
     sprintf('%4.2e', wvel_ZC(21, 1)), sprintf('%4.2e', wvel_ZC(22, 1)),...
     sprintf('%4.2e', wvel_ZC(23, 1)), sprintf('%4.2e', wvel_ZC(24, 1)), 'Location', 'best', 'NumColumns', 2);
@@ -455,9 +500,9 @@ for n=26:30
 end
 hold off
 title(sprintf('Film, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
-set(gca, 'Ylim', [0 0.007])
+set(gca, 'Ylim', [0 0.01])
 lgnd = legend(sprintf('%4.2e', wvel_ZC(25, 1)), sprintf('%4.2e', wvel_ZC(26, 1)), ...
     sprintf('%4.2e', wvel_ZC(27, 1)), sprintf('%4.2e', wvel_ZC(28, 1)),...
     sprintf('%4.2e', wvel_ZC(29, 1)), sprintf('%4.2e', wvel_ZC(30, 1)), 'Location', 'best', 'NumColumns', 2);
@@ -471,15 +516,59 @@ for n=32:36
 end
 hold off
 title(sprintf('Film, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', VM_Dataset.ParticleSize(n), '\rho', rho_p(n)))
-ylabel(sprintf('Settling Velocity \n (m/s)'))
+ylabel(sprintf('Modelled Settling \n Velocity (m/s)'))
 xlabel('Time (sec)')
-set(gca, 'YLim', [0 0.008])
+set(gca, 'YLim', [0 0.012])
 lgnd = legend(sprintf('%4.2e', wvel_ZC(31, 1)), sprintf('%4.2e', wvel_ZC(32, 1)), ...
     sprintf('%4.2e', wvel_ZC(33, 1)), sprintf('%4.2e', wvel_ZC(34, 1)),...
     sprintf('%4.2e', wvel_ZC(35, 1)), sprintf('%4.2e', wvel_ZC(36, 1)), 'Location', 'best', 'NumColumns', 2);
 title(lgnd, 'Initial Velocity (m/s)', 'FontWeight', 'bold');
-
-sgtitle(sprintf('Impact of initial velocity on calculated terminal settling velocity. \r\n Zhang and Choi (2021): Using Particle Projection Area'), 'FontWeight', 'Bold');
+sgtitle(sprintf('Graphs demonstrating that the specified initial velocity has negligible impact on the modelled terminal settling velocity. \r\n Model applied: Zhang and Choi (2021) using particle projection area as the effective area.'), 'FontWeight', 'Bold');
 
 set(gcf, 'WindowState', 'maximized')
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Velocity/ZCx6Proj.jpeg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Velocity/ZCx6Proj.jpeg', 'Resolution', 1200)
+
+%% New plot:
+% All particles on one plot, initial velocity on x axis (log) and terminal
+% settling velocity on the y axis (not log).
+
+PlotColor = {[0 0 1] [0 0 1] [1 0 0] [1 0 0] [0 1 0] [0 1 0]};
+
+PlotColor = num2cell(PlotColor, 3);
+
+ColorOrder_RC = [0 0 1; 1 0 0; 0 1 0];
+
+FaceOrder_RC = [0 0 1; 0 0 1; 1 0 0; 1 0 0; 0 1 0; 0 1 0];
+
+LineStyleOrder_RC = ["-o"; "-^"];
+
+for i = 1:12:36
+    plot(Table_ZC_Proj.Initial_W(i:i+5), Table_ZC_Proj.Wt(i:i+5),...
+        'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', FaceOrder_RC(((i+5)/6), :))
+    hold on
+end
+for i = 7:12:36
+    plot(Table_ZC_Proj.Initial_W(i:i+5), Table_ZC_Proj.Wt(i:i+5),...
+        'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', FaceOrder_RC(((i+5)/6), :))
+    hold on
+end
+hold off
+title(sprintf('Graphs demonstrating that the specified initial velocity has negligible impact on the modelled terminal settling velocity. \r\n Model applied: Zhang and Choi (2021) using particle projection area as the effective area.'), 'FontWeight', 'Bold');
+ylabel(sprintf('Modelled Terminal Settling \n Velocity (m/s)'))
+xlabel('Initial Settling Velocity specified (m/s)')
+ax=gca;
+ax.ColorOrder = ColorOrder_RC;
+ax.LineStyleOrder = LineStyleOrder_RC;
+set(gca, 'XScale', 'log')
+set (gca, 'Xlim', [3e-6 2e-3])
+lgnd = legend(sprintf('Fragment, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_ZC_Proj.ESD(1), '\rho', VM_Dataset.ParticleDensity(1)), ...
+    sprintf('Fibre, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_ZC_Proj.ESD(13), '\rho', VM_Dataset.ParticleDensity(13)), ...
+    sprintf('Film, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_ZC_Proj.ESD(25), '\rho', VM_Dataset.ParticleDensity(25)), ...
+    sprintf('Fragment, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_ZC_Proj.ESD(7), '\rho', VM_Dataset.ParticleDensity(7)), ...
+    sprintf('Fibre, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_ZC_Proj.ESD(19), '\rho', VM_Dataset.ParticleDensity(19)), ...
+    sprintf('Film, ESD=%3.2e m, %s_{mP} = %4.1f kg/m^3', Table_ZC_Proj.ESD(31), '\rho', VM_Dataset.ParticleDensity(31)), ...
+    'Location', 'southoutside', 'NumColumns', 2);
+title(lgnd, 'Particle Properties', 'FontWeight', 'bold');
+
+set(gcf, 'WindowState', 'maximized')
+exportgraphics(gcf, './DragModelsTest/Output/20230403/Velocity/ZC_ProjxAll_Terminal_Init.jpeg', 'Resolution', 1200)

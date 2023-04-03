@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: DistanceAssumption
 % Date created: 17.05.22
-% Date last mostified: 20.05.22
+% Date last mostified: 02.03.23
 % Purpose: To test the assumption that the distance travelled until the
 % particles reach terminal settling vleocity is not significantly different
 % than the distance travelled in that time if the particle was always at
@@ -12,17 +12,17 @@
 % <<<<<<<<<<<<<<<<
 clear
 
-Table_Dio_SA= readtable("./DragModelsTest/Output/20220517/DioguardiOutputVM_SA.txt", "Delimiter", ",");
-Table_Dio_Proj= readtable("./DragModelsTest/Output/20220517/DioguardiOutputVM_Proj.txt", "Delimiter", ",");
+Table_Dio_SA= readtable("./DragModelsTest/Output/SS/20220517/DioguardiOutputVM_SA.txt", "Delimiter", ",");
+Table_Dio_Proj= readtable("./DragModelsTest/Output/SS/20220517/DioguardiOutputVM_Proj.txt", "Delimiter", ",");
 
-Table_BB_SA= readtable("./DragModelsTest/Output/20220517/BagheriOutputVM_SA.txt", "Delimiter", ",");
-Table_BB_Proj= readtable("./DragModelsTest/Output/20220517/BagheriOutputVM_Proj.txt", "Delimiter", ",");
+Table_BB_SA= readtable("./DragModelsTest/Output/SS/20220517/BagheriOutputVM_SA.txt", "Delimiter", ",");
+Table_BB_Proj= readtable("./DragModelsTest/Output/SS/20220517/BagheriOutputVM_Proj.txt", "Delimiter", ",");
 
-Table_Zhang_SA= readtable("./DragModelsTest/Output/20220517/ZhangOutputVM_SA.txt", "Delimiter", ",");
-Table_Zhang_Proj= readtable("./DragModelsTest/Output/20220517/ZhangOutputVM_Proj.txt", "Delimiter", ",");
+Table_Zhang_SA= readtable("./DragModelsTest/Output/SS/20220517/ZhangOutputVM_SA.txt", "Delimiter", ",");
+Table_Zhang_Proj= readtable("./DragModelsTest/Output/SS/20220517/ZhangOutputVM_Proj.txt", "Delimiter", ",");
 
-Table_Stokes_SA= readtable("./DragModelsTest/Output/20220517/StokesOutputVM_SA.txt", "Delimiter", ",");
-Table_Stokes_Proj= readtable("./DragModelsTest/Output/20220517/StokesOutputVM_Proj.txt", "Delimiter", ",");
+Table_Stokes_SA= readtable("./DragModelsTest/Output/SS/20220517/StokesOutputVM_SA.txt", "Delimiter", ",");
+Table_Stokes_Proj= readtable("./DragModelsTest/Output/SS/20220517/StokesOutputVM_Proj.txt", "Delimiter", ",");
 
 %% Extract data required from tables
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -162,7 +162,7 @@ set(gca,'XLim', [0, nMax*1.1] )
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220517/Distance/DioguardiVM_DistVsDist.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Distance/DioguardiVM_DistVsDist.jpg', 'Resolution', 1200)
 
 %% Bagheri
 % Fit linear model through intercept:

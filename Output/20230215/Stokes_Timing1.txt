@@ -1,0 +1,5 @@
+Row,SA,Proj
+CPU: 1000 tests,8.828125,21.765625
+Average CPU Per test,0.008,0.020625
+Time for 1000 tests:,8.1588935,21.7142741
+Average time for 1 test,0.0074283954,0.0204565917

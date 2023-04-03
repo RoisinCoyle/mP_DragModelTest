@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: Density assumption test: Francalanci
 % Date created: 26.06.22
-% Date last mostified: 26.06.22
+% Date last mostified: 02.03.23
 % Purpose: To test the model by Yu satisfies the density and initial
 % velocity assumption
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -148,13 +148,26 @@ end
 
 label_t = array2table(label_m);
 new_table = [Table_Frn label_t];
-%%
-boxplot(new_table.Wt, new_table.label_m)
-ylabel('Terminal Settling Velocity (m/s)')
-title(sprintf('Francalanci et al (2021) \n\r %s_f = %5.2f to %5.2f kg/m^3', '\rho', Table_Frn.rho_f(1), Table_Frn.rho_f(6)))
+%% Boxplot
+
+colors = {[0.6980 1 0.4118] [0.6980 1 0.4118] [0.6980 1 0.4118] ...
+          [1 0.6000 0.6000] [1 0.6000 0.6000] [1 0.6000 0.6000] ...
+          [0.4000 0.6980 1] [0.4000 0.6980 1] [0.4000 0.6980 1] };
+
+fig = figure
+hold on
+boxplot(new_table.Wt, new_table.label_m, 'position', (1:6:54), 'widths', 5, 'boxstyle', 'outline', 'Colors', 'k')
+ylim([0 0.06])
+boxes = fig.Children.Children(1,1).Children(19:27);
+for j = 1:length(boxes) % draw a colored patch behind each bar
+        patch(boxes(j).XData, boxes(j).YData, colors{j},'FaceAlpha',.5,'EdgeAlpha',0.3);
+end
+ylabel('Modelled Terminal Settling Velocity (m/s)')
+title(sprintf('Boxplots showing the range of modelled terminal settling velocity attained when fluid density varies from %s_f = %5.2f to %5.2f kg/m^3.', '\rho', Table_Frn.rho_f(1), Table_Frn.rho_f(6)))
+subtitle('Model applied: Francalanci et al (2021).')
 set(gcf, 'WindowState', 'maximized');
 
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Francalanci_Boxplot.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Density/Francalanci_Boxplot.jpg', 'Resolution', 1200)
 
 %% Calculate 
 wvel_list = sort(Table_Frn.Wt(:));
@@ -199,9 +212,10 @@ legend(sprintf('Fragment, %4.1f kg/m^{3}, ESD %4.4f m', Table_Frn.rho_p(1), Tabl
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_Frn.rho_p(43), Table_Frn.ESD(43)), ...
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_Frn.rho_p(49), Table_Frn.ESD(49)), ...
     'NumColumns', 3, 'location', 'southoutside')
-title('Francalanci et al (2021).')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf("The impact of fluid density (%s_f) on modelled terminal settling velocity of six mP particles selected randomly from Van Melkebeke et al (2020)'s dataset.", '\rho'))
+subtitle('Model applied: Francalanci et al (2021).')
+ylabel('Modelled Terminal settling velocity (m/s)')
 xlabel('Fluid Density (kg/m^{3})')
    
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Francalanci_Density.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Density/Francalanci_Density.jpg', 'Resolution', 1200)

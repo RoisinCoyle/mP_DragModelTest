@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: YuScript: VM
 % Date created: 23.04.22
-% Date last mostified: 21.07.22
+% Date last mostified: 01.03.23
 % Purpose: To test the implementation of the Yu drag model on a range of
 %          particle shapes
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -180,15 +180,16 @@ end
 subplot(1, 2, 2)
 plot(Table_Yu.Wt_Meas, Table_Yu.Wt, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Yu (2022): Re-evaluation using dataset from Dioguradi et al (2018)')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled particle terminal settling velocity to \n\r particle terminal settling velocity measured by Dioguardi et al (2018).'))
+subtitle(sprintf('Model applied: Yu et al (2022).'))
 hold on
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_Yu, '--k')
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
-legend('All mPs', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Yu, r_sq), '+/- 30%', 'location', 'best');
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_Yu, '--k', 'LineWidth', 1.5)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
+legend('', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Yu, r_sq), 'y = x +/- 30%', 'location', 'best');
 set(gca,'YLim', [0.0015, nMax*1.1] )
 set(gca,'XLim', [0.0015, nMax*1.1] )
 set(gca, 'XScale', 'log')
@@ -196,7 +197,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu_Dio/YuDio_MeasVsCalc_Fit.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/YuDio_MeasVsCalc_Fit.jpg', 'Resolution', 1200);
 
 %% Combine all m and r_sq values into the error table
 Error_table = readtable("./DragModelsTest/Output/20220621/Yu_Dio/YuDioErrorTable.txt", 'Delimiter', ',', ReadVariableNames=true, ReadRowNames=true);

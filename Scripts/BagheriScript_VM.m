@@ -392,8 +392,8 @@ Table_BB_Proj = array2table(Results_BB, "VariableNames", ...
 Table_BB_Proj = [VM_Dataset.Shape Table_BB_Proj];
 Table_BB_Proj.Properties.VariableNames(1) = {'Shape'};
 
-writetable(Table_BB_Proj, './DragModelsTest/Output/20220621/Bagheri/BagheriOutputVM_Proj.txt', 'Delimiter', ',', 'WriteRowNames', true);
-writetable(Table_BB_Proj, './DragModelsTest/Output/20220621/Bagheri/BagheriOutputVM_Proj.xls', 'WriteRowNames', true);
+% writetable(Table_BB_Proj, './DragModelsTest/Output/20220621/Bagheri/BagheriOutputVM_Proj.txt', 'Delimiter', ',', 'WriteRowNames', true);
+% writetable(Table_BB_Proj, './DragModelsTest/Output/20220621/Bagheri/BagheriOutputVM_Proj.xls', 'WriteRowNames', true);
 
 %% Distance assumption calculation and plot
 
@@ -421,13 +421,14 @@ plot(DistTot_BB, DistConst_BB, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[1, 1, 0]')
 ylabel('Distance travelled at constant velocity (m)')
 xlabel('Distance travelled in attaining terminal velocity (m)')
-title('Bagheri and Bonadonna (2016): Using Particle Projected Area.')
+title(sprintf('Figure showing that distance travelled in attaining terminal settling velocity is approximately \n\r equal to the distance travelled in the same time interval at constant velocity'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using particle projection area as effective area.'))
 hold on
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_BBDist, '--k')
-plot(nVal, 0.7*nVal, ':k')
-plot(nVal, 1.3*nVal, ':k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_BBDist, r_sq_Dist), '', '', 'location', 'best');
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_BBDist, '--k', 'LineWidth', 1)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_BBDist, r_sq_Dist), 'y = x +/- 30%', '', 'location', 'best');
 set(gca,'YLim', [0.00005, nMax*1.3] )
 set(gca,'XLim', [0.00005, nMax*1.3] )
 set(gca, 'YScale', 'log')
@@ -435,7 +436,7 @@ set(gca, 'XScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'Maximized')
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Distance/BB_DistanceProj.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Distance/BB_DistanceProj.jpg', 'Resolution', 1200)
 
 %% Calculate average error and RMSE
 
@@ -555,8 +556,10 @@ hold on
 plot(Table_BB_SA.('ESD'), Table_BB_SA.('Wt_Calc'), 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 legend('Measured Wt', 'Calculated Wt', 'location', 'best')
-title('Bagheri Model: Using Particle Surface Area.')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf('Figure showing the influence of particle ESD on terminal settling velocity'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r particle surface area as effective area.'))
+
+ylabel('Modelld terminal settling velocity (m/s)')
 xlabel('Particle size (m)')
 
 % Method 2: All
@@ -567,12 +570,13 @@ hold on
 plot(Table_BB_Proj.('ESD'), Table_BB_Proj.('Wt_Calc'), 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 legend('Measured Wt', 'Calculated Wt', 'location', 'best')
-title('Bagheri Model: Using Projected Area of Volume Equivalent Sphere.')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf('Figure showing the influence of particle ESD on terminal settling velocity'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r projection area of volume equivalent sphere as effective area.'))
+ylabel('Modelled terminal settling velocity (m/s)')
 xlabel('Particle size (m)')
    
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Bagheri/BagheriVM_ESDVsW.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Bagheri/BagheriVM_ESDVsW.jpg', 'Resolution', 1200)
 
 %% A2) wt against ESD (SHAPES)
 % =============================
@@ -590,8 +594,9 @@ plot(Table_BB_SA{101:140, "ESD"}, Table_BB_SA{101:140, "Wt_Calc"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 legend('Measured Wt', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
        'Calculated Wt, Film', 'NumColumns', 2, 'location', 'southoutside')
-title('Bagheri Model: Using Particle Surface Area.')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf('Figure showing the influence of particle ESD on terminal settling velocity'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r particle surface area as effective area.'))
+ylabel('Modelled terminal settling velocity (m/s)')
 xlabel('Particle size (m)')
 hold off
 
@@ -608,13 +613,15 @@ plot(Table_BB_Proj{101:140, "ESD"}, Table_BB_Proj{101:140, "Wt_Calc"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 legend('Measured Wt', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
        'Calculated Wt, Film', 'NumColumns', 2, 'location', 'southoutside')
-title('Bagheri Model: Using Projected Area of Volume Equivalent Sphere.')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf('Figure showing the influence of particle ESD on terminal settling velocity'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r projection area of volume equivalent sphere as effective area.'))
+
+ylabel('Modelled terminal settling velocity (m/s)')
 xlabel('Particle size (m)')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Bagheri/BagheriVM_ESDVsW_Shapes.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Bagheri/BagheriVM_ESDVsW_Shapes.jpg', 'Resolution', 1200)
 
 %% B1) wt against CSF (ALL)
 % ==========================
@@ -627,8 +634,9 @@ hold on
 plot(Table_BB_SA.('CSF'), Table_BB_SA.('Wt_Calc'), 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 legend('Measured Wt', 'Calculated Wt', 'location', 'best')
-title('Bagheri Model. Using Particle Surface Area')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf('Figure showing the influence of particle CSF on terminal settling velocity'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r particle surface area as effective area.'))
+ylabel('Modelled terminal settling velocity (m/s)')
 xlabel('CSF')
 hold off
 
@@ -640,13 +648,14 @@ hold on
 plot(Table_BB_Proj.('CSF'), Table_BB_Proj.('Wt_Calc'), 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
 legend('Measured Wt', 'Calculated Wt', 'location', 'best')
-title('Bagheri Model: Using Projected Area of Volume Equivalent Sphere.')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf('Figure showing the influence of particle CSF on terminal settling velocity'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r projection area of volume equivalent sphere as effective area.'))
+ylabel('Modelled terminal settling velocity (m/s)')
 xlabel('CSF')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Bagheri/BagheriVM_CSFVsW.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Bagheri/BagheriVM_CSFVsW.jpg', 'Resolution', 1200);
 
 %% B2) wt against CSF (SHAPES)
 % =============================
@@ -664,8 +673,9 @@ plot(Table_BB_SA{101:140, "CSF"}, Table_BB_SA{101:140, "Wt_Calc"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 legend('Measured Wt', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
        'Calculated Wt, Film', 'NumColumns', 2, 'location', 'southoutside')
-title('Bagheri Model. Using Particle Surface Area')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf('Figure showing the influence of particle CSF on terminal settling velocity'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r particle surface area as effective area.'))
+ylabel('Modelled terminal settling velocity (m/s)')
 xlabel('CSF')
 hold off
 
@@ -682,13 +692,14 @@ plot(Table_BB_Proj{101:140, "CSF"}, Table_BB_Proj{101:140, "Wt_Calc"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
 legend('Measured Wt', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
        'Calculated Wt, Film', 'NumColumns', 2, 'location', 'southoutside')
-title('Bagheri Model: Using Projected Area of Volume Equivalent Sphere.')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf('Figure showing the influence of particle CSF on terminal settling velocity'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r projection area of volume equivalent sphere as effective area.'))
+ylabel('Modelled erminal settling velocity (m/s)')
 xlabel('CSF')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Bagheri/BagheriVM_CSFVsW_Shapes.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Bagheri/BagheriVM_CSFVsW_Shapes.jpg', 'Resolution', 1200);
 
 %% C2) wt against wt measured using Matlab fitlm function
 % ========================================================
@@ -709,15 +720,16 @@ end
 subplot(1, 2, 1)
 plot(Table_BB_SA.Wt_Meas, Table_BB_SA.Wt_Calc, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
-ylabel('Estimated settling velocity (m/s)')
+ylabel('Modelled settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri and Bonadonna (2016): Using Particle Surface Area.')
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r particle surface area as effective area.'))
 hold on
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_BBSA, '--k')
 plot(nVal, 0.7*nVal, ':k')
 plot(nVal, 1.3*nVal, ':k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_BBSA, r_sq_SA), '', '', 'location', 'best');
+legend('', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_BBSA, r_sq_SA), '', '', 'location', 'best');
 set(gca,'YLim', [0.0001, nMax*1.3] )
 set(gca,'XLim', [0.0001, nMax*1.3] )
 set(gca, 'YScale', 'log')
@@ -740,15 +752,16 @@ end
 subplot(1, 2, 2)
 plot(Table_BB_Proj.Wt_Meas, Table_BB_Proj.Wt_Calc, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
-ylabel('Estimated settling velocity (m/s)')
+ylabel('Modelled settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri and Bonadonna (2016): Using Projected Area of Volume Equivalent Sphere.')
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r projected area of volume equivalent sphere as effective area.'))
 hold on
 plot(nVal, nVal, '-k')
 plot(nVal, fitY_BBProj, '--k')
 plot(nVal, 0.7*nVal, ':k')
 plot(nVal, 1.3*nVal, ':k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_BBProj, r_sq_Proj), 'location', 'best');
+legend('', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_BBProj, r_sq_Proj), 'location', 'best');
 set(gca,'YLim', [0.003, nMax*1.3] )
 set(gca,'XLim', [0.003, nMax*1.3] )
 set(gca, 'YScale', 'log')
@@ -756,7 +769,7 @@ set(gca, 'XScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Bagheri/BagheriVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Bagheri/BagheriVM_MeasVsCalc_Fit.jpg', 'Resolution', 1200);
 
 %% C B) Plot all shapes separately with fitted model
 
@@ -776,9 +789,10 @@ end
 subplot(1, 2, 1)
 plot(Table_BB_SA{1:80, "Wt_Meas"}, Table_BB_SA{1:80, "Wt_Calc"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-ylabel('Estimated settling velocity (m/s)')
+ylabel('Modelled settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri and Bonadonna (2016): Using particle Surface Area.')
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r particle surface area as effective area.'))
 hold on
 plot(Table_BB_SA{81:100, "Wt_Meas"}, Table_BB_SA{81:100, "Wt_Calc"}, 'or',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
@@ -811,9 +825,10 @@ end
 subplot(1, 2, 2)
 plot(Table_BB_Proj{1:80, "Wt_Meas"}, Table_BB_Proj{1:80, "Wt_Calc"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-ylabel('Estimated settling velocity (m/s)')
+ylabel('Modelled settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri and Bonadonna (2016): Using Projected Area of Volume Equivalent Sphere.')
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r projected area of volume equivalent sphere as effective area.'))
 hold on
 plot(Table_BB_Proj{81:100, "Wt_Meas"}, Table_BB_Proj{81:100, "Wt_Calc"}, 'or',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
@@ -831,7 +846,7 @@ set(gca, 'XScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Bagheri/BagheriVM_MeasVsCalc_FitShapes.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Bagheri/BagheriVM_MeasVsCalc_FitShapes.jpg', 'Resolution', 1200);
 
 %% C C) Plot Fragments only with fitted model
 
@@ -851,9 +866,10 @@ end
 subplot(1, 2, 1)
 plot(Table_BB_SA{1:80, "Wt_Meas"}, Table_BB_SA{1:80, "Wt_Calc"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-ylabel('Estimated settling velocity (m/s)')
+ylabel('Modelled settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri and Bonadonna (2016): Using Particle Surface Area.')
+title(sprintf('Graph comparing modelled mP fragment terminal settling velocity to \n\r mP fragment terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r particle projection area as effective area.'))
 hold on
 plot(nVal_F3, nVal_F3, '-k')
 plot(nVal_F3, fitY_BBSAF3, '--b')
@@ -882,9 +898,10 @@ end
 subplot(1, 2, 2)
 plot(Table_BB_Proj{1:80, "Wt_Meas"}, Table_BB_Proj{1:80, "Wt_Calc"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-ylabel('Estimated settling velocity (m/s)')
+ylabel('Modelled settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri and Bonadonna (2016): Using Projected Area of Volume Equivalent Sphere.')
+title(sprintf('Graph comparing modelled mP fragment terminal settling velocity to \n\r mP fragment terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r projected area of volume equivalent sphere as effective area.'))
 hold on
 plot(nVal_F3, nVal_F3, '-k')
 plot(nVal_F3, fitY_BBProjF3, '--b')
@@ -898,7 +915,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Bagheri/BagheriVM_MeasVsCalc_FitF3.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Bagheri/BagheriVM_MeasVsCalc_FitF3.jpg', 'Resolution', 1200);
 
 %% C D) Plot fibres separately with fitted model
 
@@ -918,9 +935,10 @@ end
 subplot(1, 2, 1)
 plot(Table_BB_SA{81:100, "Wt_Meas"}, Table_BB_SA{81:100, "Wt_Calc"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-ylabel('Estimated settling velocity (m/s)')
+ylabel('Modelled settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri and Bonadonna (2016): Using Particle Surface Area.')
+title(sprintf('Graph comparing modelled mP fibre terminal settling velocity to \n\r mP fibre terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r particle surface area as effective area.'))
 hold on
 plot(nVal_F2, nVal_F2, '-k')
 plot(nVal_F2, fitY_BBSAF2, '--r')
@@ -949,9 +967,10 @@ end
 subplot(1, 2, 2)
 plot(Table_BB_Proj{81:100, "Wt_Meas"}, Table_BB_Proj{81:100, "Wt_Calc"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-ylabel('Estimated settling velocity (m/s)')
+ylabel('Modelled settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri and Bonadonna (2016): Using Projected Area of Volume Equivalent Sphere.')
+title(sprintf('Graph comparing modelled mP fibre terminal settling velocity to \n\r mP fibre terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r projected area of volume equivalent sphere as effective area.'))
 hold on
 plot(nVal_F2, nVal_F2, '-k')
 plot(nVal_F2, fitY_BBProjF2, '--r')
@@ -965,7 +984,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Bagheri/BagheriVM_MeasVsCalc_FitF2.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Bagheri/BagheriVM_MeasVsCalc_FitF2.jpg', 'Resolution', 1200);
 
 %% C E) Plot film separately with fitted model
 
@@ -985,9 +1004,10 @@ end
 subplot(1, 2, 1)
 plot(Table_BB_SA{101:140, "Wt_Meas"}, Table_BB_SA{101:140, "Wt_Calc"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-ylabel('Estimated settling velocity (m/s)')
+ylabel('Modelled settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri and Bonadonna (2016): Using Particle Surface Area.')
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r particle surface area as effective area.'))
 hold on
 plot(nVal_F1, nVal_F1, '-k')
 plot(nVal_F1, fitY_BBSAF1, '--g')
@@ -1016,9 +1036,10 @@ end
 subplot(1, 2, 2)
 plot(Table_BB_Proj{101:140, "Wt_Meas"}, Table_BB_Proj{101:140, "Wt_Calc"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-ylabel('Estimated settling velocity (m/s)')
+ylabel('Modelled settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title('Bagheri and Bonadonna (2016): Using Projected Area of Volume Equivalent Sphere.')
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r projected area of volume equivalent sphere as effective area.'))
 hold on
 plot(nVal_F1, nVal_F1, '-k')
 plot(nVal_F1, fitY_BBProjF1, '--g')
@@ -1032,7 +1053,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Bagheri/BagheriVM_MeasVsCalc_FitF1.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Bagheri/BagheriVM_MeasVsCalc_FitF1.jpg', 'Resolution', 1200);
 
 %% Combine all m and r_sq values into the error table: Projected Area
 Error_table = readtable("./DragModelsTest/Output/20220621/Bagheri/BagheriErrorTableVM_Proj.txt", 'Delimiter', ',', ReadVariableNames=true, ReadRowNames=true);

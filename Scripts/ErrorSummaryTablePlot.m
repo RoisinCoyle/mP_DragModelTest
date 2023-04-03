@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: All_Error
 % Date created: 30.06.22
-% Date last mostified: 30.06.22
+% Date last mostified: 01.03.23
 % Purpose: To compile all the error tables into one
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -497,7 +497,7 @@ title('Fibres Only')
 sgtitle(sprintf('Evaluation of Models: Average Error (AE) \r\n between Measured and Calculated Velocity'));
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './Output/20220621/AE_Bar7.jpg', 'Resolution', 300)
+exportgraphics(gcf, './Output/20230301/AE_Bar7.jpg', 'Resolution', 1200)
 
 %% Absolute Average Error: Overall
 subplot(3, 3, [1, 6])
@@ -592,7 +592,7 @@ title('Considering Only Fibrous Particles')
 sgtitle(sprintf('Evaluation of Models: Absolute Average Relative Error (|AE|) of Estimated Terminal Settling Velocity \r\n compared to Measured Terminal Settling Velocity for each model evaluated'), 'FontWeight', 'Bold');
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './Output/20220621/Abs_AE_Bar7.jpg', 'Resolution', 300)
+exportgraphics(gcf, './Output/20230301/Abs_AE_Bar7.jpg', 'Resolution', 1200)
 
 %% RMSE All
 
@@ -659,4 +659,4 @@ title('Considering Fibrous Particles Only')
 sgtitle(sprintf('Evaluation of Models: Root Mean Square Error (RMSE) of Estimated Terminal Settling Velocity \r\n compared to Measured Terminal Settling Velocity for each model evaluated'), 'FontWeight', 'Bold');
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './Output/20220621/RMSE_Bar7.jpg', 'Resolution', 300)
+exportgraphics(gcf, './Output/20230301/RMSE_Bar7.jpg', 'Resolution', 1200)

@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: DioguardiScript: VM
 % Date created: 23.04.22
-% Date last mostified: 22.07.22
+% Date last mostified: 02.03.23
 % Purpose: To test the implementation of the Dioguardi drag model on a range of
 %          particle shapes
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -377,8 +377,8 @@ Results_Dioguardi = zeros(140, 5);
 Table_Dio_Proj = [VM_Dataset.Shape Table_Dio_Proj];
 Table_Dio_Proj.Properties.VariableNames(1) = {'Shape'};
 
-writetable(Table_Dio_Proj, './DragModelsTest/Output/20220621/Dioguardi/DioguardiOutputVM_Proj.txt', 'Delimiter', ',', 'WriteRowNames', true);
-writetable(Table_Dio_Proj, './DragModelsTest/Output/20220621/Dioguardi/DioguardiOutputVM_Proj.xls', 'WriteRowNames', true);
+% writetable(Table_Dio_Proj, './DragModelsTest/Output/20220621/Dioguardi/DioguardiOutputVM_Proj.txt', 'Delimiter', ',', 'WriteRowNames', true);
+% writetable(Table_Dio_Proj, './DragModelsTest/Output/20220621/Dioguardi/DioguardiOutputVM_Proj.xls', 'WriteRowNames', true);
 
 %% Distance assumption calculation and plot
 
@@ -407,13 +407,14 @@ plot(DistTot_Dio, DistConst_Dio, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[1, 1, 0]')
 ylabel('Distance travelled at constant velocity (m)')
 xlabel('Distance travelled in attaining terminal velocity (m)')
-title('Dioguardi et al (2018): Using Particle Projected Area.')
+title(sprintf('Figure showing that distance travelled in attaining terminal settling velocity is approximately \n\r equal to the distance travelled in the same time interval at constant velocity'))
+subtitle(sprintf('Model applied: Dioguardi et al (2018) using particle projection area as effective area.'))
 hold on
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_DioDist, '--k')
-plot(nVal, 0.7*nVal, ':k')
-plot(nVal, 1.3*nVal, ':k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioDist, r_sq_Dist), '', '', 'location', 'best');
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_DioDist, '--k', 'LineWidth', 1)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 2, 'Color', [.7 .7 .7])
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 2, 'Color', [.7 .7 .7])
+legend(' ', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioDist, r_sq_Dist), 'y = x +/- 30%', '', 'location', 'best');
 set(gca,'YLim', [0.00001, nMax*1.3] )
 set(gca,'XLim', [0.00001, nMax*1.3] )
 set(gca, 'YScale', 'log')
@@ -421,7 +422,7 @@ set(gca, 'XScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'Maximized')
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Distance/Dio_DistanceProj.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Distance/Dio_DistanceProj.jpg', 'Resolution', 1200)
 
 %% Calculate average error and RMSE
 
@@ -698,15 +699,16 @@ end
 subplot(1, 2, 1)
 plot(Table_Dio_SA.Wt_Meas, Table_Dio_SA.Wt, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Dioguardi Model: Using particle surface area.')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Dioguardi et al (2018) using \n\r particle surface area as effective area.'))
 hold on
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_DioSA, '--k')
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSA, r_sq_SA), '', '', 'location', 'best');
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_DioSA, '--k', 'LineWidth', 1)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSA, r_sq_SA), 'y= x +/- 30%', '', 'location', 'best');
 set(gca,'YLim', [0.0003, nMax*1.1] )
 set(gca,'XLim', [0.0003, nMax*1.1] )
 set(gca, 'XScale', 'log')
@@ -729,15 +731,16 @@ end
 subplot(1, 2, 2)
 plot(Table_Dio_Proj.Wt_Meas, Table_Dio_Proj.Wt, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Dioguardi Model: Using projection area of equivalent sphere.')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Bagheri and Bonadonna (2016) using \n\r projection area of volume equivalent sphere as effective area.'))
 hold on
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_DioProj, '--k')
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProj, r_sq_Proj), '', '', 'location', 'best');
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_DioProj, '--k', 'LineWidth', 1)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProj, r_sq_Proj), 'y= x +/- 30%', '', 'location', 'best');
 set(gca,'YLim', [0.003, nMax*1.1] )
 set(gca,'XLim', [0.003, nMax*1.1] )
 set(gca, 'XScale', 'log')
@@ -745,7 +748,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioguardiVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Dioguardi/DioguardiVM_MeasVsCalc_Fit.jpg', 'Resolution', 1200);
 
 %% C B) Plot all shapes separately with fitted model
 
@@ -765,19 +768,20 @@ end
 subplot(1, 2, 1)
 plot(Table_Dio_SA{1:80, "Wt_Meas"}, Table_Dio_SA{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Dioguardi Model: Using particle surface area.')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Dioguardi et al (2018) using \n\r particle surface area as effective area.'))
 hold on
 plot(Table_Dio_SA{81:100, "Wt_Meas"}, Table_Dio_SA{81:100, "Wt"}, 'or',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 plot(Table_Dio_SA{101:140, "Wt_Meas"}, Table_Dio_SA{101:140, "Wt"}, 'og',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_DioSA, '--k')
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
-legend('Fragment', 'Fibre', 'Film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSA, r_sq_SA), '', '', 'location', 'best');
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_DioSA, '--k', 'LineWidth', 1)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('Fragment', 'Fibre', 'Film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSA, r_sq_SA), 'y = x +/- 30%', '', 'location', 'best');
 set(gca,'YLim', [0.0003, nMax*1.3] )
 set(gca,'XLim', [0.0003, nMax*1.3] )
 set(gca, 'YScale', 'log')
@@ -800,19 +804,20 @@ end
 subplot(1, 2, 2)
 plot(Table_Dio_Proj{1:80, "Wt_Meas"}, Table_Dio_Proj{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Dioguardi Model: Using projection area of equivalent sphere.')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Dioguardi et al (2018) using \n\r using projection area of volume equivalent sphere as effective area.'))
 hold on
 plot(Table_Dio_Proj{81:100, "Wt_Meas"}, Table_Dio_Proj{81:100, "Wt"}, 'or',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 plot(Table_Dio_Proj{101:140, "Wt_Meas"}, Table_Dio_Proj{101:140, "Wt"}, 'og',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_DioProj, '--k')
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
-legend('Fragment', 'Fibre', 'Film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProj, r_sq_Proj), 'location', 'best');
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_DioProj, '--k', 'LineWidth', 1)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('Fragment', 'Fibre', 'Film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProj, r_sq_Proj), 'y = x +/- 30%', '', 'location', 'best');
 set(gca,'YLim', [0.003, nMax*1.3] )
 set(gca,'XLim', [0.003, nMax*1.3] )
 set(gca, 'YScale', 'log')
@@ -820,7 +825,7 @@ set(gca, 'XScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioVM_MeasVsCalc_FitShapes.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Dioguardi/DioVM_MeasVsCalc_FitShapes.jpg', 'Resolution', 1200);
 
 %% C C) Plot Fragments only with fitted model
 
@@ -840,15 +845,16 @@ end
 subplot(1, 2, 1)
 plot(Table_Dio_SA{1:80, "Wt_Meas"}, Table_Dio_SA{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Dioguardi et al (2018): Using Particle Surface Area.')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP fragment terminal settling velocity to \n\r mP fragment terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Dioguardi et al (2018) using \n\r particle surface area as effective area.'))
 hold on
-plot(nVal_F3, nVal_F3, '-k')
-plot(nVal_F3, fitY_DioSAF3, '--b')
-plot(nVal_F3, 1.3*nVal_F3, ':k')
-plot(nVal_F3, 0.7*nVal_F3, ':k')
-legend('Fragments', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSAF3, r_sq_SAF3), '', '', 'location', 'best');
+plot(nVal_F3, nVal_F3, '-k', 'LineWidth', 1)
+plot(nVal_F3, fitY_DioSAF3, '--b', 'LineWidth', 1)
+plot(nVal_F3, 1.3*nVal_F3, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal_F3, 0.7*nVal_F3, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('Fragments', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSAF3, r_sq_SAF3), 'y = x +/- 30%', '', 'location', 'best');
 set(gca,'YLim', [0.0003, nMax_F3*1.1] )
 set(gca,'XLim', [0.0003, nMax_F3*1.1] )
 set(gca, 'XScale', 'log')
@@ -871,15 +877,16 @@ end
 subplot(1, 2, 2)
 plot(Table_Dio_Proj{1:80, "Wt_Meas"}, Table_Dio_Proj{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Dioguardi et al (2018): Using Projected Area of Volume Equivalent Sphere.')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP fragment terminal settling velocity to \n\r mP fragment terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Dioguardi et al (2018) using \n\r projection area of volume equivalent sphere as effective area.'))
 hold on
-plot(nVal_F3, nVal_F3, '-k')
-plot(nVal_F3, fitY_DioProjF3, '--b')
-plot(nVal_F3, 1.3*nVal_F3, ':k')
-plot(nVal_F3, 0.7*nVal_F3, ':k')
-legend('Fragments', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProjF3, r_sq_ProjF3), '', '', 'location', 'best');
+plot(nVal_F3, nVal_F3, '-k', 'LineWidth', 1)
+plot(nVal_F3, fitY_DioProjF3, '--b', 'LineWidth', 1)
+plot(nVal_F3, 1.3*nVal_F3, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal_F3, 0.7*nVal_F3, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('Fragments', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProjF3, r_sq_ProjF3), 'y = x +/- 30%', '', 'location', 'best');
 set(gca,'YLim', [0.003, nMax_F3*1.1] )
 set(gca,'XLim', [0.003, nMax_F3*1.1] )
 set(gca, 'XScale', 'log')
@@ -887,7 +894,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioVM_MeasVsCalc_FitF3.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Dioguardi/DioVM_MeasVsCalc_FitF3.jpg', 'Resolution', 1200);
 
 %% C D) Plot fibres separately with fitted model
 
@@ -907,15 +914,16 @@ end
 subplot(1, 2, 1)
 plot(Table_Dio_SA{81:100, "Wt_Meas"}, Table_Dio_SA{81:100, "Wt"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Dioguardi et al (2018):  Using Particle Surface Area.')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP fibre terminal settling velocity to \n\r mP fibre terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Dioguardi et al (2018) using \n\r particle surface area as effective area.'))
 hold on
-plot(nVal_F2, nVal_F2, '-k')
-plot(nVal_F2, fitY_DioSAF2, '--r')
-plot(nVal_F2, 1.3*nVal_F2, ':k')
-plot(nVal_F2, 0.7*nVal_F2, ':k')
-legend('Fibres', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSAF2, r_sq_SAF2), '', '', 'location', 'best');
+plot(nVal_F2, nVal_F2, '-k', 'LineWidth', 1)
+plot(nVal_F2, fitY_DioSAF2, '--r', 'LineWidth', 1)
+plot(nVal_F2, 1.3*nVal_F2, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal_F2, 0.7*nVal_F2, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('Fibres', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSAF2, r_sq_SAF2), 'y = x +/- 30%', '', 'location', 'best');
 set(gca,'YLim', [0.0003, nMax_F2*1.1] )
 set(gca,'XLim', [0.0003, nMax_F2*1.1] )
 set(gca, 'XScale', 'log')
@@ -939,15 +947,16 @@ end
 subplot(1, 2, 2)
 plot(Table_Dio_Proj{81:100, "Wt_Meas"}, Table_Dio_Proj{81:100, "Wt"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Dioguardi et al (2018): Using Projected Area of Volume Equivalent Sphere.')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP fibre terminal settling velocity to \n\r mP fibre terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Dioguardi et al (2018) using \n\r projection area of volume equivalent sphere as effective area.'))
 hold on
-plot(nVal_F2, nVal_F2, '-k')
-plot(nVal_F2, fitY_DioProjF2, '--r')
-plot(nVal_F2, 1.3*nVal_F2, ':k')
-plot(nVal_F2, 0.7*nVal_F2, ':k')
-legend('Fibres', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProjF2, r_sq_ProjF2), '', '', 'location', 'best');
+plot(nVal_F2, nVal_F2, '-k', 'LineWidth', 1)
+plot(nVal_F2, fitY_DioProjF2, '--r', 'LineWidth', 1)
+plot(nVal_F2, 1.3*nVal_F2, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal_F2, 0.7*nVal_F2, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('Fibres', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProjF2, r_sq_ProjF2), 'y = x +/- 30%', '', 'location', 'best');
 set(gca,'YLim', [0.003, nMax_F2*1.1] )
 set(gca,'XLim', [0.003, nMax_F2*1.1] )
 set(gca, 'XScale', 'log')
@@ -955,7 +964,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioVM_MeasVsCalc_FitF2.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Dioguardi/DioVM_MeasVsCalc_FitF2.jpg', 'Resolution', 1200);
 
 %% C E) Plot film separately with fitted model
 
@@ -975,15 +984,16 @@ end
 subplot(1, 2, 1)
 plot(Table_Dio_SA{101:140, "Wt_Meas"}, Table_Dio_SA{101:140, "Wt"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Dioguardi et al (2018): Using Particle Surface Area.')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP film terminal settling velocity to \n\r mP film terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Dioguardi et al (2018) using \n\r particle surface area as effective area.'))
 hold on
-plot(nVal_F1, nVal_F1, '-k')
-plot(nVal_F1, fitY_DioSAF1, '--g')
-plot(nVal_F1, 1.3*nVal_F1, ':k')
-plot(nVal_F1, 0.7*nVal_F1, ':k')
-legend('film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSAF1, r_sq_SAF1), '', '',  'location', 'best');
+plot(nVal_F1, nVal_F1, '-k', 'LineWidth', 1)
+plot(nVal_F1, fitY_DioSAF1, '--g', 'LineWidth', 1)
+plot(nVal_F1, 1.3*nVal_F1, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal_F1, 0.7*nVal_F1, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioSAF1, r_sq_SAF1), 'y = x +/- 30%', '',  'location', 'best');
 set(gca,'YLim', [0.0003, nMax_F1*1.1] )
 set(gca,'XLim', [0.0003, nMax_F1*1.1] )
 set(gca, 'XScale', 'log')
@@ -1006,15 +1016,16 @@ end
 subplot(1, 2, 2)
 plot(Table_Dio_Proj{101:140, "Wt_Meas"}, Table_Dio_Proj{101:140, "Wt"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Dioguardi et al (2018): Using Projected Area of Volume Equivalent Sphere.')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP film terminal settling velocity to \n\r mP film terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Dioguardi et al (2018) using \n\r projection area of volume equivalent sphere as effective area.'))
 hold on
-plot(nVal_F1, nVal_F1, '-k')
-plot(nVal_F1, fitY_DioProjF1, '--g')
-plot(nVal_F1, 1.3*nVal_F1, ':k')
-plot(nVal_F1, 0.7*nVal_F1, ':k')
-legend('film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProjF1, r_sq_ProjF1), '', '', 'location', 'best');
+plot(nVal_F1, nVal_F1, '-k', 'LineWidth', 1)
+plot(nVal_F1, fitY_DioProjF1, '--g', 'LineWidth', 1)
+plot(nVal_F1, 1.3*nVal_F1, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal_F1, 0.7*nVal_F1, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProjF1, r_sq_ProjF1), 'y = x +/- 30%', '', 'location', 'best');
 set(gca,'YLim', [0.003, nMax_F1*1.1] )
 set(gca,'XLim', [0.003, nMax_F1*1.1] )
 set(gca, 'XScale', 'log')
@@ -1022,7 +1033,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dioguardi/DioVM_MeasVsCalc_FitF1.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Dioguardi/DioVM_MeasVsCalc_FitF1.jpg', 'Resolution', 1200);
 
 %% Combine all m and r_sq values into the error table: Projected Area
 Error_table = readtable("./DragModelsTest/Output/20220621/Dioguardi/DioguardiErrorTableVM_Proj.txt", 'Delimiter', ',', ReadVariableNames=true, ReadRowNames=true);

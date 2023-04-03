@@ -1,0 +1,5 @@
+Row,Results_Frn
+CPU: 1000 tests,0.421875
+Average CPU Per test,0.000421875
+Time for 1000 tests:,0.1799589
+Average time for 1 test,0.0001730034

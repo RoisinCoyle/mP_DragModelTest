@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: OutputAllModels
 % Date created: 24.05.22
-% Date last mostified: 26.05.22
+% Date last mostified: 1.03.23
 % Purpose: To plot the output of the drag model tests together
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -692,12 +692,14 @@ hold off
 set(gcf, 'WindowState', 'maximized');
 exportgraphics(gcf, './DragModelsTest/Output/20220621/ExplicitResults_MeasVsCalc_FitShape.jpg', 'Resolution', 300);
 
-%% Plot all models: Fitted lines, all shapes
+%% Plot all models: Fitted lines, all shapes, points outlined
 
 subplot(3, 3, 1) %Yu
 
 % Fit linear model through the intercept
-lm_Yu = fitlm(Table_Yu.Wt_Meas, Table_Yu.Wt, 'y~-1+x1');
+lm_Yu = fitlm(Table_Yu.Wt_Meas, Table_Yu.Wt, 'y~-1+x1');   % The formula is specified in Wilkinson notation. 
+                                                           % The -1 means there is no intercept (i.e., no c term in y=mx). 
+                                                           % The x1 means to have and mx term.                                 
 m_Yu = lm_Yu.Coefficients.Estimate(1);
 fitY_Yu = zeros(140, 1);
 % Generate data using linear model:
@@ -719,10 +721,11 @@ plot(Table_Yu{81:100, "Wt_Meas"}, Table_Yu{81:100, "Wt"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 plot(Table_Yu{101:140, "Wt_Meas"}, Table_Yu{101:140, "Wt"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_Yu, '--k', 'LineWidth', 1)
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
+plot(nVal, nVal, '-k', 'LineWidth', 1.5)
+%plot(nVal, fitY_Yu, '--', 'Color', '#ffcc00', 'LineWidth', 2)
+plot(nVal, fitY_Yu, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
 legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Yu, r_sq), '', '', 'location', 'best');
 set(gca,'YLim', [0.003, nMax*1.3] )
 set(gca,'XLim', [0.003, nMax*1.3] )
@@ -755,10 +758,10 @@ plot(Table_Dio_Proj{81:100, "Wt_Meas"}, Table_Dio_Proj{81:100, "Wt"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 plot(Table_Dio_Proj{101:140, "Wt_Meas"}, Table_Dio_Proj{101:140, "Wt"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_DioProj, '--k', 'LineWidth', 1)
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
+plot(nVal, nVal, '-k', 'LineWidth', 1.5)
+plot(nVal, fitY_DioProj, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
 legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProj, r_sq_Proj), '', '', 'location', 'best');
 set(gca,'YLim', [0.003, nMax*1.3] )
 set(gca,'XLim', [0.003, nMax*1.3] )
@@ -791,10 +794,10 @@ plot(Table_BB_Proj{81:100, "Wt_Meas"}, Table_BB_Proj{81:100, "Wt_Calc"}, 'sr',..
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 plot(Table_BB_Proj{101:140, "Wt_Meas"}, Table_BB_Proj{101:140, "Wt_Calc"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_BBProj, '--k', 'LineWidth', 1)
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
+plot(nVal, nVal, '-k', 'LineWidth', 1.5)
+plot(nVal, fitY_BBProj, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
 legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_BBProj, r_sq_Proj), '', '', 'location', 'best');
 set(gca,'YLim', [0.003, nMax*1.3] )
 set(gca,'XLim', [0.003, nMax*1.3] )
@@ -827,10 +830,10 @@ plot(Table_Frn{81:100, "Wt_Meas"}, Table_Frn{81:100, "Wt"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 plot(Table_Frn{101:140, "Wt_Meas"}, Table_Frn{101:140, "Wt"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_Frn, '--k', 'LineWidth', 1)
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
+plot(nVal, nVal, '-k', 'LineWidth', 1.5)
+plot(nVal, fitY_Frn, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
 legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Frn, r_sq), '', '', 'location', 'best');
 set(gca,'YLim', [0.003, nMax*1.3] )
 set(gca,'XLim', [0.003, nMax*1.3] )
@@ -863,10 +866,10 @@ plot(Table_Zhang_Proj{81:100, "Wt_Meas"}, Table_Zhang_Proj{81:100, "Wt"}, 'sr',.
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 plot(Table_Zhang_Proj{101:140, "Wt_Meas"}, Table_Zhang_Proj{101:140, "Wt"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_ZCProj, '--k', 'LineWidth', 1)
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
+plot(nVal, nVal, '-k', 'LineWidth', 1.5)
+plot(nVal, fitY_ZCProj, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
 legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_ZCProj, r_sq_Proj), '', '', 'location', 'best');
 set(gca, 'YScale', 'log')
 set(gca, 'XScale', 'log')
@@ -899,10 +902,10 @@ plot(Table_Zhang_SA{81:100, "Wt_Meas"}, Table_Zhang_SA{81:100, "Wt"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 plot(Table_Zhang_SA{101:140, "Wt_Meas"}, Table_Zhang_SA{101:140, "Wt"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_ZCSA, '--k', 'LineWidth', 1)
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
+plot(nVal, nVal, '-k', 'LineWidth', 1.5)
+plot(nVal, fitY_ZCSA, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
 legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_ZCSA, r_sq_SA), '', '', 'location', 'best');
 set(gca, 'YScale', 'log')
 set(gca, 'XScale', 'log')
@@ -933,10 +936,10 @@ plot(Table_Dietrich{42, "Wt_Meas"}, Table_Dietrich{42, "Wt"}, 'sr',...
 ylabel(sprintf('Estimated settling \r\n velocity (m/s)'))
 xlabel('Measured settling velocity (m/s)')
 title('G. Dietrich (1982)')
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_Dietrich, '--k', 'LineWidth', 1)
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
+plot(nVal, nVal, '-k', 'LineWidth', 1.5)
+plot(nVal, fitY_Dietrich, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
 legend('', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Dietrich, r_sq), '', '', 'location', 'best');
 set(gca,'YLim', [0.003, nMax*1.3] )
 set(gca,'XLim', [0.003, nMax*1.3] )
@@ -969,9 +972,10 @@ plot(Table_Stokes_SA{81:100, "Wt_Meas"}, Table_Stokes_SA{81:100, "Wt"}, 'sr',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 plot(Table_Stokes_SA{101:140, "Wt_Meas"}, Table_Stokes_SA{101:140, "Wt"}, '^g',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-plot(nVal, nVal, '-k')
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1)
+plot(nVal, fitY_StokesSA, '--k', 'LineWidth', 1.5)
 lgnd = legend('Fragment', 'Fibre', 'Film', 'Calculated Velocity = Measured Velocity', 'Measured velocity +/- 30%', '', 'NumColumns', 2);
 lgnd.Position(1) = 0.6916;
 lgnd.Position(2) = 0.1126;
@@ -985,24 +989,345 @@ set(gca, 'XScale', 'log')
 hold off
 
 subplot(3, 3, 9)
-plot(nVal, nVal, '-k')
+plot(0, 0, '--k', 'LineWidth', 1)
 hold on
-plot(nVal, fitY_StokesSA, '--k', 'LineWidth', 1)
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
-set(gca,'YLim', [0.0005, nMax*1.3] )
-set(gca,'XLim', [0.0005, nMax*1.3] )
-set(gca, 'YScale', 'log')
-set(gca, 'XScale', 'log')
-set(subplot(3,3,9), 'XTick', [], 'YTick', [])
-set(subplot(3,3,9), 'XTickLabel', [], 'YTickLabel', [])
-set(gca, 'Position', [0.4108, 0.1126, 0.2134, 0.1914])
-axis off
-lgnd = legend('', sprintf('y=%2.4fx, r^{2}=%1.4f', m_StokesSA, r_sqSA), '', '');
-lgnd.Position(1) = 0.5159;
-lgnd.Position(2) = 0.1227;
-lgnd.Position(3) = 0.1051;
-lgnd.Position(4) = 0.0509;
+%plot(nVal, fitY_StokesSA, '--w', 'LineWidth', 1)
+% plot(nVal, 1.3*nVal, ':k')
+% plot(nVal, 0.7*nVal, ':k')
+% set(gca,'YLim', [0.0005, nMax*1.3] )
+% set(gca,'XLim', [0.0005, nMax*1.3] )
+% set(gca, 'YScale', 'log')
+% set(gca, 'XScale', 'log')
+% set(subplot(3,3,9), 'XTick', [], 'YTick', [])
+% set(subplot(3,3,9), 'XTickLabel', [], 'YTickLabel', [])
+% set(gca, 'Position', [0.4108, 0.1126, 0.2134, 0.1914])
+ axis off
+ lgnd = legend(sprintf('y=%2.4fx, r^{2}=%1.4f', m_StokesSA, r_sqSA));
+ lgnd.Position(1) = 0.5159;
+ lgnd.Position(2) = 0.1227;
+ lgnd.Position(3) = 0.1051;
+ lgnd.Position(4) = 0.0509;
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/AllFit.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/AllFit_HighResolution.jpg', 'Resolution', 400);
+
+%% Plot all models: Fitted lines, all shapes, points not outlined
+
+subplot(3, 3, 1) %Yu
+
+% Fit linear model through the intercept
+lm_Yu = fitlm(Table_Yu.Wt_Meas, Table_Yu.Wt, 'y~-1+x1');   % The formula is specified in Wilkinson notation. 
+                                                           % The -1 means there is no intercept (i.e., no c term in y=mx). 
+                                                           % The x1 means to have and mx term.                                 
+m_Yu = lm_Yu.Coefficients.Estimate(1);
+fitY_Yu = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_Yu.Wt), max(Table_Yu.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq = lm_Yu.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_Yu(i) = m_Yu * nVal(i);
+end
+
+plot(Table_Yu{1:80, "Wt_Meas"}, Table_Yu{1:80, "Wt"}, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','b', 'MarkerFaceColor', 'b')
+ylabel(sprintf('Modelled terminal \r\n settling velocity (m/s)'))
+xlabel(sprintf('Measured terminal settling velocity (m/s)'))
+title('A. Yu et al. (2022)')
+hold on
+plot(Table_Yu{81:100, "Wt_Meas"}, Table_Yu{81:100, "Wt"}, 'sr',...
+    'MarkerSize',5,'MarkerEdgeColor','r', 'MarkerFaceColor', 'r')
+plot(Table_Yu{101:140, "Wt_Meas"}, Table_Yu{101:140, "Wt"}, '^g',...
+    'MarkerSize',5,'MarkerEdgeColor','g', 'MarkerFaceColor', 'g')
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_Yu, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
+legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Yu, r_sq), '', '', 'location', 'best');
+set(gca,'YLim', [0.003, nMax*1.3] )
+set(gca,'XLim', [0.003, nMax*1.1] )
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
+hold off
+
+subplot(3, 3, 2) % Dioguardi Proj
+
+% Fit linear model through the intercept: Projected area
+lm_DioProj = fitlm(Table_Dio_Proj.Wt_Meas, Table_Dio_Proj.Wt, 'y~-1+x1');
+m_DioProj = lm_DioProj.Coefficients.Estimate(1);
+fitY_DioProj = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_Dio_Proj.Wt), max(Table_Dio_Proj.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq_Proj = lm_DioProj.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_DioProj(i) = m_DioProj * nVal(i);
+end
+
+plot(Table_Dio_Proj{1:80, "Wt_Meas"}, Table_Dio_Proj{1:80, "Wt"}, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','b', 'MarkerFaceColor', 'b')
+ylabel(sprintf('Modelled terminal \r\n settling velocity (m/s)'))
+xlabel(sprintf('Measured terminal settling velocity (m/s)'))
+title(sprintf('B. Dioguardi et al. (2018): \r\n Projected Area of Volume Equivalent Sphere'))
+hold on
+plot(Table_Dio_Proj{81:100, "Wt_Meas"}, Table_Dio_Proj{81:100, "Wt"}, 'sr',...
+    'MarkerSize',5,'MarkerEdgeColor','r', 'MarkerFaceColor', 'r')
+plot(Table_Dio_Proj{101:140, "Wt_Meas"}, Table_Dio_Proj{101:140, "Wt"}, '^g',...
+    'MarkerSize',5,'MarkerEdgeColor','g', 'MarkerFaceColor', 'g')
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_DioProj, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
+legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_DioProj, r_sq_Proj), '', '', 'location', 'northwest');
+set(gca,'YLim', [0.003, nMax*1.3] )
+set(gca,'XLim', [0.003, nMax*1.1] )
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
+hold off
+
+subplot(3, 3, 3) % Bagheri Proj
+
+% Fit linear model through the intercept: Projected area
+lm_BBProj = fitlm(Table_BB_Proj.Wt_Meas, Table_BB_Proj.Wt_Calc, 'y~-1+x1');
+m_BBProj = lm_BBProj.Coefficients.Estimate(1);
+fitY_BBProj = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_BB_Proj.Wt_Calc), max(Table_BB_Proj.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq_Proj = lm_BBProj.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_BBProj(i) = m_BBProj * nVal(i);
+end
+
+plot(Table_BB_Proj{1:80, "Wt_Meas"}, Table_BB_Proj{1:80, "Wt_Calc"}, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','b', 'MarkerFaceColor', 'b')
+ylabel(sprintf('Modelled terminal \r\n settling velocity (m/s)'))
+xlabel(sprintf('Measured terminal settling velocity (m/s)'))
+title(sprintf('C. Bagheri and Bonadonna (2016): \r\n Projected Area of Volume Equivalent Sphere'))
+hold on
+plot(Table_BB_Proj{81:100, "Wt_Meas"}, Table_BB_Proj{81:100, "Wt_Calc"}, 'sr',...
+    'MarkerSize',5,'MarkerEdgeColor','r', 'MarkerFaceColor', 'r')
+plot(Table_BB_Proj{101:140, "Wt_Meas"}, Table_BB_Proj{101:140, "Wt_Calc"}, '^g',...
+    'MarkerSize',5,'MarkerEdgeColor','g', 'MarkerFaceColor', 'g')
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_BBProj, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
+legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_BBProj, r_sq_Proj), '', '', 'location', 'best');
+set(gca,'YLim', [0.003, nMax*1.3] )
+set(gca,'XLim', [0.003, nMax*1.1] )
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
+hold off
+
+subplot(3, 3, 4) % Francalanci
+
+% Fit linear model through the intercept: SA
+lm_Frn = fitlm(Table_Frn.Wt_Meas, Table_Frn.Wt, 'y~-1+x1');
+m_Frn = lm_Frn.Coefficients.Estimate(1);
+fitY_Frn = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_Frn.Wt), max(Table_Frn.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq = lm_Frn.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_Frn(i) = m_Frn * nVal(i);
+end
+
+plot(Table_Frn{1:80, "Wt_Meas"}, Table_Frn{1:80, "Wt"}, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','b', 'MarkerFaceColor', 'b')
+ylabel(sprintf('Modelled terminal \r\n settling velocity (m/s)'))
+xlabel(sprintf('Measured terminal settling velocity (m/s)'))
+title('D. Francalanci et al. (2021)')
+hold on
+plot(Table_Frn{81:100, "Wt_Meas"}, Table_Frn{81:100, "Wt"}, 'sr',...
+    'MarkerSize',5,'MarkerEdgeColor','r', 'MarkerFaceColor', 'r')
+plot(Table_Frn{101:140, "Wt_Meas"}, Table_Frn{101:140, "Wt"}, '^g',...
+    'MarkerSize',5,'MarkerEdgeColor','g', 'MarkerFaceColor', 'g')
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_Frn, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
+legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Frn, r_sq), '', '', 'location', 'best');
+set(gca,'YLim', [0.003, nMax*m_Frn] )
+set(gca,'XLim', [0.003, nMax*1.1] )
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
+hold off
+
+subplot(3, 3, 5) % Zhang Proj
+
+% Fit linear model through the intercept: Projected area
+lm_ZCProj = fitlm(Table_Zhang_Proj.Wt_Meas, Table_Zhang_Proj.Wt, 'y~-1+x1');
+m_ZCProj = lm_ZCProj.Coefficients.Estimate(1);
+fitY_ZCProj = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_Zhang_Proj.Wt), max(Table_Zhang_Proj.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq_Proj = lm_ZCProj.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_ZCProj(i) = m_ZCProj * nVal(i);
+end
+
+plot(Table_Zhang_Proj{1:80, "Wt_Meas"}, Table_Zhang_Proj{1:80, "Wt"}, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','b', 'MarkerFaceColor', 'b')
+ylabel(sprintf('Modelled terminal \r\n settling velocity (m/s)'))
+xlabel(sprintf('Measured terminal settling velocity (m/s)'))
+title(sprintf('E. Zhang and Choi (2021): \r\n Projected Area using Max CSA'))
+hold on
+plot(Table_Zhang_Proj{81:100, "Wt_Meas"}, Table_Zhang_Proj{81:100, "Wt"}, 'sr',...
+    'MarkerSize',5,'MarkerEdgeColor','r', 'MarkerFaceColor', 'r')
+plot(Table_Zhang_Proj{101:140, "Wt_Meas"}, Table_Zhang_Proj{101:140, "Wt"}, '^g',...
+    'MarkerSize',5,'MarkerEdgeColor','g', 'MarkerFaceColor', 'g')
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_ZCProj, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
+legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_ZCProj, r_sq_Proj), '', '', 'location', 'best');
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
+set(gca,'YLim', [0.003, nMax*m_ZCProj] )
+set(gca,'XLim', [0.003, nMax*1.1] )
+hold off
+
+subplot(3, 3, 6) % Zhang SA
+
+% Fit linear model through the intercept: SA
+lm_ZCSA = fitlm(Table_Zhang_SA.Wt_Meas, Table_Zhang_SA.Wt, 'y~-1+x1');
+m_ZCSA = lm_ZCSA.Coefficients.Estimate(1);
+fitY_ZCSA = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_Zhang_SA.Wt), max(Table_Zhang_SA.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq_SA = lm_ZCSA.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_ZCSA(i) = m_ZCSA * nVal(i);
+end
+
+plot(Table_Zhang_SA{1:80, "Wt_Meas"}, Table_Zhang_SA{1:80, "Wt"}, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','b', 'MarkerFaceColor', 'b')
+ylabel(sprintf('Modelled terminal \r\n settling velocity (m/s)'))
+xlabel(sprintf('Measured terminal settling velocity (m/s)'))
+title(sprintf('F. Zhang and Choi (2021): \r\n Particle Surface Area'))
+hold on
+plot(Table_Zhang_SA{81:100, "Wt_Meas"}, Table_Zhang_SA{81:100, "Wt"}, 'sr',...
+    'MarkerSize',5,'MarkerEdgeColor','r', 'MarkerFaceColor', 'r')
+plot(Table_Zhang_SA{101:140, "Wt_Meas"}, Table_Zhang_SA{101:140, "Wt"}, '^g',...
+    'MarkerSize',5,'MarkerEdgeColor','g', 'MarkerFaceColor', 'g')
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_ZCSA, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
+legend('', '', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_ZCSA, r_sq_SA), '', '', 'location', 'northwest');
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
+set(gca,'YLim', [0.003, nMax*1.3] )
+set(gca,'XLim', [0.003, nMax*1.1] )
+hold off
+
+subplot(3, 3, 7) % Dietrich
+
+% Fit linear model through the intercept
+lm_Dietrich = fitlm(Table_Dietrich_New.Wt_Meas, Table_Dietrich_New.Wt, 'y~-1+x1');
+m_Dietrich = lm_Dietrich.Coefficients.Estimate(1);
+fitY_Dietrich = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_Dietrich_New.Wt), max(Table_Dietrich_New.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0, nMax, 140);
+r_sq = lm_Dietrich.Rsquared.Ordinary(1);
+for i=1:140
+    fitY_Dietrich(i) = m_Dietrich * nVal(i);
+end
+
+plot(Table_Dietrich_New{1:41, "Wt_Meas"}, Table_Dietrich_New{1:41, "Wt"}, 'o', ...
+    'MarkerSize',5,'MarkerEdgeColor','b', 'MarkerFaceColor', 'b')
+hold on
+plot(Table_Dietrich{42, "Wt_Meas"}, Table_Dietrich{42, "Wt"}, 'sr',...
+    'MarkerSize',5,'MarkerEdgeColor','r', 'MarkerFaceColor', 'r')
+ylabel(sprintf('Modelled terminal \r\n settling velocity (m/s)'))
+xlabel(sprintf('Measured terminal settling velocity (m/s)'))
+title('G. Dietrich (1982)')
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_Dietrich, '--k', 'LineWidth', 2)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5)
+legend('', '', '', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Dietrich, r_sq), '', '', 'location', 'northwest');
+set(gca,'YLim', [0.003, nMax*1.3] )
+set(gca,'XLim', [0.003, nMax*1.1] )
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
+hold off
+
+subplot(3, 3, 8) % Stokes Proj
+
+% Fit linear model through the intercept: SA
+lm_StokesSA = fitlm(Table_Stokes_SA.Wt_Meas, Table_Stokes_SA.Wt, 'y~-1+x1');
+m_StokesSA = lm_StokesSA.Coefficients.Estimate(1);
+fitY_StokesSA = zeros(140, 1);
+% Generate data using linear model:
+n1=[max(Table_Stokes_SA.Wt), max(Table_Stokes_SA.Wt_Meas)] ;
+nMax = max(n1);
+nVal=linspace(0.0001, 1, 1000);
+r_sqSA = lm_StokesSA.Rsquared.Ordinary(1);
+for i=1:1000
+    fitY_StokesSA(i) = m_StokesSA * nVal(i);
+end
+
+plot(Table_Stokes_SA{1:80, "Wt_Meas"}, Table_Stokes_SA{1:80, "Wt"}, 'ob', ...
+    'MarkerSize',5,'MarkerEdgeColor','b', 'MarkerFaceColor', 'b')
+ylabel(sprintf('Modelled terminal \r\n settling velocity (m/s)'))
+xlabel(sprintf('Measured terminal settling velocity (m/s)'))
+title('H. Stokes (1851): Particle Surface Area')
+hold on
+plot(Table_Stokes_SA{81:100, "Wt_Meas"}, Table_Stokes_SA{81:100, "Wt"}, 'sr',...
+    'MarkerSize',5,'MarkerEdgeColor','r', 'MarkerFaceColor', 'r')
+plot(Table_Stokes_SA{101:140, "Wt_Meas"}, Table_Stokes_SA{101:140, "Wt"}, '^g',...
+    'MarkerSize',5,'MarkerEdgeColor','g', 'MarkerFaceColor', 'g')
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1)
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1)
+plot(nVal, fitY_StokesSA, '--k', 'LineWidth', 1.5)
+lgnd = legend('Fragment', 'Fibre', 'Film', 'Calculated Velocity = Measured Velocity', 'Measured velocity +/- 30%', '', 'NumColumns', 2);
+lgnd.Position(1) = 0.6916;
+lgnd.Position(2) = 0.1126;
+lgnd.Position(3) = 0.2134;
+lgnd.Position(4) = 0.1914;
+title(lgnd, 'Key', 'FontWeight', 'bold');
+set(gca,'YLim', [0.0007, nMax*m_StokesSA] )
+set(gca,'XLim', [0.0007, nMax*1.1] )
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
+hold off
+
+subplot(3, 3, 9)
+plot(0, 0, '--k', 'LineWidth', 1.5)
+hold on
+%plot(nVal, fitY_StokesSA, '--w', 'LineWidth', 1)
+% plot(nVal, 1.3*nVal, ':k')
+% plot(nVal, 0.7*nVal, ':k')
+% set(gca,'YLim', [0.0005, nMax*1.3] )
+% set(gca,'XLim', [0.0005, nMax*1.3] )
+% set(gca, 'YScale', 'log')
+% set(gca, 'XScale', 'log')
+% set(subplot(3,3,9), 'XTick', [], 'YTick', [])
+% set(subplot(3,3,9), 'XTickLabel', [], 'YTickLabel', [])
+% set(gca, 'Position', [0.4108, 0.1126, 0.2134, 0.1914])
+ axis off
+ lgnd = legend(sprintf('y=%2.4fx, r^{2}=%1.4f', m_StokesSA, r_sqSA));
+ lgnd.Position(1) = 0.5159;
+ lgnd.Position(2) = 0.1227;
+ lgnd.Position(3) = 0.1051;
+ lgnd.Position(4) = 0.0509;
+
+ sgtitle(sprintf('Comparison of modelled mP terminal settling velocity to mP terminal settling velocity measured by Van Melkebeke et al (2020)'), 'FontWeight', 'bold')
+ 
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20230301/AllFit_HighResolution_NO.jpg', 'Resolution', 1200);

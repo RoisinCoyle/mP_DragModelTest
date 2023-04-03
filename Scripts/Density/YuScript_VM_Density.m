@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: YuScript: VM
 % Date created: 25.04.22
-% Date last mostified: 26.06.22
+% Date last mostified: 02.03.23
 % Purpose: To test the model by Yu satisfies the density and initial
 % velocity assumption
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -93,12 +93,10 @@ Table_Yu.Properties.VariableNames(2) = {'Shape'};
 writetable(Table_Yu, './DragModelsTest/Output/20220621/Density/YuOutputDensity.txt', 'Delimiter', ',', 'WriteRowNames', true);
 writetable(Table_Yu, './DragModelsTest/Output/20220621/Density/YuOutputDensity.xls', 'WriteRowNames', true);
 
-%% Plot Yu output
+%% Read in data
 % <<<<<<<<<<<<<<<<<<<
 clear
 Table_Yu= readtable("./DragModelsTest/Output/20220621/Density/YuOutputDensity.txt", "Delimiter", ",");
-
-%% Plot boxplot
 
 label_m = "";
 for i=1:54
@@ -116,13 +114,25 @@ end
 
 label_t = array2table(label_m);
 new_table = [Table_Yu label_t];
-%%
-boxplot(new_table.Wt, new_table.label_m)
-ylabel('Terminal Settling Velocity (m/s)')
-title(sprintf('Yu et al (2022). \n\r %s_f = %5.2f to %5.2f kg/m^3', '\rho', Table_Yu.rho_f(1), Table_Yu.rho_f(6)))
-set(gcf, 'WindowState', 'maximized');
+%% Plot boxplot
+colors = {[0.6980 1 0.4118] [0.6980 1 0.4118] [0.6980 1 0.4118] ...
+          [1 0.6000 0.6000] [1 0.6000 0.6000] [1 0.6000 0.6000] ...
+          [0.4000 0.6980 1] [0.4000 0.6980 1] [0.4000 0.6980 1] };
 
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Yu_Boxplot.jpg', 'Resolution', 300)
+fig = figure
+hold on
+boxplot(new_table.Wt, new_table.label_m, 'position', (1:6:54), 'widths', 5, 'boxstyle', 'outline', 'Colors', 'k')
+ylim([0 0.035])
+boxes = fig.Children.Children(1,1).Children(19:27)
+for j = 1:length(boxes) % draw a colored patch behind each bar
+        patch(boxes(j).XData, boxes(j).YData, colors{j},'FaceAlpha',.5,'EdgeAlpha',0.3);
+end
+ylabel('Modelled Terminal Settling Velocity (m/s)')
+title(sprintf('Boxplots showing the range of modelled terminal settling velocity attained when fluid density varies from %s_f = %5.2f to %5.2f kg/m^3.', '\rho', Table_Yu.rho_f(1), Table_Yu.rho_f(6)))
+subtitle('Model applied: Yu et al (2022).')
+
+set(gcf, 'WindowState', 'maximized');
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Density/Yu_Boxplot.jpg', 'Resolution', 1200)
 
 %% Range table
 
@@ -179,13 +189,11 @@ legend(sprintf('Fragment, %4.1f kg/m^{3}, ESD %4.4f m', Table_Yu.rho_p(1), Table
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_Yu.rho_p(43), Table_Yu.ESD(43)), ...
     sprintf('Film, %4.1f kg/m^{3}, ESD %4.4f m', Table_Yu.rho_p(49), Table_Yu.ESD(49)), ...
     'NumColumns', 3, 'location', 'southoutside')
-title('Yu et al (2022)')
-ylabel('Terminal settling velocity (m/s)')
+title(sprintf("The impact of fluid density (%s_f) on modelled terminal settling velocity of six mP particles selected randomly from Van Melkebeke et al (2020)'s dataset.", '\rho'))
+subtitle('Model applied: Yu et al (2022).')
+ylabel('Modelled Terminal settling velocity (m/s)')
 xlabel('Fluid Density (kg/m^{3})')
+
    
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Density/Yu_Density.jpg', 'Resolution', 300)
-
-
-
-
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Density/Yu_Density.jpg', 'Resolution', 1200)

@@ -280,7 +280,7 @@ xlabel('Particle size (m)')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_ESDV_CSF_NaN.jpg', 'Resolution', 300)
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Dietrich/DietrichVM_ESDV_CSF_NaN.jpg', 'Resolution', 1200)
 
 %% C2) wt against wt measured using Matlab fitlm function alongside CSF
 % ======================================================================
@@ -304,15 +304,16 @@ plot(Table_Dietrich_New{1:40, "Wt_Meas"}, Table_Dietrich_New{1:40, "Wt"}, 'o', .
 hold on
 plot(Table_Dietrich{41, "Wt_Meas"}, Table_Dietrich{41, "Wt"}, 'or',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-ylabel('Estimated settling velocity (m/s)')
+ylabel('Modelled settling velocity (m/s)')
 xlabel('Measured settling velocity (m/s)')
-title(sprintf('Dietrich (1982): Estimated terminal settling velocity \n\r against measured terminal settling velocity'))
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle('Model applied: Dietrich (1982).')
 hold on
-plot(nVal, nVal, '-k')
+plot(nVal, nVal, '-k', 'LineWidth', 1)
 plot(nVal, fitY_Dietrich, '--k')
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
-legend('Fragment', 'Fibre', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Dietrich, r_sq), 'location', 'best');
+plot(nVal, 1.3*nVal, ':', 'LineWidth', 2, 'Color', [.7 .7 .7])
+plot(nVal, 0.7*nVal, ':', 'LineWidth', 2, 'Color', [.7, .7, .7])
+legend('Fragment', 'Fibre', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Dietrich, r_sq), 'Measured velocity +/-30%', '', 'location', 'best');
 set(gca,'YLim', [0.003, nMax*1.3] )
 set(gca,'XLim', [0.003, nMax*1.3] )
 set(gca, 'YScale', 'log')
@@ -334,17 +335,18 @@ plot(Table_Dietrich_New{42, "CSF"}, Table_Dietrich_New{42, "Wt"}, 'or', ...
 ymax = max(max(Table_Dietrich_New.Wt_Meas), max(Table_Dietrich_New.Wt));
 ydot = linspace(0, ymax*1.1, 100)
 xdot = linspace(0.15, 0.15, 100)
-plot(xdot, ydot, 'k:')
-legend('Measured Wt, Fragment', 'Measured Wt, Fibre', 'Measured Wt, Film', 'Calculated Wt, Fragment', 'Calculated Wt, Fibre', ...
+plot(xdot, ydot, ':k', 'LineWidth', 2, 'Color', [.7 .7 .7])
+legend('Measured Wt, Fragment', 'Measured Wt, Fibre', 'Measured Wt, Film', 'Modelled Wt, Fragment', 'Modelled Wt, Fibre', ...
        'CSF=0.15', 'NumColumns', 1, 'location', 'best')
-title(sprintf('Dietrich (1982): Corey Shape Factor \n Against Terminal Settling Velocity'))
+title(sprintf('Graph showing mP terminal settling velocity against CSF \n\r for particles in the dataset in Van Melkebeke et al (2020).'))
+subtitle('Model applied: Dietrich (1982).')
 ylabel('Terminal settling velocity (m/s)')
 xlabel('CSF')
 set(gca, 'YLim', [0, ymax*1.1])
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Dietrich/DietrichVM_MeasVsCalc_FitCSF.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Dietrich/DietrichVM_MeasVsCalc_FitCSF.jpg', 'Resolution', 1200);
 
 %% Combine all m and r_sq values into the error table
 Error_table = readtable("./DragModelsTest/Output/20220621/Dietrich/DietrichErrorTableVM.txt", 'Delimiter', ',', ReadVariableNames=true, ReadRowNames=true);

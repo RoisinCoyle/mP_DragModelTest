@@ -1,7 +1,7 @@
 %% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Title: YuScript: VM
 % Date created: 23.04.22
-% Date last mostified: 23.06.22
+% Date last mostified: 02.03.23
 % Purpose: To test the implementation of the Yu drag model on a range of
 %          particle shapes
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -287,15 +287,17 @@ end
 subplot(1, 2, 1)
 plot(Table_Yu.Wt_Meas, Table_Yu.Wt, 'o', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', '[.7, .7, .7]')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Yu et al (2022).')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Yu et al (2022).'))
+
 hold on
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_Yu, '--k')
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
-legend('Data', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Yu, r_sq), 'location', 'best');
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_Yu, '--k', 'LineWidth', 1)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Yu, r_sq), 'y = x +/- 30%', 'location', 'best');
 set(gca,'YLim', [0.003, nMax*1.1] )
 set(gca,'XLim', [0.003, nMax*1.1] )
 set(gca, 'XScale', 'log')
@@ -303,7 +305,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_MeasVsCalc_Fit.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Yu/YuVM_MeasVsCalc_Fit.jpg', 'Resolution', 1200);
 
 %% C B) Plot all shapes separately with fitted model
 
@@ -323,19 +325,20 @@ end
 subplot(1, 2, 1)
 plot(Table_Yu{1:80, "Wt_Meas"}, Table_Yu{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Yu et al (2022).')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP terminal settling velocity to \n\r mP terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Yu et al (2022).'))
 hold on
 plot(Table_Yu{81:100, "Wt_Meas"}, Table_Yu{81:100, "Wt"}, 'or',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
 plot(Table_Yu{101:140, "Wt_Meas"}, Table_Yu{101:140, "Wt"}, 'og',...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-plot(nVal, nVal, '-k')
-plot(nVal, fitY_Yu, '--k')
-plot(nVal, 1.3*nVal, ':k')
-plot(nVal, 0.7*nVal, ':k')
-legend('Fragment', 'Fibre', 'Film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Yu, r_sq), 'location', 'best');
+plot(nVal, nVal, '-k', 'LineWidth', 1)
+plot(nVal, fitY_Yu, '--k', 'LineWidth', 1)
+plot(nVal, 1.3*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal, 0.7*nVal, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('Fragment', 'Fibre', 'Film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_Yu, r_sq), 'y = x +/- 30%', 'location', 'best');
 set(gca,'YLim', [0.003, nMax*1.3] )
 set(gca,'XLim', [0.003, nMax*1.3] )
 set(gca, 'YScale', 'log')
@@ -343,7 +346,7 @@ set(gca, 'XScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_MeasVsCalc_FitShapes.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Yu/YuVM_MeasVsCalc_FitShapes.jpg', 'Resolution', 1200);
 
 %% C C) Plot Fragments only with fitted model
 
@@ -363,15 +366,16 @@ end
 subplot(1, 2, 1)
 plot(Table_Yu{1:80, "Wt_Meas"}, Table_Yu{1:80, "Wt"}, 'ob', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'b')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Yu et al (2022)')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP fragment terminal settling velocity to \n\r mP fragment terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Yu et al (2022).'))
 hold on
-plot(nVal_F3, nVal_F3, '-k')
-plot(nVal_F3, fitY_YuF3, '--b')
-plot(nVal_F3, 1.3*nVal_F3, ':k')
-plot(nVal_F3, 0.7*nVal_F3, ':k')
-legend('Fragments', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_YuF3, r_sq_F3), 'location', 'best');
+plot(nVal_F3, nVal_F3, '-k', 'LineWidth', 1)
+plot(nVal_F3, fitY_YuF3, '--b', 'LineWidth', 1)
+plot(nVal_F3, 1.3*nVal_F3, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal_F3, 0.7*nVal_F3, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('Fragments', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_YuF3, r_sq_F3), 'y = x +/- 30%', 'location', 'best');
 set(gca,'YLim', [0.003, nMax_F3*1.1] )
 set(gca,'XLim', [0.003, nMax_F3*1.1] )
 set(gca, 'XScale', 'log')
@@ -379,7 +383,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_MeasVsCalc_FitF3.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Yu/YuVM_MeasVsCalc_FitF3.jpg', 'Resolution', 1200);
 
 %% C D) Plot fibres separately with fitted model
 
@@ -399,15 +403,16 @@ end
 subplot(1, 2, 1)
 plot(Table_Yu{81:100, "Wt_Meas"}, Table_Yu{81:100, "Wt"}, 'or', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'r')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Yu et al (2022)')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP fibre terminal settling velocity to \n\r mP fibre terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Yu et al (2022).'))
 hold on
-plot(nVal_F1, nVal_F1, '-k')
-plot(nVal_F1, fitY_YuF1, '--r')
-plot(nVal_F1, 1.3*nVal_F1, ':k')
-plot(nVal_F1, 0.7*nVal_F1, ':k')
-legend('Fibres', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_YuF1, r_sq_F1), 'location', 'best');
+plot(nVal_F1, nVal_F1, '-k', 'LineWidth', 1)
+plot(nVal_F1, fitY_YuF1, '--r', 'LineWidth', 1)
+plot(nVal_F1, 1.3*nVal_F1, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal_F1, 0.7*nVal_F1, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('Fibres', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_YuF1, r_sq_F1), 'y = x +/-30%', 'location', 'best');
 set(gca,'YLim', [0.007, nMax_F1*1.1] )
 set(gca,'XLim', [0.007, nMax_F1*1.1] )
 set(gca, 'XScale', 'log')
@@ -415,7 +420,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_MeasVsCalc_FitF1.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Yu/YuVM_MeasVsCalc_FitF1.jpg', 'Resolution', 1200);
 
 %% C E) Plot film separately with fitted model
 
@@ -435,15 +440,16 @@ end
 subplot(1, 2, 1)
 plot(Table_Yu{101:140, "Wt_Meas"}, Table_Yu{101:140, "Wt"}, 'og', ...
     'MarkerSize',5,'MarkerEdgeColor','k', 'MarkerFaceColor', 'g')
-ylabel('Estimated settling velocity (m/s)')
-xlabel('Measured settling velocity (m/s)')
-title('Yu et al (2022)')
+ylabel('Modelled terminal settling velocity (m/s)')
+xlabel('Measured terminal settling velocity (m/s)')
+title(sprintf('Graph comparing modelled mP film terminal settling velocity to \n\r mP film terminal settling velocity measured by Van Melkebeke et al (2020).'))
+subtitle(sprintf('Model applied: Yu et al (2022).'))
 hold on
-plot(nVal_F2, nVal_F2, '-k')
-plot(nVal_F2, fitY_YuF2, '--g')
-plot(nVal_F2, 1.3*nVal_F2, ':k')
-plot(nVal_F2, 0.7*nVal_F2, ':k')
-legend('film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_YuF2, r_sq_F2), 'location', 'best');
+plot(nVal_F2, nVal_F2, '-k', 'LineWidth', 1)
+plot(nVal_F2, fitY_YuF2, '--g', 'LineWidth', 1)
+plot(nVal_F2, 1.3*nVal_F2, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+plot(nVal_F2, 0.7*nVal_F2, ':k', 'LineWidth', 1.5, 'Color', [.7 .7 .7])
+legend('film', 'y=x', sprintf('y=%2.4fx, r^{2}=%1.4f', m_YuF2, r_sq_F2), 'y = x +/- 30%', 'location', 'best');
 set(gca,'YLim', [0.003, nMax_F1*1.1] )
 set(gca,'XLim', [0.003, nMax_F1*1.1] )
 set(gca, 'XScale', 'log')
@@ -451,7 +457,7 @@ set(gca, 'YScale', 'log')
 hold off
 
 set(gcf, 'WindowState', 'maximized');
-exportgraphics(gcf, './DragModelsTest/Output/20220621/Yu/YuVM_MeasVsCalc_FitF2.jpg', 'Resolution', 300);
+exportgraphics(gcf, './DragModelsTest/Output/20230301/Yu/YuVM_MeasVsCalc_FitF2.jpg', 'Resolution', 1200);
 
 %% Combine all m and r_sq values into the error table
 Error_table = readtable("./DragModelsTest/Output/20220621/Yu/YuErrorTableVM.txt", 'Delimiter', ',', ReadVariableNames=true, ReadRowNames=true);
